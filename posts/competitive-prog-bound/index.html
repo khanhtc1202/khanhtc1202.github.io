@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Boundaries for algorithm analysis</title>
+	<meta name="description" content="khanhtc personal&#39;s note">
+	<meta name="author" content="khanhtc">
+	
+		<link rel="preconnect" href="https://cse.google.com">
+		<link rel="preconnect" href="https://www.googleapis.com">
+		<link rel="preconnect" href="https://www.google.com">
+		<link rel="preconnect" href="https://clients1.google.com">
+	
+	
+		<link rel="preconnect" href="https://cdn.mathjax.org">
+	
+	
+</head>
+<body>
+	<header id="header">
+	<a href="https://khanhtc.me/">khanhtc&#39;s blog</a> | 📣 <a href="https://khanhtc.me/index.xml">RSS</a> | 👀 <a href="https://khanhtc.me/alive">Liveness check</a>
+	<div class="gcse-search"></div>
+	
+	<nav>
+		<ul>
+			
+			<li><a href="/about">about</a></li>
+			
+			<li><a href="https://github.com/khanhtc1202">github</a></li>
+			
+			<li><a href="https://leetcode.com/khanhtc">leetcode</a></li>
+			
+			<li><a href="https://www.linkedin.com/in/khanhtc1202">linkedin</a></li>
+			
+		</ul>
+	</nav>
+	
+</header>
+
+	
+	<main>
+		<article>
+			<h1>Boundaries for algorithm analysis</h1>
+			<time>15.08.2019 07:18</time>
+			<div>
+				<p>Some boundaries you should know to approximate time and space complexity of your algorithm.</p>
+<!-- more -->
+<ul>
+<li>$2^{10} = 1,024 \approx 10^{3}, 2^{20} = 1,048,576 \approx 10^{6}$</li>
+<li>32-bit signed integers (<strong>int</strong>) and 64-bit signed integers (<strong>long long</strong>) have upper limits of $2^{31} − 1 \approx 2 \times 10^{9}$ (safe for up to $\approx 9$ decimal digits) and $2^{63} − 1 \approx 9 \times 10^{18}$ (safe for up to $\approx 18$ decimal digits) respectively.</li>
+<li>Unsigned integers can be used if only non-negative numbers are required. 32-bit unsigned integers (<strong>unsigned int</strong>) and 64-bit unsigned integers (<strong>unsigned long long</strong>) have upper limits of $2^{32} − 1 \approx 4 \times 10^{9}$ and $2^{64} − 1 \approx 1.8 \times 10^{19}$ respectively.</li>
+<li>There are $n!$ permutations and $2^{n}$ subsets (or combinations) of n elements.</li>
+<li>The best time complexity of a comparison-based sorting algorithm is $Ω(n\log_{2}{n})$.</li>
+</ul>
+<p>Notes:</p>
+<ul>
+<li>The largest input size for typical programming contest problems must be &lt; 1M. Beyond that, the time needed to read the input (the Input/Output routine) will be the bottleneck.</li>
+<li>Usually, $O(n\log_{2}{n})$ algorithms are sufficient to solve most contest problems.</li>
+<li>There are a number of studies to find smaller sorting algorithms, one of them could be found <a href="https://pdfs.semanticscholar.org/157e/6626e2c89cd1a004b2dec6def86068833b40.pdf">here</a>.</li>
+<li>If you need to store integers $\geq 2^{64}$, use the <a href="https://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html">Big Integer</a> technique.</li>
+</ul>
+<p>By calculating the time complexity of an algorithm, it is possible to check, before implementing the algorithm, that it is efficient enough for the problem. The starting point for estimations is the fact that a modern computer can perform some hundreds of millions of operations in a second.</p>
+<p>For example, assume that the time limit for a problem is one second and the input size is n = $10^5$. If the time complexity is O($n^2$), the algorithm will perform about $(10^5)^2 = 10^{10}$ operations. This should take at least some tens of seconds, so the algorithm seems to be too slow for solving the problem.</p>
+<p>On the other hand, given the input size, we can try to guess the required time complexity of the algorithm that solves the problem. The following table contains some useful estimates assuming a time limit of one second.</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: center">Input</th>
+          <th style="text-align: center">Limit time complexity</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: center">$n \leq 10$</td>
+          <td style="text-align: center">O(n!)</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">$n \leq 20$</td>
+          <td style="text-align: center">O($2^n$)</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">$n \leq 500$</td>
+          <td style="text-align: center">O($n^3$)</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">$n \leq 5000$</td>
+          <td style="text-align: center">O($n^2$)</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">$n \leq 10^6$</td>
+          <td style="text-align: center">O($n \log n$) or O(n)</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">n is large</td>
+          <td style="text-align: center">O(1) or O($\log n$)</td>
+      </tr>
+  </tbody>
+</table>
+<p>For example, if the input size is $n = 10^5$, it is probably expected that the time complexity of the algorithm is O(n) or O($n \log n$). This information makes it easier to design the algorithm, because it rules out approaches that would yield an algorithm with a worse time complexity.</p>
+<p>Still, it is important to remember that a time complexity is only an estimate of efficiency, because it hides the constant factors. For example, an algorithm that runs in O(n) time may perform $n/2$ or $5n$ operations. This has an important effect on the actual running time of the algorithm.</p>
+<p>to be continue&hellip;</p>
+
+			</div>
+			
+			<div>
+				<ul id="tags">
+					
+					<li><a href="/tags/algorithm">algorithm</a></li>
+					
+					<li><a href="/tags/approx">approx</a></li>
+					
+				</ul>
+			</div>
+			
+		</article>
+	</main>
+<aside>
+	<div>
+		<div>
+			<h3>LATEST POSTS</h3>
+		</div>
+		<div>
+			<ul>
+				
+				<li><a href="/posts/kadane-and-its-applications/">From subarray problems to Kadane and applications</a></li>
+				
+				<li><a href="/posts/an-approach-for-dp-problem/">An Approach for DP Problem</a></li>
+				
+				<li><a href="/posts/some-thought-about-tactics/">A breakthrough of my mind</a></li>
+				
+				<li><a href="/posts/concurrent-unit/">Process, Thread and Routine</a></li>
+				
+				<li><a href="/posts/complexity-classes/">Complexity Classes</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</aside>
+
+<aside>
+	<div>
+    		
+			<div>
+				<h3>TAGS</h3>
+			</div>
+			<div>
+				<ul>
+					
+					<li><a href="/tags/algorithm">algorithm</a></li>
+					
+					<li><a href="/tags/approx">approx</a></li>
+					
+					<li><a href="/tags/architecture">architecture</a></li>
+					
+					<li><a href="/tags/c/c&#43;&#43;">c/c&#43;&#43;</a></li>
+					
+					<li><a href="/tags/code">code</a></li>
+					
+					<li><a href="/tags/compiler">compiler</a></li>
+					
+					<li><a href="/tags/concurrent">concurrent</a></li>
+					
+					<li><a href="/tags/database">database</a></li>
+					
+					<li><a href="/tags/design">design</a></li>
+					
+					<li><a href="/tags/dev%20tool">dev tool</a></li>
+					
+					<li><a href="/tags/golang">golang</a></li>
+					
+					<li><a href="/tags/javascript">javascript</a></li>
+					
+					<li><a href="/tags/lock">lock</a></li>
+					
+					<li><a href="/tags/manual">manual</a></li>
+					
+					<li><a href="/tags/memory">memory</a></li>
+					
+					<li><a href="/tags/networks">networks</a></li>
+					
+					<li><a href="/tags/nodejs">nodejs</a></li>
+					
+					<li><a href="/tags/oop">oop</a></li>
+					
+					<li><a href="/tags/os">os</a></li>
+					
+					<li><a href="/tags/package%20manager">package manager</a></li>
+					
+					<li><a href="/tags/programming">programming</a></li>
+					
+					<li><a href="/tags/react">react</a></li>
+					
+					<li><a href="/tags/tactics">tactics</a></li>
+					
+					<li><a href="/tags/thinking">thinking</a></li>
+					
+					<li><a href="/tags/tree">tree</a></li>
+					
+					<li><a href="/tags/trick">trick</a></li>
+					
+				</ul>
+			</div>
+		
+	</div>
+</aside>
+
+
+
+	<footer id="footer">
+	<p>&copy; 2017-2024 <a href="https://khanhtc.me/">khanhtc&#39;s blog</a> | <a href="https://khanhtc.me/index.xml">RSS</a></p>
+	<section><script async src="https://cse.google.com/cse.js?cx=009971123916912295303:lpg9aljzbui"></script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+  });
+  MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+
+  MathJax.Hub.Config({
+  
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+  });
+</script>
+
+
+	</section>
+</footer>
+
+</body>
+</html>

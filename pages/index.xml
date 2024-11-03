@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pages on khanhtc&#39;s blog</title>
+    <link>https://khanhtc.me/pages/</link>
+    <description>Recent content in Pages on khanhtc&#39;s blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 26 Feb 2022 16:41:32 +0900</lastBuildDate>
+    <atom:link href="https://khanhtc.me/pages/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Live check</title>
+      <link>https://khanhtc.me/alive/</link>
+      <pubDate>Sat, 26 Feb 2022 16:41:32 +0900</pubDate>
+      <guid>https://khanhtc.me/alive/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

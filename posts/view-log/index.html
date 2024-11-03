@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Log Viewer via HTTP</title>
+	<meta name="description" content="khanhtc personal&#39;s note">
+	<meta name="author" content="khanhtc">
+	
+		<link rel="preconnect" href="https://cse.google.com">
+		<link rel="preconnect" href="https://www.googleapis.com">
+		<link rel="preconnect" href="https://www.google.com">
+		<link rel="preconnect" href="https://clients1.google.com">
+	
+	
+		<link rel="preconnect" href="https://cdn.mathjax.org">
+	
+	
+</head>
+<body>
+	<header id="header">
+	<a href="https://khanhtc.me/">khanhtc&#39;s blog</a> | 📣 <a href="https://khanhtc.me/index.xml">RSS</a> | 👀 <a href="https://khanhtc.me/alive">Liveness check</a>
+	<div class="gcse-search"></div>
+	
+	<nav>
+		<ul>
+			
+			<li><a href="/about">about</a></li>
+			
+			<li><a href="https://github.com/khanhtc1202">github</a></li>
+			
+			<li><a href="https://leetcode.com/khanhtc">leetcode</a></li>
+			
+			<li><a href="https://www.linkedin.com/in/khanhtc1202">linkedin</a></li>
+			
+		</ul>
+	</nav>
+	
+</header>
+
+	
+	<main>
+		<article>
+			<h1>Log Viewer via HTTP</h1>
+			<time>30.03.2018 17:17</time>
+			<div>
+				<p>Nhân một cuối tuần rảnh rỗi cao hứng nào đấy, mình đã build một hệ thống nhỏ - mục đích chính để nó giúp mình <strong>clone tự động anime mới</strong> từ các trang mình đã thu thập rss (phần vì mình lười down từng tập, phần do đợt này mình hay quên nên 🤣).</p>
+<p>Do là cái hệ thống viết chơi bời trong 2 ngày nghỉ nên nó thiếu đủ thứ 🤧&hellip; Lúc đầu, mình chỉ tập trung vào viết cho nó chạy, nhưng thời gian đầu - do một số lý do khó nói - mà nó chết sập liên tục 😟 mình bắt đầu nghĩ đến logging, tất nhiên là log ra file thôi&hellip;Sau đấy một thời gian khi đã chạy khá ổn định, dần dần bản thân việc <strong>mò vào server để mở file log ra đọc</strong> mình cũng lười nốt 🤤 nên bắt đầu nghĩ xem có cách nào đơn giản (không phải cài hay dùng thêm dịch vụ ngoài nào) mà có thể giúp xem luôn log file ở server từ trình duyệt không 🧐</p>
+<!-- more -->
+<p>Ý tưởng giải quyết vấn đề của mình như sau: Nếu có thể serve text data trong log file như data thông thường và gửi chúng trong response trả về thì vấn đề cần giải quyết chỉ là <strong>làm cách nào để lấy được log data dưới dạng stream và dán nó lên stream data của response</strong> - giải quyết được vấn đề này thì có thể đọc log qua http thông qua 1 request đơn giản lên server rồi. (Lý do phải đọc log data từ log file dưới dạng stream là do log file lớn đọc trong 1 lần thì tốn ram quá, nhất là với cái server dùng ké của mình 🤧)</p>
+<p>Từ đó mình nghĩ các bước thực hiện như sau (do mình đã viết xong khung cho hệ thống từ trước nên bước viết endpoint mới là dễ dàng thực hiện và không được list ra ở đây):</p>
+<ol>
+<li>Tìm cách đọc stream data từ log file (ở đây mình nghĩ ngay đến <code>tail</code> :)) )</li>
+<li>Tìm cách gọi được stream đó từ source code ( server của hệ thống mình viết bằng nodejs )</li>
+<li>Gắn stream data đọc được lên stream data của response trả về.</li>
+<li>DONE!!!</li>
+</ol>
+<p>Bắt tay vào làm nào :))</p>
+<p>Trong nodejs, để sử dụng các linux command, cách đơn giản nhất là sử dụng thư viện <a href="https://nodejs.org/api/child_process.html">child_process</a>, về cơ bản khi dùng method <code>spawn()</code> của thư viện này, 1 process mới được sinh ra và gán cho <code>&lt;ChildProcess&gt; object</code> thực hiện command và trả về kết quả bạn có thể gọi được thông qua property <code>.stdout</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-weight:bold">var</span> spawn = require(<span style="color:#d20;background-color:#fff0f0">&#39;child_process&#39;</span>).spawn;
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>    obj.show = <span style="color:#080;font-weight:bold">function</span>(req, res, next) {
+</span></span><span style="display:flex;"><span>        res.header(<span style="color:#d20;background-color:#fff0f0">&#39;Content-Type&#39;</span>,<span style="color:#d20;background-color:#fff0f0">&#39;text/html;charset=utf-8&#39;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-weight:bold">var</span> tail = spawn(<span style="color:#d20;background-color:#fff0f0">&#39;tail&#39;</span>, [<span style="color:#d20;background-color:#fff0f0">&#39;-f&#39;</span>, config.app.logPath]);
+</span></span><span style="display:flex;"><span>        console.log(tail.stdout);
+</span></span><span style="display:flex;"><span>    };
+</span></span></code></pre></div><p>kết quả thu được</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>[nodemon] starting <span style="color:#d20;background-color:#fff0f0">`</span>node app.js<span style="color:#d20;background-color:#fff0f0">`</span>
+</span></span><span style="display:flex;"><span>Loaded: log controller.
+</span></span><span style="display:flex;"><span>Loaded: monitor controller.
+</span></span><span style="display:flex;"><span>Loaded: streamer controller.
+</span></span><span style="display:flex;"><span>Loaded: videos controller.
+</span></span><span style="display:flex;"><span>Server running on 127.0.0.1: <span style="color:#00d;font-weight:bold">3000</span>
+</span></span><span style="display:flex;"><span>Loaded file [Fuyu] Citrus - <span style="color:#00d;font-weight:bold">12</span> [720p].mkv ready to view!
+</span></span><span style="display:flex;"><span>Loaded file [Fuyu] Hakumei to Mikochi - <span style="color:#00d;font-weight:bold">11</span> [720p].mkv ready to view!
+</span></span><span style="display:flex;"><span>Loaded file [Fuyu] Killing Bites - <span style="color:#00d;font-weight:bold">11</span> [720p].mkv ready to view!
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p>Có vẻ đã get stream thành công :)) giờ gán nó cho data stream của response là xong :)</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-weight:bold">var</span> spawn = require(<span style="color:#d20;background-color:#fff0f0">&#39;child_process&#39;</span>).spawn;
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>    obj.show = <span style="color:#080;font-weight:bold">function</span>(req, res, next) {
+</span></span><span style="display:flex;"><span>        res.header(<span style="color:#d20;background-color:#fff0f0">&#39;Content-Type&#39;</span>,<span style="color:#d20;background-color:#fff0f0">&#39;text/html;charset=utf-8&#39;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-weight:bold">var</span> tail = spawn(<span style="color:#d20;background-color:#fff0f0">&#39;tail&#39;</span>, [<span style="color:#d20;background-color:#fff0f0">&#39;-f&#39;</span>, config.app.logPath]);
+</span></span><span style="display:flex;"><span>        tail.stdout.pipe(res);
+</span></span><span style="display:flex;"><span>    };
+</span></span></code></pre></div><p>Ở đây mình dùng <code>pipe()</code> để stream đọc được đang ở <code>stdout</code> của process sinh ra bởi spawn() được viết thẳng sang cho res (socket) :)) chắc cũng không hẳn là socket nhưng theo ý hiểu ở đây có thể coi nó gần giống như vậy :D lý do vì</p>
+<p><img src="https://i.imgur.com/LucItFe.png?1" alt=""></p>
+<p>Như đã thấy trong hình trên, stream data của response chưa bắt được event end :)) lý do vì stdout của process đang chạy lệnh tail vẫn chưa hoàn thành (vì nó là tail mà :) ). Như vậy nếu bây giờ mình viết thêm gì đấy vào file log thì trên trình duyệt, nội dung của tab log mình đang xem cũng thay đổi luôn - quá tuyệt :)) thử nào&hellip;</p>
+<p><a href="https://youtu.be/41XIFcZKfEU"><img src="https://media.giphy.com/media/cm1SRZW8XOEGFZNy8V/giphy.gif" alt=""></a></p>
+<p>Done!!! :)))) vậy là đã hoàn thành việc view log thông qua http, lại còn realtime nữa chứ :))))&hellip;</p>
+<p>Nhưng có gì đấy không đúng ở đây 🤔 Nếu như mình ngắt kết nối đến server (tắt cái tab đang nhận log ở trình duyệt) thì sẽ thế nào với cái process get log stream 🧐
+Nghĩ thế nên mình lại vào server check lại và&hellip;</p>
+<pre tabindex="0"><code class="language-shell" data-lang="shell">$ ps aux | grep tail
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root     12951  0.0  0.0   4408   248 pts/3    S+   07:55   0:00 tail -f logs/run.log
+root     12961  0.0  0.0   4408   248 pts/3    S+   07:59   0:00 tail -f logs/run.log
+root     12971  0.0  0.0   4408   248 pts/3    S+   08:05   0:00 tail -f logs/run.log
+</code></pre><p>Không ổn!!! Thế này đọc log 100 lần thì có cả trăm cái process chạy tail nó lưu lại ở server, nghĩ đến thôi đã thấy rùng mình 😱.</p>
+<p>Hiện trạng của cái log view như sau:</p>
+<p><img src="https://i.imgur.com/vJbERcj.jpg" alt=""></p>
+<p>Vấn đề hiện tại sẽ được giải quyết nếu bắt được trạng thái data stream của response bị terminated! Và rất may đây là nodejs :)) chẳng có gì ngoài event, do vậy vấn đề sẽ được giải quyết dễ dàng khi sửa đoạn code gán stream data như sau.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-weight:bold">var</span> spawn = require(<span style="color:#d20;background-color:#fff0f0">&#39;child_process&#39;</span>).spawn;
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>    obj.show = <span style="color:#080;font-weight:bold">function</span>(req, res, next) {
+</span></span><span style="display:flex;"><span>        res.header(<span style="color:#d20;background-color:#fff0f0">&#39;Content-Type&#39;</span>,<span style="color:#d20;background-color:#fff0f0">&#39;text/html;charset=utf-8&#39;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-weight:bold">var</span> tail = spawn(<span style="color:#d20;background-color:#fff0f0">&#39;tail&#39;</span>, [<span style="color:#d20;background-color:#fff0f0">&#39;-f&#39;</span>, config.app.logPath]);
+</span></span><span style="display:flex;"><span>        res.on(<span style="color:#d20;background-color:#fff0f0">&#39;close&#39;</span>, <span style="color:#080;font-weight:bold">function</span>(){
+</span></span><span style="display:flex;"><span>            console.log(<span style="color:#d20;background-color:#fff0f0">&#34;Response ended&#34;</span>);
+</span></span><span style="display:flex;"><span>            tail.kill(<span style="color:#d20;background-color:#fff0f0">&#34;SIGINT&#34;</span>);
+</span></span><span style="display:flex;"><span>        }).on(<span style="color:#d20;background-color:#fff0f0">&#39;finish&#39;</span>, <span style="color:#080;font-weight:bold">function</span>() {
+</span></span><span style="display:flex;"><span>            console.log(<span style="color:#d20;background-color:#fff0f0">&#34;Response finished successfully&#34;</span>);
+</span></span><span style="display:flex;"><span>            tail.kill(<span style="color:#d20;background-color:#fff0f0">&#34;SIGINT&#34;</span>);
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>        tail.stdout.pipe(res);
+</span></span><span style="display:flex;"><span>    };
+</span></span></code></pre></div><p>Ở đây <code>'close'</code> là event sẽ được bắt khi response connection bị ngắt đột ngột và <code>'finish'</code> là event hit khi response connection bị đóng vì lý do tự nhiên (timeout của trình duyệt chẳng hạn). Khi bắt được event này, chỉ cần <code>kill</code> process đang chạy lệnh tail là xong (giống như lệnh kill trong linux thông thường).</p>
+<p>Ok giờ thử lại nào! Đây là trạng thái của server khi có request đọc log đến.</p>
+<p><img src="https://i.imgur.com/oxoyhf4.png" alt=""></p>
+<p>Và giờ thì thử ngắt nó đi :))))</p>
+<p><img src="https://i.imgur.com/pkxmpfI.png" alt=""></p>
+<p>DONE!!!! Lần này thì có vẻ không còn vấn đề nào nữa :)))
+Định lười nhưng cuối cùng thành ra khá lòng vòng mới có thể giải quyết hết vấn đề 🤧 Nên nếu có cần đưa ra kết luận gì đó thì sẽ là đừng lười như mình, kết quả không tốt đẹp gì đâu :)))</p>
+<p>P/S:</p>
+<p>Repo source code của hệ thống clone anime cho bạn nào quan tâm:</p>
+<p><a href="https://github.com/khanhtc1202/animu-crawling-system">https://github.com/khanhtc1202/animu-crawling-system</a></p>
+<p>Bạn nào ngại cài lại thì down chung từ server của mình cũng được :)))</p>
+<p>Nhân đây mình còn rất nhiều cuối tuần rảnh rỗi 🤧 còn hứng thì lúc nào cũng có 😂 bạn nào có ý tưởng gì hay sẵn sàng chia sẻ thì mình xin một chân ngồi hóng nhé 🙌🙌🙌.</p>
+
+			</div>
+			
+			<div>
+				<ul id="tags">
+					
+					<li><a href="/tags/manual">manual</a></li>
+					
+					<li><a href="/tags/networks">networks</a></li>
+					
+					<li><a href="/tags/nodejs">nodejs</a></li>
+					
+				</ul>
+			</div>
+			
+		</article>
+	</main>
+<aside>
+	<div>
+		<div>
+			<h3>LATEST POSTS</h3>
+		</div>
+		<div>
+			<ul>
+				
+				<li><a href="/posts/kadane-and-its-applications/">From subarray problems to Kadane and applications</a></li>
+				
+				<li><a href="/posts/an-approach-for-dp-problem/">An Approach for DP Problem</a></li>
+				
+				<li><a href="/posts/some-thought-about-tactics/">A breakthrough of my mind</a></li>
+				
+				<li><a href="/posts/concurrent-unit/">Process, Thread and Routine</a></li>
+				
+				<li><a href="/posts/complexity-classes/">Complexity Classes</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</aside>
+
+<aside>
+	<div>
+    		
+			<div>
+				<h3>TAGS</h3>
+			</div>
+			<div>
+				<ul>
+					
+					<li><a href="/tags/algorithm">algorithm</a></li>
+					
+					<li><a href="/tags/approx">approx</a></li>
+					
+					<li><a href="/tags/architecture">architecture</a></li>
+					
+					<li><a href="/tags/c/c&#43;&#43;">c/c&#43;&#43;</a></li>
+					
+					<li><a href="/tags/code">code</a></li>
+					
+					<li><a href="/tags/compiler">compiler</a></li>
+					
+					<li><a href="/tags/concurrent">concurrent</a></li>
+					
+					<li><a href="/tags/database">database</a></li>
+					
+					<li><a href="/tags/design">design</a></li>
+					
+					<li><a href="/tags/dev%20tool">dev tool</a></li>
+					
+					<li><a href="/tags/golang">golang</a></li>
+					
+					<li><a href="/tags/javascript">javascript</a></li>
+					
+					<li><a href="/tags/lock">lock</a></li>
+					
+					<li><a href="/tags/manual">manual</a></li>
+					
+					<li><a href="/tags/memory">memory</a></li>
+					
+					<li><a href="/tags/networks">networks</a></li>
+					
+					<li><a href="/tags/nodejs">nodejs</a></li>
+					
+					<li><a href="/tags/oop">oop</a></li>
+					
+					<li><a href="/tags/os">os</a></li>
+					
+					<li><a href="/tags/package%20manager">package manager</a></li>
+					
+					<li><a href="/tags/programming">programming</a></li>
+					
+					<li><a href="/tags/react">react</a></li>
+					
+					<li><a href="/tags/tactics">tactics</a></li>
+					
+					<li><a href="/tags/thinking">thinking</a></li>
+					
+					<li><a href="/tags/tree">tree</a></li>
+					
+					<li><a href="/tags/trick">trick</a></li>
+					
+				</ul>
+			</div>
+		
+	</div>
+</aside>
+
+
+
+	<footer id="footer">
+	<p>&copy; 2017-2024 <a href="https://khanhtc.me/">khanhtc&#39;s blog</a> | <a href="https://khanhtc.me/index.xml">RSS</a></p>
+	<section><script async src="https://cse.google.com/cse.js?cx=009971123916912295303:lpg9aljzbui"></script>
+
+	</section>
+</footer>
+
+</body>
+</html>

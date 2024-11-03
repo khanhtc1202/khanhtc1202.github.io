@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Process, Thread and Routine</title>
+	<meta name="description" content="khanhtc personal&#39;s note">
+	<meta name="author" content="khanhtc">
+	
+		<link rel="preconnect" href="https://cse.google.com">
+		<link rel="preconnect" href="https://www.googleapis.com">
+		<link rel="preconnect" href="https://www.google.com">
+		<link rel="preconnect" href="https://clients1.google.com">
+	
+	
+		<link rel="preconnect" href="https://cdn.mathjax.org">
+	
+	
+</head>
+<body>
+	<header id="header">
+	<a href="https://khanhtc.me/">khanhtc&#39;s blog</a> | 📣 <a href="https://khanhtc.me/index.xml">RSS</a> | 👀 <a href="https://khanhtc.me/alive">Liveness check</a>
+	<div class="gcse-search"></div>
+	
+	<nav>
+		<ul>
+			
+			<li><a href="/about">about</a></li>
+			
+			<li><a href="https://github.com/khanhtc1202">github</a></li>
+			
+			<li><a href="https://leetcode.com/khanhtc">leetcode</a></li>
+			
+			<li><a href="https://www.linkedin.com/in/khanhtc1202">linkedin</a></li>
+			
+		</ul>
+	</nav>
+	
+</header>
+
+	
+	<main>
+		<article>
+			<h1>Process, Thread and Routine</h1>
+			<time>28.02.2020 03:56</time>
+			<div>
+				<h2 id="process-and-thread">Process and Thread</h2>
+<h3 id="process">Process</h3>
+<p>Tiến trình có thể hiểu đơn giản là một chương trình đang chạy trong máy tính. Khi chúng ta mở một trang web trình duyệt thì đây được xem là một tiến trình. Khi chúng ta viết 1 chương trình máy tính bằng ngôn ngữ lập trình như C, Java, hay Go, sau khi tiến hành biên dịch và chạy chương trình thì hệ điều hành sẽ cấp cho chương trình một không gian bộ nhớ nhất định, PID (process ID),&hellip; Mỗi tiến trình có ít nhất một luồng chính (main thread) để chạy chương trình, nó như là xương sống của chương trình vậy. Khi luồng chính này ngừng hoạt động tương ứng với việc chương trình bị tắt.</p>
+<h3 id="thread">Thread</h3>
+<p>Thread hay được gọi là tiểu trình nó là một luồng trong tiến trình đang chạy. Các luồng được chạy song song trong mỗi tiến trình và có thể truy cập đến vùng nhớ được cung cấp bởi tiến trình, các tài nguyên của hệ điều hành,&hellip;</p>
+<p><img src="https://user-images.githubusercontent.com/32532742/70388904-75ad5180-19fb-11ea-9ca7-29eb9bc0654b.png" alt="inner-process"></p>
+<ul>
+<li>Các thread trong process sẽ được cấp phát riêng một vùng nhớ <code>stack</code> để lưu các biến riêng của thread đó. Stack được cấp phát cố định khoảng 1MB-2MB.</li>
+<li>Các thread chia sẻ chung vùng nhớ <code>heap của process</code>. ( các process không chung memory resource - được đảm bảo bởi OS )</li>
+</ul>
+<h4 id="hệ-quả">Hệ quả</h4>
+<ul>
+<li>Khi process tạo <strong>quá nhiều thread sẽ dẫn đến tình trạng stack overflow</strong>.</li>
+<li>Stack overflow khi thread thực thi hàm gọi hàm đệ quy sâu.</li>
+<li>Thread stack size cố định cũng gây lãng phí nếu thread đó chỉ chạy task đơn giản.</li>
+<li>Khi <strong>các thread sử dụng chung vùng nhớ sẽ dễ gây ra hiện tượng race condition</strong>.</li>
+<li><strong>Số lượng thread chạy song song trong cùng một thời điểm sẽ bằng với số lượng nhân CPU mà máy tính chúng ta có</strong>. Theo kinh nghiệm lập trình chúng ta chỉ nên tạo số thread bằng số nhân <code>CPU * 2</code>. ( bản chất số thread được sinh ra trong process không bị giới hạn nếu không tính đến vấn đề stack overflow như hệ quả 1 nói trên, tuy nhiên số lượng thread tối đa chạy trong cùng 1 thời điểm bằng số cpu của hệ điều hành - xem lại image 2 ).</li>
+</ul>
+<h3 id="thread-in-action">Thread in action</h3>
+<p><strong>Tại một thời điểm chỉ có một tác vụ được xử lý hay một thread được chạy trên một nhân CPU</strong>. Khi nhân CPU chuyển qua xử lý tác vụ khác cũng có nghĩa là thread khác được chạy. Thao tác đó được gọi là <code>context switch</code>.</p>
+<p>Context switch xảy ra dựa trên cơ chế cpu cycle time: sau mỗi khoảng thời gian cố định, hardware timer interrupt processor, trigger kernel scheduler. Hàm scheduler của kernel sẽ dừng thực thi các thread ( os thread ) hiện tại, lưu lại các giá trị trên register của các thread đó vào thread local storage ( trên memory ), kiểm tra lại list các thread đã được đăng kí với os, chọn ra các thread sẽ được thực thi tiếp theo, restore các giá trị cần dùng để thực thi các thread đó từ memory và tiến hành thực thi. // chi phí cho context switch là tốn kém!</p>
+<p>chi tiết hơn có thể xem tại: <a href="https://books.google.co.jp/books?id=SJHvCgAAQBAJ&amp;pg=PT362&amp;lpg=PT362&amp;dq=goroutines%20stack%201gb&amp;source=bl&amp;ots=qzkKDXeZvf&amp;sig=ACfU3U33DUanUlDn9HYx8I58IeWqfpaPEA&amp;hl=ja&amp;sa=X&amp;ved=2ahUKEwi-j8Sh8J7mAhWWPXAKHdXdDW4Q6AEwBHoECAoQAQ#v=onepage&amp;q=goroutines%20stack%201gb&amp;f=false">đây</a>.</p>
+<h4 id="conclusion-about-thread-and-process">Conclusion about thread and process</h4>
+<ul>
+<li><strong>OS thread != program thread</strong>, tuy nhiên trong execution context, chúng có tương quan 1:1</li>
+<li>OS thread chỉ số task processor có thể thực hiện đk trong cùng 1 thời điểm ( = CPU number )</li>
+<li>số lượng thread tạo được trong 1 program chỉ bị giới hạn bởi bộ nhớ stack của process chạy program đó ( phụ thuộc vào stack được cấp phát bởi OS )</li>
+</ul>
+<h2 id="routine--in-golang--">Routine ( in Golang :) )</h2>
+<p>So sánh với thread trong các ngôn ngữ khác ( eg. java )</p>
+<ul>
+<li>Một Goroutines sẽ được bắt đầu bằng một vùng nhớ nhỏ (8KB).</li>
+<li>Khi gọi đệ quy sâu (không gian stack hiện tại là không đủ) Goroutines sẽ tự động tăng không gian stack (kích thước tối đa của stack có thể được đạt tới 1GB).</li>
+<li>model <code>M goroutine : N thread</code>. Biến <code>runtime.GOMAXPROCS</code> quy định số lượng thread ( prog thread ) hiện thời đang được handle bởi go runtime ( số n trong model ).</li>
+</ul>
+<h3 id="go-model-in-action">go model in action</h3>
+<p>Để test model <code>m routines : n threads</code>, có thể thí nghiệm như sau</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#080;font-weight:bold">for</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-weight:bold">go</span> <span style="color:#038">print</span>(<span style="color:#00d;font-weight:bold">0</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#038">print</span>(<span style="color:#00d;font-weight:bold">1</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>then</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ <span style="color:#369">GOMAXPROCS</span>=<span style="color:#00d;font-weight:bold">1</span> go run main.go
+</span></span><span style="display:flex;"><span>11111111111111100000000000000011...
+</span></span><span style="display:flex;"><span>$ <span style="color:#369">GOMAXPROCS</span>=<span style="color:#00d;font-weight:bold">2</span> go run main.go
+</span></span><span style="display:flex;"><span>01010101010101010101010101010101...
+</span></span></code></pre></div><p>Ở trường hợp đầu ( runtime handle 1 thread pro ~ 1 os thread ), có 2 goroutine chạy trong prog tuy nhiên có duy nhất 1 thread pro ~ 1 os thread do đó tối đa 1 routine thực thi trong 1 thời điểm, switch value 0-1 xảy ra tại interrupt của hardware. <br>
+Ở trường hợp sau ( runtime handle 2 thread pro ~ 2 os thread ), prog có thể có tối đa 2 thread chạy trong cùng 1 thời điểm được khai báo với os. Cũng tương tự như trên, với 2 goroutine chạy trong prog, runtime có thể cho 2 routine thực thi đồng thời tại mọi thời điểm ( không nhận ra đk interrupt của hardware ).</p>
+<p><strong>but</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ <span style="color:#369">GOMAXPROCS</span>=<span style="color:#00d;font-weight:bold">1</span> go run main.go
+</span></span><span style="display:flex;"><span>1111111111111111111111111111111111111.....111111111110000000000000000000000...000....
+</span></span><span style="display:flex;"><span>$ <span style="color:#369">GOMAXPROCS</span>=<span style="color:#00d;font-weight:bold">2</span> go run main.go
+</span></span><span style="display:flex;"><span>111111111111111000000000000000111111111111111000000000000000111111111111111000...
+</span></span></code></pre></div><p>( chú ý: số số 1 và 0 trong mỗi block phải bằng nhau )</p>
+<p>Trong thực tế 1 cycle time của cpu hiện đại ( 1 lượt thread os execute ) dài hơn nhiều so với thời gian chạy của 1 statement trong goroutine ( hay cả thread prog ) do đó, có thể khẳng định sự khác biệt giữa os thread và prog thread.</p>
+<p>Đọc thêm tại <a href="https://github.com/khanhtc1202/til/issues/32">đây</a>&hellip;</p>
+
+			</div>
+			
+			<div>
+				<ul id="tags">
+					
+					<li><a href="/tags/concurrent">concurrent</a></li>
+					
+					<li><a href="/tags/os">os</a></li>
+					
+				</ul>
+			</div>
+			
+		</article>
+	</main>
+<aside>
+	<div>
+		<div>
+			<h3>LATEST POSTS</h3>
+		</div>
+		<div>
+			<ul>
+				
+				<li><a href="/posts/kadane-and-its-applications/">From subarray problems to Kadane and applications</a></li>
+				
+				<li><a href="/posts/an-approach-for-dp-problem/">An Approach for DP Problem</a></li>
+				
+				<li><a href="/posts/some-thought-about-tactics/">A breakthrough of my mind</a></li>
+				
+				<li><a href="/posts/concurrent-unit/">Process, Thread and Routine</a></li>
+				
+				<li><a href="/posts/complexity-classes/">Complexity Classes</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</aside>
+
+<aside>
+	<div>
+    		
+			<div>
+				<h3>TAGS</h3>
+			</div>
+			<div>
+				<ul>
+					
+					<li><a href="/tags/algorithm">algorithm</a></li>
+					
+					<li><a href="/tags/approx">approx</a></li>
+					
+					<li><a href="/tags/architecture">architecture</a></li>
+					
+					<li><a href="/tags/c/c&#43;&#43;">c/c&#43;&#43;</a></li>
+					
+					<li><a href="/tags/code">code</a></li>
+					
+					<li><a href="/tags/compiler">compiler</a></li>
+					
+					<li><a href="/tags/concurrent">concurrent</a></li>
+					
+					<li><a href="/tags/database">database</a></li>
+					
+					<li><a href="/tags/design">design</a></li>
+					
+					<li><a href="/tags/dev%20tool">dev tool</a></li>
+					
+					<li><a href="/tags/golang">golang</a></li>
+					
+					<li><a href="/tags/javascript">javascript</a></li>
+					
+					<li><a href="/tags/lock">lock</a></li>
+					
+					<li><a href="/tags/manual">manual</a></li>
+					
+					<li><a href="/tags/memory">memory</a></li>
+					
+					<li><a href="/tags/networks">networks</a></li>
+					
+					<li><a href="/tags/nodejs">nodejs</a></li>
+					
+					<li><a href="/tags/oop">oop</a></li>
+					
+					<li><a href="/tags/os">os</a></li>
+					
+					<li><a href="/tags/package%20manager">package manager</a></li>
+					
+					<li><a href="/tags/programming">programming</a></li>
+					
+					<li><a href="/tags/react">react</a></li>
+					
+					<li><a href="/tags/tactics">tactics</a></li>
+					
+					<li><a href="/tags/thinking">thinking</a></li>
+					
+					<li><a href="/tags/tree">tree</a></li>
+					
+					<li><a href="/tags/trick">trick</a></li>
+					
+				</ul>
+			</div>
+		
+	</div>
+</aside>
+
+
+
+	<footer id="footer">
+	<p>&copy; 2017-2024 <a href="https://khanhtc.me/">khanhtc&#39;s blog</a> | <a href="https://khanhtc.me/index.xml">RSS</a></p>
+	<section><script async src="https://cse.google.com/cse.js?cx=009971123916912295303:lpg9aljzbui"></script>
+
+	</section>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tree on khanhtc&#39;s blog</title>
+    <link>https://khanhtc.me/tags/tree/</link>
+    <description>Recent content in Tree on khanhtc&#39;s blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 21 Jul 2018 18:59:07 +0000</lastBuildDate>
+    <atom:link href="https://khanhtc.me/tags/tree/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Play around with goroutine</title>
+      <link>https://khanhtc.me/posts/play-around-with-gorountine/</link>
+      <pubDate>Sat, 21 Jul 2018 18:59:07 +0000</pubDate>
+      <guid>https://khanhtc.me/posts/play-around-with-gorountine/</guid>
+      <description>&lt;p&gt;Hôm nay trong lúc lượn lờ &lt;a href=&#34;https://tour.golang.org/list&#34;&gt;go tour&lt;/a&gt; - một guide khá đầy đủ và thú vị giới thiệu về golang, mình bắt gặp một đoạn khá thú vị :))&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;p&gt;Trong mục concurrency in golang, giới thiệu về goroutine - một điểm rất mạnh của golang dùng thay thế cho thread trong các ngôn ngữ lập trình khác - item 7 có nhắc lại kiến thức về tree. Trong đó có đưa ra 1 quiz nhỏ như sau:&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

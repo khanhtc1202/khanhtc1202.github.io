@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Algorithm</title>
+	<meta name="description" content="khanhtc personal&#39;s note">
+	<meta name="author" content="khanhtc">
+	
+		<link rel="preconnect" href="https://cse.google.com">
+		<link rel="preconnect" href="https://www.googleapis.com">
+		<link rel="preconnect" href="https://www.google.com">
+		<link rel="preconnect" href="https://clients1.google.com">
+	
+	
+		<link rel="preconnect" href="https://cdn.mathjax.org">
+	
+	<link rel="alternate" type="application/rss+xml" href="/tags/algorithm/index.xml" title="khanhtc's blog">
+</head>
+<body>
+	<header id="header">
+	<a href="https://khanhtc.me/">khanhtc&#39;s blog</a> | 📣 <a href="https://khanhtc.me/index.xml">RSS</a> | 👀 <a href="https://khanhtc.me/alive">Liveness check</a>
+	<div class="gcse-search"></div>
+	
+	<nav>
+		<ul>
+			
+			<li><a href="/about">about</a></li>
+			
+			<li><a href="https://github.com/khanhtc1202">github</a></li>
+			
+			<li><a href="https://leetcode.com/khanhtc">leetcode</a></li>
+			
+			<li><a href="https://www.linkedin.com/in/khanhtc1202">linkedin</a></li>
+			
+		</ul>
+	</nav>
+	
+</header>
+
+	
+	<main>
+		
+		<div>
+			<h1>Algorithm</h1>
+			
+		</div>
+		
+
+		
+			<article>
+	<h1><a href="https://khanhtc.me/posts/kadane-and-its-applications/">From subarray problems to Kadane and applications</a></h1>
+	<time>06.07.2023 21:58</time>
+	
+	<a href="/tags/algorithm">algorithm</a>
+	
+	<div>
+		<p>Let&rsquo;s start with a problem (src: <a href="https://leetcode.com/problems/maximum-subarray/">leetcode#53</a>)</p>
+<pre tabindex="0"><code>Given an integer array nums, find the subarray with the largest sum, and return its sum.
+
+Constraints:
+・ 1 &lt;= nums.length &lt;= 1e5
+・ -1e4 &lt;= nums[i] &lt;= 1e4
+</code></pre><p>Since subarray means to a contiguous non-empty sequence of elements within an array. It&rsquo;s easy to find the trivial solution where we try to calculate all possible subarray.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Cpp" data-lang="Cpp"><span style="display:flex;"><span><span style="color:#080;font-weight:bold">class</span> <span style="color:#b06;font-weight:bold">Solution</span> {
+</span></span><span style="display:flex;"><span><span style="color:#080;font-weight:bold">public</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-weight:bold">int</span> maxSubArray(vector&lt;<span style="color:#888;font-weight:bold">int</span>&gt;&amp; nums) {
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-weight:bold">int</span> ans = INT_MIN;
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-weight:bold">for</span> (<span style="color:#888;font-weight:bold">int</span> l = <span style="color:#00d;font-weight:bold">0</span>; l &lt; nums.size(); ++l) {
+</span></span><span style="display:flex;"><span>            <span style="color:#080;font-weight:bold">for</span> (<span style="color:#888;font-weight:bold">int</span> r = l; r &lt; nums.size(); ++r) {
+</span></span><span style="display:flex;"><span>                <span style="color:#888;font-weight:bold">int</span> sum = <span style="color:#00d;font-weight:bold">0</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#080;font-weight:bold">for</span> (<span style="color:#888;font-weight:bold">int</span> i = l; i &lt;= r; i++) sum += nums[i];
+</span></span><span style="display:flex;"><span>                ans = max(ans, sum);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-weight:bold">return</span> ans;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>The time complexity for this solution is $O(n^{3})$ which clearly impossible to be an AC solution. Then how to update that?</p>
+		
+			<a href="https://khanhtc.me/posts/kadane-and-its-applications/">Read more...</a>
+		
+	</div>
+</article>
+
+		
+			<article>
+	<h1><a href="https://khanhtc.me/posts/an-approach-for-dp-problem/">An Approach for DP Problem</a></h1>
+	<time>24.06.2023 13:00</time>
+	
+	<a href="/tags/algorithm">algorithm</a>
+	
+	<div>
+		<p>Start with the problem (src: <a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/">leetcode#714</a>)</p>
+<pre tabindex="0"><code>You are given an array prices where prices[i] is the price of a given stock on the ith day, and an integer fee representing a transaction fee.
+
+Find the maximum profit you can achieve. You may complete as many transactions as you like, but you need to pay the transaction fee for each transaction.
+
+Note: You may not engage in multiple transactions simultaneously (i.e., you must sell the stock before you buy again).
+</code></pre><h3 id="how-do-we-know-its-a-dynamic-programming-dp-problem-">How do we know it&rsquo;s a Dynamic Programming (DP) problem? 💭</h3>
+<p>It&rsquo;s based on your sense ;) But there are some signs that you can follow</p>
+		
+			<a href="https://khanhtc.me/posts/an-approach-for-dp-problem/">Read more...</a>
+		
+	</div>
+</article>
+
+		
+			<article>
+	<h1><a href="https://khanhtc.me/posts/complexity-classes/">Complexity Classes</a></h1>
+	<time>19.11.2019 00:51</time>
+	
+	<a href="/tags/algorithm">algorithm</a>
+	
+	<div>
+		<p>The following list contains common time complexities of algorithms:</p>
+<ul>
+<li>
+<p>O(1) The running time of a constant-time algorithm does not depend on the input size. A typical constant-time algorithm is a direct formula that calculates the answer.</p>
+</li>
+<li>
+<p>O($\log n$) A logarithmic algorithm often halves the input size at each step. The running time of such an algorithm is logarithmic, because $\log n$ equals the number of times n must be divided by 2 to get 1.</p>
+		
+			<a href="https://khanhtc.me/posts/complexity-classes/">Read more...</a>
+		
+	</div>
+</article>
+
+		
+			<article>
+	<h1><a href="https://khanhtc.me/posts/dining-philosophers/">Dining Philosophers</a></h1>
+	<time>04.11.2019 21:39</time>
+	
+	<a href="/tags/algorithm">algorithm</a>
+	
+	<a href="/tags/lock">lock</a>
+	
+	<a href="/tags/concurrent">concurrent</a>
+	
+	<div>
+		<p>Bữa tối của các triết gia (dining philosophers problem) là một ví dụ nổi tiếng khi nhắc đến các vấn đề trong bài toán xử lý concurrent.</p>
+<p>Vấn đề được phát biểu như sau: Cho 5 triết gia ngồi chung một bàn tròn với 5 chiếc đũa xếp xem kẽ giữa 2 người ngồi cạnh nhau như hình</p>
+<p><img src="https://sphof.readthedocs.io/_images/philtable.png" alt="Dining Philosophers"></p>
+<p>img: sphof.readthedocs.io</p>
+<p>Mỗi triết gia tìm cách để ăn được thức ăn từ đĩa của mình với điều kiện: &ldquo;chỉ ai có 2 chiếc đũa cạnh mình mới được phép ăn&rdquo;, do đó họ lần lượt đổi trạng thái giữa ăn (eating) và đợi (thinking) :)) Mỗi người sau khi giữa đôi đũa để ăn sau 1 khoảng thời gian phải bỏ lại 2 chiếc đũa về vị trí cũ để tiếp tục quá trình này. Yêu cầu: tìm một phương pháp đảm bảo để các triết gia đều có thể đk ăn / đợi đổi lượt để không ai bị chết đói (chỉ đợi chứ không được ăn).</p>
+		
+			<a href="https://khanhtc.me/posts/dining-philosophers/">Read more...</a>
+		
+	</div>
+</article>
+
+		
+			<article>
+	<h1><a href="https://khanhtc.me/posts/competitive-prog-bound/">Boundaries for algorithm analysis</a></h1>
+	<time>15.08.2019 07:18</time>
+	
+	<a href="/tags/algorithm">algorithm</a>
+	
+	<a href="/tags/approx">approx</a>
+	
+	<div>
+		<p>Some boundaries you should know to approximate time and space complexity of your algorithm.</p>
+<!-- more -->
+<ul>
+<li>$2^{10} = 1,024 \approx 10^{3}, 2^{20} = 1,048,576 \approx 10^{6}$</li>
+<li>32-bit signed integers (<strong>int</strong>) and 64-bit signed integers (<strong>long long</strong>) have upper limits of $2^{31} − 1 \approx 2 \times 10^{9}$ (safe for up to $\approx 9$ decimal digits) and $2^{63} − 1 \approx 9 \times 10^{18}$ (safe for up to $\approx 18$ decimal digits) respectively.</li>
+<li>Unsigned integers can be used if only non-negative numbers are required. 32-bit unsigned integers (<strong>unsigned int</strong>) and 64-bit unsigned integers (<strong>unsigned long long</strong>) have upper limits of $2^{32} − 1 \approx 4 \times 10^{9}$ and $2^{64} − 1 \approx 1.8 \times 10^{19}$ respectively.</li>
+<li>There are $n!$ permutations and $2^{n}$ subsets (or combinations) of n elements.</li>
+<li>The best time complexity of a comparison-based sorting algorithm is $Ω(n\log_{2}{n})$.</li>
+</ul>
+<p>Notes:</p>
+		
+			<a href="https://khanhtc.me/posts/competitive-prog-bound/">Read more...</a>
+		
+	</div>
+</article>
+
+		
+		<div>
+	<hr />
+
+1 of 1
+
+</div>
+
+	</main>
+<aside>
+	<div>
+		<div>
+			<h3>LATEST POSTS</h3>
+		</div>
+		<div>
+			<ul>
+				
+				<li><a href="/posts/kadane-and-its-applications/">From subarray problems to Kadane and applications</a></li>
+				
+				<li><a href="/posts/an-approach-for-dp-problem/">An Approach for DP Problem</a></li>
+				
+				<li><a href="/posts/some-thought-about-tactics/">A breakthrough of my mind</a></li>
+				
+				<li><a href="/posts/concurrent-unit/">Process, Thread and Routine</a></li>
+				
+				<li><a href="/posts/complexity-classes/">Complexity Classes</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</aside>
+
+<aside>
+	<div>
+    		
+			<div>
+				<h3>TAGS</h3>
+			</div>
+			<div>
+				<ul>
+					
+					<li><a href="/tags/algorithm">algorithm</a></li>
+					
+					<li><a href="/tags/approx">approx</a></li>
+					
+					<li><a href="/tags/architecture">architecture</a></li>
+					
+					<li><a href="/tags/c/c&#43;&#43;">c/c&#43;&#43;</a></li>
+					
+					<li><a href="/tags/code">code</a></li>
+					
+					<li><a href="/tags/compiler">compiler</a></li>
+					
+					<li><a href="/tags/concurrent">concurrent</a></li>
+					
+					<li><a href="/tags/database">database</a></li>
+					
+					<li><a href="/tags/design">design</a></li>
+					
+					<li><a href="/tags/dev%20tool">dev tool</a></li>
+					
+					<li><a href="/tags/golang">golang</a></li>
+					
+					<li><a href="/tags/javascript">javascript</a></li>
+					
+					<li><a href="/tags/lock">lock</a></li>
+					
+					<li><a href="/tags/manual">manual</a></li>
+					
+					<li><a href="/tags/memory">memory</a></li>
+					
+					<li><a href="/tags/networks">networks</a></li>
+					
+					<li><a href="/tags/nodejs">nodejs</a></li>
+					
+					<li><a href="/tags/oop">oop</a></li>
+					
+					<li><a href="/tags/os">os</a></li>
+					
+					<li><a href="/tags/package%20manager">package manager</a></li>
+					
+					<li><a href="/tags/programming">programming</a></li>
+					
+					<li><a href="/tags/react">react</a></li>
+					
+					<li><a href="/tags/tactics">tactics</a></li>
+					
+					<li><a href="/tags/thinking">thinking</a></li>
+					
+					<li><a href="/tags/tree">tree</a></li>
+					
+					<li><a href="/tags/trick">trick</a></li>
+					
+				</ul>
+			</div>
+		
+	</div>
+</aside>
+
+
+
+	<footer id="footer">
+	<p>&copy; 2017-2024 <a href="https://khanhtc.me/">khanhtc&#39;s blog</a> | <a href="https://khanhtc.me/index.xml">RSS</a></p>
+	<section><script async src="https://cse.google.com/cse.js?cx=009971123916912295303:lpg9aljzbui"></script>
+
+	</section>
+</footer>
+
+</body>
+</html>

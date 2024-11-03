@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Oop on khanhtc&#39;s blog</title>
+    <link>https://khanhtc.me/tags/oop/</link>
+    <description>Recent content in Oop on khanhtc&#39;s blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 30 Sep 2019 22:57:39 +0900</lastBuildDate>
+    <atom:link href="https://khanhtc.me/tags/oop/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Immutable Go Object</title>
+      <link>https://khanhtc.me/posts/immutable-go-object/</link>
+      <pubDate>Mon, 30 Sep 2019 22:57:39 +0900</pubDate>
+      <guid>https://khanhtc.me/posts/immutable-go-object/</guid>
+      <description>&lt;p&gt;Every Go programmer knows about the &lt;code&gt;receiver&lt;/code&gt; in go, which be declared as:&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#080;font-weight:bold&#34;&gt;type&lt;/span&gt; X &lt;span style=&#34;color:#080;font-weight:bold&#34;&gt;struct&lt;/span&gt; {}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#080;font-weight:bold&#34;&gt;func&lt;/span&gt; (receiver X) &lt;span style=&#34;color:#06b;font-weight:bold&#34;&gt;doThing&lt;/span&gt;() {...}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We have two types of receiver in Golang, which is &lt;strong&gt;Value receiver&lt;/strong&gt; and &lt;strong&gt;Pointer receiver&lt;/strong&gt;. Basically, the receiver in Golang could be map to &lt;code&gt;self&lt;/code&gt; in other programming languages and the function which uses the receiver will be pointed from struct type of the receiver.&lt;/p&gt;&#xA;&lt;p&gt;&lt;em&gt;So, what does this means, anyway?&lt;/em&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Type embedding not inheritance</title>
+      <link>https://khanhtc.me/posts/type_embedding/</link>
+      <pubDate>Mon, 25 Mar 2019 23:00:13 +0000</pubDate>
+      <guid>https://khanhtc.me/posts/type_embedding/</guid>
+      <description>&lt;p&gt;Since we don’t have classes in go, you can say &lt;code&gt;struct&lt;/code&gt; will do a job to make objects. So how 4 principles of object-oriented programming represent in Golang? In this post, we will discuss the principle of OOP that make Golang better than others object-oriented programming language: &lt;strong&gt;inheritance&lt;/strong&gt;.&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;p&gt;A simple question, how does Golang represent inheritance principle even if it doesn&amp;rsquo;t have &lt;code&gt;extends&lt;/code&gt;? We can easily find out the answer to this question: &lt;strong&gt;embedding type&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Why can&#39;t initialize object from abstract class (java)</title>
+      <link>https://khanhtc.me/posts/why_can_not_new_abstract_class/</link>
+      <pubDate>Sat, 23 Mar 2019 01:50:54 +0000</pubDate>
+      <guid>https://khanhtc.me/posts/why_can_not_new_abstract_class/</guid>
+      <description>&lt;p&gt;Difference between Abstract class and Interface is one of the most be confused problem when the first time I learnt Java. In which case we should use Abstract class and which case we should use Interface? Let&amp;rsquo;s take a deeper look in this two of concepts.&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;p&gt;By defination, the Abstract class (java) is a &lt;strong&gt;class but unlike a simple java class, it&amp;rsquo;s may not only contain regular defined methods but may also contain abstract methods or a mix of regular and abstract methods.&lt;/strong&gt; Some of Abstract class&amp;rsquo;s properties that make is different from Interface can be listed are:&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>How much your objects encapsulate ?</title>
+      <link>https://khanhtc.me/posts/encapsulate/</link>
+      <pubDate>Sun, 24 Feb 2019 18:46:19 +0000</pubDate>
+      <guid>https://khanhtc.me/posts/encapsulate/</guid>
+      <description>&lt;p&gt;Encapsulate ( tài liệu tiếng Việt thường dịch là &lt;code&gt;đóng gói&lt;/code&gt; ) hay được nhắc đến và ví dụ như là cách để &lt;code&gt;che giấu&lt;/code&gt; thông tin trong lập trình hướng đối tượng.&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;Tức là trạng thái của đối tượng được bảo vệ không cho các truy cập từ code bên ngoài như thay đổi trong thái hay nhìn trực tiếp. Việc cho phép môi trường bên ngoài tác động lên các dữ liệu nội tại của một đối tượng theo cách nào là hoàn toàn tùy thuộc vào người viết mã. Đây là tính chất đảm bảo sự toàn vẹn, bảo mật của đối tượng Trong Java, tính đóng gói được thể hiện thông qua phạm vi truy cập (access modifier).&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

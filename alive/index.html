@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+	<title>Live check</title>
+	<meta name="description" content="khanhtc personal&#39;s note">
+	<meta name="author" content="khanhtc">
+</head>
+<body>
+    <p id="liveness-check">Checking... 🔍</p>
+    <div>
+        <p>Heartbeat (based on <a href="https://github.com/khanhtc1202" target="_blank">github</a> contribution data) 🤧</p>
+        <canvas id="line-chart" height="100vh"></canvas>
+    </div>
+    <script>
+        const fetchCommits = fetch("https://api.github.com/ztest").then(r => r.json()).then(d => {
+            const data = [2,5,4,5,6,9,7,1,0,7];
+            return data;
+        });
+
+        window.onload = async () => {
+            const data = await fetchCommits;
+            const livecheck = data.reduce((p, c) => p+c, 0) > 0;
+            if (livecheck) {
+                document.getElementById("liveness-check").textContent="Good news! I'm still alive...👋";
+            } else {
+                document.getElementById("liveness-check").textContent="Find me, plz...🤧";
+            }
+            new Chart(document.getElementById("line-chart"), {
+                type: 'line',
+                data: {
+                    labels: [-9,-8,-7,-6,-5,-4,-3,-2,-1,0],
+                    datasets: [{
+                        data: data,
+                        label: "Commits by day",
+                        borderColor: livecheck ? "#2BA50F" : "#E5190F",
+                        fill: false,
+                        stepped: "middle",
+                    }]
+                },
+                options: {}
+            });
+        };
+    </script>
+    <div style="position: fixed; bottom: 0;">
+	    <footer id="footer">
+	<p>&copy; 2017-2024 <a href="https://khanhtc.me/">khanhtc&#39;s blog</a> | <a href="https://khanhtc.me/index.xml">RSS</a></p>
+	<section><script async src="https://cse.google.com/cse.js?cx=009971123916912295303:lpg9aljzbui"></script>
+
+	</section>
+</footer>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Memory on khanhtc&#39;s blog</title>
+    <link>https://khanhtc.me/tags/memory/</link>
+    <description>Recent content in Memory on khanhtc&#39;s blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 22 Dec 2017 18:42:41 +0000</lastBuildDate>
+    <atom:link href="https://khanhtc.me/tags/memory/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Memory trick</title>
+      <link>https://khanhtc.me/posts/mem-trick/</link>
+      <pubDate>Fri, 22 Dec 2017 18:42:41 +0000</pubDate>
+      <guid>https://khanhtc.me/posts/mem-trick/</guid>
+      <description>&lt;p&gt;Nếu đã từng có thời gian làm việc với C (hay ông nào kinh hơn làm hẳn với Assembly :) ) chắc ai cũng nhớ sự kinh hoàng của &lt;strong&gt;core dump fail&lt;/strong&gt; :&amp;rsquo;( . Dù có sử dụng &lt;a href=&#34;https://en.wikipedia.org/wiki/GNU_Debugger&#34;&gt;&lt;code&gt;gdb&lt;/code&gt;&lt;/a&gt; debug thì chắc cũng phải bỏ ra cả mớ thời gian và công sức mà nhiều khi lỗi bắt nguồn từ những cái vớ vẩn nào đó mà bình thường ta không để ý :&amp;rsquo;( . Mặt khác bạn nên thấy may mắn khi ít ra còn biết chương trình đã lỗi ở đâu đó để mà sửa, có những lỗi nằm ở nhưng nơi hiểm hơn - không làm cho chương trình dừng nhưng kết quả thì sai lè. Một trong số những nguyên nhân chính dẫn đến nó là vấn đề &lt;a href=&#34;https://en.wikipedia.org/wiki/Overflow&#34;&gt;&lt;code&gt;tràn số&lt;/code&gt;&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

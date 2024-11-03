@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Networks on khanhtc&#39;s blog</title>
+    <link>https://khanhtc.me/tags/networks/</link>
+    <description>Recent content in Networks on khanhtc&#39;s blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 30 Mar 2018 17:17:44 +0000</lastBuildDate>
+    <atom:link href="https://khanhtc.me/tags/networks/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Log Viewer via HTTP</title>
+      <link>https://khanhtc.me/posts/view-log/</link>
+      <pubDate>Fri, 30 Mar 2018 17:17:44 +0000</pubDate>
+      <guid>https://khanhtc.me/posts/view-log/</guid>
+      <description>&lt;p&gt;Nhân một cuối tuần rảnh rỗi cao hứng nào đấy, mình đã build một hệ thống nhỏ - mục đích chính để nó giúp mình &lt;strong&gt;clone tự động anime mới&lt;/strong&gt; từ các trang mình đã thu thập rss (phần vì mình lười down từng tập, phần do đợt này mình hay quên nên 🤣).&lt;/p&gt;&#xA;&lt;p&gt;Do là cái hệ thống viết chơi bời trong 2 ngày nghỉ nên nó thiếu đủ thứ 🤧&amp;hellip; Lúc đầu, mình chỉ tập trung vào viết cho nó chạy, nhưng thời gian đầu - do một số lý do khó nói - mà nó chết sập liên tục 😟 mình bắt đầu nghĩ đến logging, tất nhiên là log ra file thôi&amp;hellip;Sau đấy một thời gian khi đã chạy khá ổn định, dần dần bản thân việc &lt;strong&gt;mò vào server để mở file log ra đọc&lt;/strong&gt; mình cũng lười nốt 🤤 nên bắt đầu nghĩ xem có cách nào đơn giản (không phải cài hay dùng thêm dịch vụ ngoài nào) mà có thể giúp xem luôn log file ở server từ trình duyệt không 🧐&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

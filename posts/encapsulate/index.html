@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>How much your objects encapsulate ?</title>
+	<meta name="description" content="khanhtc personal&#39;s note">
+	<meta name="author" content="khanhtc">
+	
+		<link rel="preconnect" href="https://cse.google.com">
+		<link rel="preconnect" href="https://www.googleapis.com">
+		<link rel="preconnect" href="https://www.google.com">
+		<link rel="preconnect" href="https://clients1.google.com">
+	
+	
+		<link rel="preconnect" href="https://cdn.mathjax.org">
+	
+	
+</head>
+<body>
+	<header id="header">
+	<a href="https://khanhtc.me/">khanhtc&#39;s blog</a> | 📣 <a href="https://khanhtc.me/index.xml">RSS</a> | 👀 <a href="https://khanhtc.me/alive">Liveness check</a>
+	<div class="gcse-search"></div>
+	
+	<nav>
+		<ul>
+			
+			<li><a href="/about">about</a></li>
+			
+			<li><a href="https://github.com/khanhtc1202">github</a></li>
+			
+			<li><a href="https://leetcode.com/khanhtc">leetcode</a></li>
+			
+			<li><a href="https://www.linkedin.com/in/khanhtc1202">linkedin</a></li>
+			
+		</ul>
+	</nav>
+	
+</header>
+
+	
+	<main>
+		<article>
+			<h1>How much your objects encapsulate ?</h1>
+			<time>24.02.2019 18:46</time>
+			<div>
+				<p>Encapsulate ( tài liệu tiếng Việt thường dịch là <code>đóng gói</code> ) hay được nhắc đến và ví dụ như là cách để <code>che giấu</code> thông tin trong lập trình hướng đối tượng.</p>
+<!-- more -->
+<blockquote>
+<p>Tức là trạng thái của đối tượng được bảo vệ không cho các truy cập từ code bên ngoài như thay đổi trong thái hay nhìn trực tiếp. Việc cho phép môi trường bên ngoài tác động lên các dữ liệu nội tại của một đối tượng theo cách nào là hoàn toàn tùy thuộc vào người viết mã. Đây là tính chất đảm bảo sự toàn vẹn, bảo mật của đối tượng Trong Java, tính đóng gói được thể hiện thông qua phạm vi truy cập (access modifier).</p>
+</blockquote>
+<p>Từ <a href="https://en.wikipedia.org/wiki/Encapsulation_(computer_programming)">wiki</a> ta có định nghĩa</p>
+<blockquote>
+<p>Encapsulation is one of the fundamentals of OOP (object-oriented programming). It refers to the bundling of data with the methods that operate on that data. Encapsulation is used to hide the values or state of a structured data object inside a class, preventing unauthorized parties&rsquo; direct access to them. Publicly accessible methods are generally provided in the class (so-called getters and setters) to access the values, and other client classes call these methods to retrieve and modify the values within the object.</p>
+</blockquote>
+<p>Những thứ nổi lên và dễ đập vào mắt nhất khi đọc định nghĩa này là &ldquo;đảm bảo sự toàn vẹn&rdquo;, &ldquo;không cho các truy cập từ code bên ngoài&rdquo;, &ldquo;hide the values or state&rdquo;,&hellip;đại ý là cấm thay đổi trực tiếp value và state nhưng sau cùng lại có <code>getters and setters</code> @@ nếu đã tồn tại 2 thứ này, sau cùng vẫn có cách để bạn thay đổi value hay state của object, vậy rút cuộc encapsulate mang ý nghĩa gì, và liệu cách hiểu như vậy có phải là một cách hiểu đúng :))</p>
+<p>Thử nghĩ lại một chút qua ví dụ sau:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-weight:bold">new</span><span style="color:#bbb"> </span>HTTP(<span style="color:#d20;background-color:#fff0f0">&#34;https://www.google.com&#34;</span>).<span style="color:#369">read</span>();<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#080;font-weight:bold">new</span><span style="color:#bbb"> </span>HTTP().<span style="color:#369">read</span>(<span style="color:#d20;background-color:#fff0f0">&#34;https://www.google.com&#34;</span>);<span style="color:#bbb">
+</span></span></span></code></pre></div><p>Có gì khác biệt giữa 2 cách code trên ? Class <code>HTTP</code> thứ nhất encapsulate URL như là một thành phần của chính nó, trong khi class <code>HTTP</code> thứ hai nhận vào URL như là biến cần thiết để thực hiện hành vi <code>read()</code>. Về cơ bản, object tạo bởi 2 class nói trên khi gọi read đều thực hiện cùng một hành vi: chúng đọc nội dung từ google. Vậy cách dùng nào <code>đúng</code> ? Câu trả lời có vẻ là tuỳ thuộc vào việc dùng chúng vào mục đích gì.</p>
+<p>Một cách mô tả về object trong OOP mà ai cũng biết, object là <code>thế hiện của một thực thể trong thực tế</code>! Object tồn tại trong cái môi trường được gọi là thực tế đó và biết cách <code>tương tác với môi trường</code> thông qua các <code>hành vi</code>. Nếu vậy trong ví dụ về object của 2 class <code>HTTP</code> bên trên, những object đó thể hiện cho đối tượng nào trong thực tế? Rõ ràng, mỗi class (với thiết kế khác nhau) thể hiện cho một thực thể khác nhau :)</p>
+<p>Class <code>HTTP</code> thứ nhất, nhận vào một URL thông qua constructor, nó chỉ cho ta biết rằng: object của class này sau khi được khởi tạo thông qua constructor sẽ là thể hiện cho một trang web (cái mà được trỏ đến bởi URL).</p>
+<p>Class <code>HTTP</code> thứ hai, với một constructor không có tham số, nó chỉ ra rằng: object khởi tạo bởi nó là thể hiện của&hellip;vũ trụ (the Universe)!</p>
+<p>Có một cách đơn giản để biết một class là thể hiện của thực thể nào trong thực tế, đó là <code>nhìn vào constructor</code> - hay một cách cụ thể hơn: cách tạo ra object thuộc kiểu của class đó</p>
+<blockquote>
+<p>In order to understand what real-life entity an object represents, look at its constructor.</p>
+</blockquote>
+<p>Về cơ bản, class nắm giữ cách tạo ra object trong môi trường object tồn tại, định nghĩa về object được xác định thông qua cách mà nó được tạo ra. Các tham số được truyền vào cho constructor và được encapsulate bởi object, nhằm định nghĩa object đó là thể hiện của thực thể nào trong môi trường.</p>
+<p>Và bây giờ, thử làm rõ hơn câu hỏi đã đề ra: <strong>class nào trong 2 class HTTP đã đưa ra được thiết kế đúng?</strong> bằng cách thay nó bởi câu hỏi: <strong>class nào thể hiện thực thể tốt hơn? web page hay the Universe?</strong> Tuy nhiên có một điều chúng ta đã biết: trong phần lớn trường hợp, càng tập trung thể hiện một thực thể đủ nhỏ - ta nắm rõ bao nhiêu, object ta thiết kế ra càng bền vững và gắn kết (solid &amp; cohesive) bấy nhiêu.</p>
+<p>Mặt khác, đôi khi chúng ta cũng cần những object thể hiện các thực thể có độ lớn như vũ trụ. Ví dụ như trong trường hợp class <code>HTTP</code> thứ hai bên trên:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#080;font-weight:bold">class</span> <span style="color:#b06;font-weight:bold">HTTP</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-weight:bold">public</span><span style="color:#bbb"> </span>String<span style="color:#bbb"> </span><span style="color:#06b;font-weight:bold">read</span>(String<span style="color:#bbb"> </span>url)<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span><span style="color:#888">// read via HTTP and return</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-weight:bold">public</span><span style="color:#bbb"> </span><span style="color:#888;font-weight:bold">boolean</span><span style="color:#bbb"> </span><span style="color:#06b;font-weight:bold">online</span>()<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span><span style="color:#888">// check whether we&#39;re online</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb">
+</span></span></span></code></pre></div><p>Nó có thể không phải là một thiết kế tốt, tuy nhiên nó cần thiết nếu như muốn thể hiện những thực thể có kích thước vũ trụ. Một object của class <code>HTTP</code> trên có thể đọc thông tin từ bất cứ trang web nào trên internet (có lẽ số lượng cũng nhiều và đủ lớn để so sánh với kích thước vũ trụ?), và đồng thời biết cách kiểm tra xem trạng thái hiện tại của những trang web đó,&hellip;tất nhiên với một object là thể hiện của vũ trụ, không có gì giới hạn việc bạn thêm vào bao nhiêu hành vi cho nó cả :)). Trong trường hợp này, chúng ta thực sự không cần thiết phải encapsulate bất cứ gì vào trong nó.</p>
+<p>Tôi tin rằng, <strong>những object với thiết kế để thể hiện cho thực thể vũ trụ là những object có thiết kế không tốt!</strong> Một trong những lý do chính vì chúng ta chỉ có một vũ trụ (the Universe) - hay ít nhất, trong trường hợp nó có nhiều phiên bản, nó cũng khá tương tự nhau đối với chúng ta; tại sao chúng ta phải thiết kế nhiều thể hiện khác nhau cho nó chứ? :))</p>
+<p>Tham khảo: <a href="https://www.yegor256.com/2014/12/15/how-much-your-objects-encapsulate.html">https://www.yegor256.com/2014/12/15/how-much-your-objects-encapsulate.html</a></p>
+
+			</div>
+			
+			<div>
+				<ul id="tags">
+					
+					<li><a href="/tags/oop">oop</a></li>
+					
+					<li><a href="/tags/thinking">thinking</a></li>
+					
+					<li><a href="/tags/design">design</a></li>
+					
+				</ul>
+			</div>
+			
+		</article>
+	</main>
+<aside>
+	<div>
+		<div>
+			<h3>LATEST POSTS</h3>
+		</div>
+		<div>
+			<ul>
+				
+				<li><a href="/posts/kadane-and-its-applications/">From subarray problems to Kadane and applications</a></li>
+				
+				<li><a href="/posts/an-approach-for-dp-problem/">An Approach for DP Problem</a></li>
+				
+				<li><a href="/posts/some-thought-about-tactics/">A breakthrough of my mind</a></li>
+				
+				<li><a href="/posts/concurrent-unit/">Process, Thread and Routine</a></li>
+				
+				<li><a href="/posts/complexity-classes/">Complexity Classes</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</aside>
+
+<aside>
+	<div>
+    		
+			<div>
+				<h3>TAGS</h3>
+			</div>
+			<div>
+				<ul>
+					
+					<li><a href="/tags/algorithm">algorithm</a></li>
+					
+					<li><a href="/tags/approx">approx</a></li>
+					
+					<li><a href="/tags/architecture">architecture</a></li>
+					
+					<li><a href="/tags/c/c&#43;&#43;">c/c&#43;&#43;</a></li>
+					
+					<li><a href="/tags/code">code</a></li>
+					
+					<li><a href="/tags/compiler">compiler</a></li>
+					
+					<li><a href="/tags/concurrent">concurrent</a></li>
+					
+					<li><a href="/tags/database">database</a></li>
+					
+					<li><a href="/tags/design">design</a></li>
+					
+					<li><a href="/tags/dev%20tool">dev tool</a></li>
+					
+					<li><a href="/tags/golang">golang</a></li>
+					
+					<li><a href="/tags/javascript">javascript</a></li>
+					
+					<li><a href="/tags/lock">lock</a></li>
+					
+					<li><a href="/tags/manual">manual</a></li>
+					
+					<li><a href="/tags/memory">memory</a></li>
+					
+					<li><a href="/tags/networks">networks</a></li>
+					
+					<li><a href="/tags/nodejs">nodejs</a></li>
+					
+					<li><a href="/tags/oop">oop</a></li>
+					
+					<li><a href="/tags/os">os</a></li>
+					
+					<li><a href="/tags/package%20manager">package manager</a></li>
+					
+					<li><a href="/tags/programming">programming</a></li>
+					
+					<li><a href="/tags/react">react</a></li>
+					
+					<li><a href="/tags/tactics">tactics</a></li>
+					
+					<li><a href="/tags/thinking">thinking</a></li>
+					
+					<li><a href="/tags/tree">tree</a></li>
+					
+					<li><a href="/tags/trick">trick</a></li>
+					
+				</ul>
+			</div>
+		
+	</div>
+</aside>
+
+
+
+	<footer id="footer">
+	<p>&copy; 2017-2024 <a href="https://khanhtc.me/">khanhtc&#39;s blog</a> | <a href="https://khanhtc.me/index.xml">RSS</a></p>
+	<section><script async src="https://cse.google.com/cse.js?cx=009971123916912295303:lpg9aljzbui"></script>
+
+	</section>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Migrate to NoSql</title>
+	<meta name="description" content="khanhtc personal&#39;s note">
+	<meta name="author" content="khanhtc">
+	
+		<link rel="preconnect" href="https://cse.google.com">
+		<link rel="preconnect" href="https://www.googleapis.com">
+		<link rel="preconnect" href="https://www.google.com">
+		<link rel="preconnect" href="https://clients1.google.com">
+	
+	
+		<link rel="preconnect" href="https://cdn.mathjax.org">
+	
+	
+</head>
+<body>
+	<header id="header">
+	<a href="https://khanhtc.me/">khanhtc&#39;s blog</a> | 📣 <a href="https://khanhtc.me/index.xml">RSS</a> | 👀 <a href="https://khanhtc.me/alive">Liveness check</a>
+	<div class="gcse-search"></div>
+	
+	<nav>
+		<ul>
+			
+			<li><a href="/about">about</a></li>
+			
+			<li><a href="https://github.com/khanhtc1202">github</a></li>
+			
+			<li><a href="https://leetcode.com/khanhtc">leetcode</a></li>
+			
+			<li><a href="https://www.linkedin.com/in/khanhtc1202">linkedin</a></li>
+			
+		</ul>
+	</nav>
+	
+</header>
+
+	
+	<main>
+		<article>
+			<h1>Migrate to NoSql</h1>
+			<time>10.07.2019 22:34</time>
+			<div>
+				<p>Một điều được nhắc đến rất nhiệu khi chuyển từ sql sang nosql là cách để lưu trữ quan hệ giữa các đối tượng trong database. Một đối tượng thường rất ít khi tồn tại độc lâp trong một hệ thống mà nắm giữ 1 phần thông tin được sử dụng để tạo ra một đối tượng khác.</p>
+<!-- more -->
+<p>Các dạng quan hệ chính giữa các đối tượng có thể lưu được trong cơ sở dữ liệu quan hệ bao gồm</p>
+<ul>
+<li>One-to-One</li>
+<li>One-to-N</li>
+<li>N-to-N</li>
+</ul>
+<p>Tất nhiên, trong các loại đã được liệt kê phía trên, quan hệ N-to-N thường ít thấy do được chuyển thành 2 quan hệ One-to-N ( và tốt nhất là nó nên được chuyển như thế :smile: ), quan hệ One-to-One thì khá cơ bản và không gặp vấn đề khi chuyển từ sql sang nosql. Vậy vấn đề chính cần giải quyết là tìm câu trả lời cho việc thế hiện quan hệ One-to-N một cách hiệu quả trong nosql.</p>
+<p>Để phủ đầu mọi tranh luận, câu trả lời ngắn gọn cho câu trả lời trên là: <strong>không có phương pháp cố định nào để áp dụng khi chuyển quan hệ One-to-N từ sql sang nosql!</strong> Nó phụ thuộc vào một số trường hợp cụ thể, cũng như yêu cầu của hệ thống và đặc điểm của dữ liệu để người thiết kế có thể quyết định cách nào là hiệu quả.</p>
+<p>Để đưa ra thiết kế phù hợp cho dữ liệu có quan hệ One-to-N, một câu hỏi được đặt ra: Cardinality ( lực lượng hay số số phần tử của một tập hợp ) của tập N trong mối quan hệ đố là bao nhiêu? hay một cách hỏi khác: cụ thể quan hệ One-to-N đó là <code>One-to-few</code>, <code>One-to-many</code>, <code>One-to-squillions</code>? Tuỳ thuộc vào câu trả lời mà cách thiết kế trong nosql tương ứng sẽ khác nhau.</p>
+<h2 id="one-to-few">One-to-few</h2>
+<p>Lưu trữ dư thừa ( hay lặp lại ) để giảm bớt việc join khi cần lấy dữ liệu là một đặc tính của nosql. Trong trường hợp quan hệ One-to-N là One-to-few, một cách hợp lý để lưu dữ liệu là <strong>lưu trực tiếp các thành phần dữ liệu N trong dữ liệu One</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&gt; db.person.findOne()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  name: <span style="color:#d20;background-color:#fff0f0">&#39;khanhtc&#39;</span>,
+</span></span><span style="display:flex;"><span>  dob: <span style="color:#d20;background-color:#fff0f0">&#39;1994-01-01&#39;</span>
+</span></span><span style="display:flex;"><span>  addresses : [
+</span></span><span style="display:flex;"><span>    { city: <span style="color:#d20;background-color:#fff0f0">&#39;Tokyo&#39;</span>, cc: <span style="color:#d20;background-color:#fff0f0">&#39;JPN&#39;</span> },
+</span></span><span style="display:flex;"><span>    { city: <span style="color:#d20;background-color:#fff0f0">&#39;Hanoi&#39;</span>, cc: <span style="color:#d20;background-color:#fff0f0">&#39;VNM&#39;</span> }
+</span></span><span style="display:flex;"><span>  ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Dễ thấy số lượng dữ liệu địa chỉ là nhỏ và khi tính đến việc query 2 bảng hoặc join bảng để lấy dữ liệu, việc lưu trữ trực tiếp thông tin địa chỉ dưới dạng mảng hiệu quả hơn.</p>
+<h2 id="one-to-many">One-to-many</h2>
+<p>Khi lực lượng (cardinality) của tập N trong quan hệ One-to-N đủ lớn ( cỡ hàng trăm chẳng hạn ), việc lưu trữ lặp lại hàng trăm dữ liệu của tập N trong mỗi document dữ liệu của tập One là dư thừa quá lớn. Một cách đơn giản, giống <strong>như trog cơ sở dữ liệu quan hệ, lưu trữ key trỏ đến dữ liệu của kiểu N trong kiểu One</strong> là một cách hợp lý để giải quyết vấn đề này.</p>
+<p>Ví dụ một product như oto chẳng hạn, được tạo thành từ vài trăm chi tiết khác nhau.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&gt; db.parts.findOne()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    _id : ObjectID(<span style="color:#d20;background-color:#fff0f0">&#39;AAAA&#39;</span>),
+</span></span><span style="display:flex;"><span>    partno : <span style="color:#d20;background-color:#fff0f0">&#39;123-aff-456&#39;</span>,
+</span></span><span style="display:flex;"><span>    name : <span style="color:#d20;background-color:#fff0f0">&#39;#4 grommet&#39;</span>,
+</span></span><span style="display:flex;"><span>    qty: 94,
+</span></span><span style="display:flex;"><span>    cost: 0.94,
+</span></span><span style="display:flex;"><span>    price: 3.99
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>&gt; db.cars.findOne()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    name : <span style="color:#d20;background-color:#fff0f0">&#39;mini cooper&#39;</span>,
+</span></span><span style="display:flex;"><span>    manufacturer : <span style="color:#d20;background-color:#fff0f0">&#39;BMW&#39;</span>,
+</span></span><span style="display:flex;"><span>    catalog_number: 1234,
+</span></span><span style="display:flex;"><span>    parts : [     // array of references to Part documents
+</span></span><span style="display:flex;"><span>        ObjectID(<span style="color:#d20;background-color:#fff0f0">&#39;AAAA&#39;</span>),    // reference to the <span style="color:#888">#4 grommet above</span>
+</span></span><span style="display:flex;"><span>        ObjectID(<span style="color:#d20;background-color:#fff0f0">&#39;F17C&#39;</span>),    // reference to a different Part
+</span></span><span style="display:flex;"><span>        ObjectID(<span style="color:#d20;background-color:#fff0f0">&#39;D2AA&#39;</span>),
+</span></span><span style="display:flex;"><span>        // etc
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Để query dữ liệu, ta cần 2 query riêng biệt cho trường hợp này</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>// Fetch the Cars document identified by this catalog number
+</span></span><span style="display:flex;"><span>&gt; <span style="color:#369">product</span> = db.cars.findOne({catalog_number: 1234});
+</span></span><span style="display:flex;"><span>// Fetch all the Parts that are linked to this Car
+</span></span><span style="display:flex;"><span>&gt; <span style="color:#369">product_parts</span> = db.parts.find({_id: { <span style="color:#369">$in</span> : product.parts } } ).toArray() ;
+</span></span></code></pre></div><p>Một điểm cần chú ý là khi dữ liệu của tập N thường xuyên bị thay đổi, việc lưu riêng dữ liệu kiểu N thành 1 collections giúp cho việc update bớt tốn kém hơn ( tương tự như khi lưu dữ liệu trong sql ).</p>
+<h2 id="one-to-squillions">One-to-squillions</h2>
+<p>Một ví dụ điển hình của kiểu dữ liệu dạng này là dữ liệu log hệ thống, chẳng hạn log trạng thái của các host trong hệ thống.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&gt; db.hosts.findOne()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    _id : ObjectID(<span style="color:#d20;background-color:#fff0f0">&#39;AAAB&#39;</span>),
+</span></span><span style="display:flex;"><span>    name : <span style="color:#d20;background-color:#fff0f0">&#39;goofy.example.com&#39;</span>,
+</span></span><span style="display:flex;"><span>    ipaddr : <span style="color:#d20;background-color:#fff0f0">&#39;127.66.66.66&#39;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>&gt; db.logmsg.findOne()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#038">time</span> : ISODate(<span style="color:#d20;background-color:#fff0f0">&#34;2014-03-28T09:42:41.382Z&#34;</span>),
+</span></span><span style="display:flex;"><span>message : <span style="color:#d20;background-color:#fff0f0">&#39;cpu is on fire!&#39;</span>,
+</span></span><span style="display:flex;"><span>....
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Bất cứ dữ liệu kiểu dạng log nào cũng đều rất lớn và tăng cực nhanh, một cách hiệu quả để thể hiện mỗi quan hệ One-to-N giữ host và log thuộc về nó là <strong>để dữ liệu kiểu N (log) giữ relation đến dữ liệu kiểu One (host)</strong>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&gt; db.logmsg.findOne()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#038">time</span> : ISODate(<span style="color:#d20;background-color:#fff0f0">&#34;2014-03-28T09:42:41.382Z&#34;</span>),
+</span></span><span style="display:flex;"><span>message : <span style="color:#d20;background-color:#fff0f0">&#39;cpu is on fire!&#39;</span>,
+</span></span><span style="display:flex;"><span>host: ObjectID(<span style="color:#d20;background-color:#fff0f0">&#39;AAAB&#39;</span>)       // Reference to the Host document
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Khi đó query dữ liệu log theo host sẽ trở thành</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>// find the parent ‘host’ document
+</span></span><span style="display:flex;"><span>&gt; <span style="color:#369">host</span> = db.hosts.findOne({ipaddr : <span style="color:#d20;background-color:#fff0f0">&#39;127.66.66.66&#39;</span>});  // assumes unique index
+</span></span><span style="display:flex;"><span>// find the most recent <span style="color:#00d;font-weight:bold">5000</span> log message documents linked to that host
+</span></span><span style="display:flex;"><span>&gt; <span style="color:#369">last_5k_msg</span> = db.logmsg.find({host: host._id}).sort({<span style="color:#038">time</span> : -1}).limit(5000).toArray()
+</span></span></code></pre></div><p>to be continue&hellip;</p>
+
+			</div>
+			
+			<div>
+				<ul id="tags">
+					
+					<li><a href="/tags/database">database</a></li>
+					
+					<li><a href="/tags/design">design</a></li>
+					
+				</ul>
+			</div>
+			
+		</article>
+	</main>
+<aside>
+	<div>
+		<div>
+			<h3>LATEST POSTS</h3>
+		</div>
+		<div>
+			<ul>
+				
+				<li><a href="/posts/kadane-and-its-applications/">From subarray problems to Kadane and applications</a></li>
+				
+				<li><a href="/posts/an-approach-for-dp-problem/">An Approach for DP Problem</a></li>
+				
+				<li><a href="/posts/some-thought-about-tactics/">A breakthrough of my mind</a></li>
+				
+				<li><a href="/posts/concurrent-unit/">Process, Thread and Routine</a></li>
+				
+				<li><a href="/posts/complexity-classes/">Complexity Classes</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</aside>
+
+<aside>
+	<div>
+    		
+			<div>
+				<h3>TAGS</h3>
+			</div>
+			<div>
+				<ul>
+					
+					<li><a href="/tags/algorithm">algorithm</a></li>
+					
+					<li><a href="/tags/approx">approx</a></li>
+					
+					<li><a href="/tags/architecture">architecture</a></li>
+					
+					<li><a href="/tags/c/c&#43;&#43;">c/c&#43;&#43;</a></li>
+					
+					<li><a href="/tags/code">code</a></li>
+					
+					<li><a href="/tags/compiler">compiler</a></li>
+					
+					<li><a href="/tags/concurrent">concurrent</a></li>
+					
+					<li><a href="/tags/database">database</a></li>
+					
+					<li><a href="/tags/design">design</a></li>
+					
+					<li><a href="/tags/dev%20tool">dev tool</a></li>
+					
+					<li><a href="/tags/golang">golang</a></li>
+					
+					<li><a href="/tags/javascript">javascript</a></li>
+					
+					<li><a href="/tags/lock">lock</a></li>
+					
+					<li><a href="/tags/manual">manual</a></li>
+					
+					<li><a href="/tags/memory">memory</a></li>
+					
+					<li><a href="/tags/networks">networks</a></li>
+					
+					<li><a href="/tags/nodejs">nodejs</a></li>
+					
+					<li><a href="/tags/oop">oop</a></li>
+					
+					<li><a href="/tags/os">os</a></li>
+					
+					<li><a href="/tags/package%20manager">package manager</a></li>
+					
+					<li><a href="/tags/programming">programming</a></li>
+					
+					<li><a href="/tags/react">react</a></li>
+					
+					<li><a href="/tags/tactics">tactics</a></li>
+					
+					<li><a href="/tags/thinking">thinking</a></li>
+					
+					<li><a href="/tags/tree">tree</a></li>
+					
+					<li><a href="/tags/trick">trick</a></li>
+					
+				</ul>
+			</div>
+		
+	</div>
+</aside>
+
+
+
+	<footer id="footer">
+	<p>&copy; 2017-2024 <a href="https://khanhtc.me/">khanhtc&#39;s blog</a> | <a href="https://khanhtc.me/index.xml">RSS</a></p>
+	<section><script async src="https://cse.google.com/cse.js?cx=009971123916912295303:lpg9aljzbui"></script>
+
+	</section>
+</footer>
+
+</body>
+</html>

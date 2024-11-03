@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tactics on khanhtc&#39;s blog</title>
+    <link>https://khanhtc.me/tags/tactics/</link>
+    <description>Recent content in Tactics on khanhtc&#39;s blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 24 Jan 2021 21:21:01 +0900</lastBuildDate>
+    <atom:link href="https://khanhtc.me/tags/tactics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A breakthrough of my mind</title>
+      <link>https://khanhtc.me/posts/some-thought-about-tactics/</link>
+      <pubDate>Sun, 24 Jan 2021 21:21:01 +0900</pubDate>
+      <guid>https://khanhtc.me/posts/some-thought-about-tactics/</guid>
+      <description>&lt;p&gt;Today I got a really nice chess puzzle that makes me review all of my knowledge, or even more important - the way I should think strategically. 🤔&lt;/p&gt;&#xA;&lt;img width=&#34;100%&#34; alt=&#34;chess puzzle 1&#34; src=&#34;https://user-images.githubusercontent.com/32532742/105636360-6614f480-5eab-11eb-98bc-d526e991537a.png&#34;&gt;&#xA;&lt;p&gt;via &lt;a href=&#34;https://chess.com&#34;&gt;chess.com&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;The puzzle starts with black makes Na5, white to move.&lt;/p&gt;&#xA;&lt;p&gt;To this day, what I have learned about chess strategies could be shortened into: seek to prevail. There are many shapes of prevail, that is:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;checkmate the opposite king&lt;/li&gt;&#xA;&lt;li&gt;gain the advantage in trading pieces (sacrifice)&lt;/li&gt;&#xA;&lt;li&gt;take the advantage of space (suppress, narrow the opponent&amp;rsquo;s scope of activity)&lt;/li&gt;&#xA;&lt;li&gt;promotion&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;Apply to the current situation, white wins one piece (a pawn which means 1 point but it&amp;rsquo;s just a gambit), a little bit advantage of space (a pawn in d5 followed by Bishop at c4), a bad move of black pawn f7. And on top of that, white has a strong Bishop - Bc4 which makes a threat to Kg8 indirectly.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

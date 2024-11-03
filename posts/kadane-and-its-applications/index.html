@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>From subarray problems to Kadane and applications</title>
+	<meta name="description" content="khanhtc personal&#39;s note">
+	<meta name="author" content="khanhtc">
+	
+		<link rel="preconnect" href="https://cse.google.com">
+		<link rel="preconnect" href="https://www.googleapis.com">
+		<link rel="preconnect" href="https://www.google.com">
+		<link rel="preconnect" href="https://clients1.google.com">
+	
+	
+		<link rel="preconnect" href="https://cdn.mathjax.org">
+	
+	
+</head>
+<body>
+	<header id="header">
+	<a href="https://khanhtc.me/">khanhtc&#39;s blog</a> | 📣 <a href="https://khanhtc.me/index.xml">RSS</a> | 👀 <a href="https://khanhtc.me/alive">Liveness check</a>
+	<div class="gcse-search"></div>
+	
+	<nav>
+		<ul>
+			
+			<li><a href="/about">about</a></li>
+			
+			<li><a href="https://github.com/khanhtc1202">github</a></li>
+			
+			<li><a href="https://leetcode.com/khanhtc">leetcode</a></li>
+			
+			<li><a href="https://www.linkedin.com/in/khanhtc1202">linkedin</a></li>
+			
+		</ul>
+	</nav>
+	
+</header>
+
+	
+	<main>
+		<article>
+			<h1>From subarray problems to Kadane and applications</h1>
+			<time>06.07.2023 21:58</time>
+			<div>
+				<p>Let&rsquo;s start with a problem (src: <a href="https://leetcode.com/problems/maximum-subarray/">leetcode#53</a>)</p>
+<pre tabindex="0"><code>Given an integer array nums, find the subarray with the largest sum, and return its sum.
+
+Constraints:
+・ 1 &lt;= nums.length &lt;= 1e5
+・ -1e4 &lt;= nums[i] &lt;= 1e4
+</code></pre><p>Since subarray means to a contiguous non-empty sequence of elements within an array. It&rsquo;s easy to find the trivial solution where we try to calculate all possible subarray.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Cpp" data-lang="Cpp"><span style="display:flex;"><span><span style="color:#080;font-weight:bold">class</span> <span style="color:#b06;font-weight:bold">Solution</span> {
+</span></span><span style="display:flex;"><span><span style="color:#080;font-weight:bold">public</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-weight:bold">int</span> maxSubArray(vector&lt;<span style="color:#888;font-weight:bold">int</span>&gt;&amp; nums) {
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-weight:bold">int</span> ans = INT_MIN;
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-weight:bold">for</span> (<span style="color:#888;font-weight:bold">int</span> l = <span style="color:#00d;font-weight:bold">0</span>; l &lt; nums.size(); ++l) {
+</span></span><span style="display:flex;"><span>            <span style="color:#080;font-weight:bold">for</span> (<span style="color:#888;font-weight:bold">int</span> r = l; r &lt; nums.size(); ++r) {
+</span></span><span style="display:flex;"><span>                <span style="color:#888;font-weight:bold">int</span> sum = <span style="color:#00d;font-weight:bold">0</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#080;font-weight:bold">for</span> (<span style="color:#888;font-weight:bold">int</span> i = l; i &lt;= r; i++) sum += nums[i];
+</span></span><span style="display:flex;"><span>                ans = max(ans, sum);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-weight:bold">return</span> ans;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>The time complexity for this solution is $O(n^{3})$ which clearly impossible to be an AC solution. Then how to update that?</p>
+<p>We may notice that the most inner for loop which be used to calculate sum of nums in range <strong>[l, r]</strong>, it can be done better. Due to we only update r =&gt; (r+1), then we obviously have</p>
+<blockquote>
+<p>sum(l, r+1) = sum(l, r) + nums[r+1]</p>
+</blockquote>
+<p>The trick is to recognize that <strong>all of the subarrays starting at a particular value will share a common prefix</strong>. (1)</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Cpp" data-lang="Cpp"><span style="display:flex;"><span><span style="color:#080;font-weight:bold">class</span> <span style="color:#b06;font-weight:bold">Solution</span> {
+</span></span><span style="display:flex;"><span><span style="color:#080;font-weight:bold">public</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-weight:bold">int</span> maxSubArray(vector&lt;<span style="color:#888;font-weight:bold">int</span>&gt;&amp; nums) {
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-weight:bold">int</span> ans = INT_MIN;
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-weight:bold">for</span> (<span style="color:#888;font-weight:bold">int</span> l = <span style="color:#00d;font-weight:bold">0</span>; l &lt; nums.size(); ++l) {
+</span></span><span style="display:flex;"><span>            <span style="color:#888;font-weight:bold">int</span> sum = <span style="color:#00d;font-weight:bold">0</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#080;font-weight:bold">for</span> (<span style="color:#888;font-weight:bold">int</span> r = l; r &lt; nums.size(); ++r) {
+</span></span><span style="display:flex;"><span>                sum += nums[r];
+</span></span><span style="display:flex;"><span>                ans = max(ans, sum);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-weight:bold">return</span> ans;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>The time complexity for this solution is $O(n^{2})$ and yes it&rsquo;s still not an AC solution due to the problem constraints.</p>
+<p>Back to the previous intuition (1), suppose we have a vector prefix which <strong>prefix[i]</strong> is sum of all element in nums up to <strong>i</strong>. Then we obviously have</p>
+<blockquote>
+<p>sum(l, r) = prefix[r] - prefix[l] + nums[l]</p>
+</blockquote>
+<p>or</p>
+<blockquote>
+<p>sum(l, r) = prefix[r] - prefix[l-1]</p>
+</blockquote>
+<p>The <strong>prefix[r]</strong> is a constant for each iteration at <strong>r</strong>. That means to maximize the <strong>sum(l, r)</strong>, we have to find the minimum <strong>prefix[l-1]</strong> or whichever previous MIN.</p>
+<p>That can be done using a variable which maintain previous min.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Cpp" data-lang="Cpp"><span style="display:flex;"><span><span style="color:#080;font-weight:bold">class</span> <span style="color:#b06;font-weight:bold">Solution</span> {
+</span></span><span style="display:flex;"><span><span style="color:#080;font-weight:bold">public</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-weight:bold">int</span> maxSubArray(vector&lt;<span style="color:#888;font-weight:bold">int</span>&gt;&amp; nums) {
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-weight:bold">int</span> sum = <span style="color:#00d;font-weight:bold">0</span>, ans = nums[<span style="color:#00d;font-weight:bold">0</span>];
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-weight:bold">int</span> mn = <span style="color:#00d;font-weight:bold">0</span>; <span style="color:#888">// Min prefix sum[l] at specify r.
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>        <span style="color:#080;font-weight:bold">for</span> (<span style="color:#888;font-weight:bold">int</span> &amp;<span style="color:#369;font-style:italic">r</span> : nums){
+</span></span><span style="display:flex;"><span>            <span style="color:#888">// Prefix up to r.
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>            sum += r;
+</span></span><span style="display:flex;"><span>            <span style="color:#888">// Update ans by compare with sum(l+1, r)
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>            <span style="color:#888">// with l provides sum[l] min
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>            ans = max(ans, sum - mn);
+</span></span><span style="display:flex;"><span>            <span style="color:#888">// Maintain min by compare with latest prefix
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>            mn = min(mn, sum);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-weight:bold">return</span> ans;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>The time complexity for this solution is $O(n)$ and yes it&rsquo;s an AC 👏</p>
+<p>Though we found the $O(n)$ solution for this problem, this question in particular is a popular problem that can be solved using an algorithm called <a href="https://en.wikipedia.org/wiki/Maximum_subarray_problem#Kadane's_algorithm">Kadane&rsquo;s Algorithm</a>.</p>
+<p>It is based on a pretty greedy-like intuition: Since the numbers input contains negative numbers that subtract the accumulated sum up to that point, to find the max for a subarray, we have to figure out when a negative number is “worth” keeping in that subarray.</p>
+<p>Obviously, we have: <strong>If the accumulated sum up to i is a negative number, then of course it&rsquo;s better to start over with the accumulated sum reset to 0</strong>.</p>
+<blockquote>
+<p>accumulate_sum = max(accumulated_sum, 0)</p>
+</blockquote>
+<p>or</p>
+<blockquote>
+<p>accumulate_sum = max(nums[i+1], accumulated_sum + nums[i+1])</p>
+</blockquote>
+<p>This means we don&rsquo;t care about any accumulated sum, which contributes a negative sum to the later subarray sum. If an accumulated sum up to the current position is negative, we drop it and start over.</p>
+<p><strong>Note:</strong> If you think deeply, you may notice the previous solution (maintain previous min) is a more general case for this approach (yes, please take time to think about that).</p>
+<p>Then we have the <strong>Kadane implementation</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Cpp" data-lang="Cpp"><span style="display:flex;"><span><span style="color:#080;font-weight:bold">class</span> <span style="color:#b06;font-weight:bold">Solution</span> {
+</span></span><span style="display:flex;"><span><span style="color:#080;font-weight:bold">public</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-weight:bold">int</span> maxSubArray(vector&lt;<span style="color:#888;font-weight:bold">int</span>&gt;&amp; nums) {
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-weight:bold">int</span> sum = <span style="color:#00d;font-weight:bold">0</span>, ans = nums[<span style="color:#00d;font-weight:bold">0</span>];
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-weight:bold">for</span> (<span style="color:#080;font-weight:bold">auto</span> <span style="color:#369;font-style:italic">num</span>: nums) {
+</span></span><span style="display:flex;"><span>            <span style="color:#888">// Kadane intuition!
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>            sum = max(sum, <span style="color:#00d;font-weight:bold">0</span>) + num;
+</span></span><span style="display:flex;"><span>            <span style="color:#888">// Update ans by compare with current accumulated sum
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>            ans = max(ans, sum);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-weight:bold">return</span> ans;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>And yes, it&rsquo;s a $O(n)$ solution as well!! Just as good as the min maintaining approach.</p>
+<h3 id="so-why-kadane">So why Kadane?</h3>
+<p>Since it&rsquo;s a subset of the general min maintaining approach, it&rsquo;s <strong>easier to implement</strong>. You will see what I mean if you think about the title problem but in revert condition, where we want to find minimum subarray.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Cpp" data-lang="Cpp"><span style="display:flex;"><span><span style="color:#080;font-weight:bold">class</span> <span style="color:#b06;font-weight:bold">Solution</span> {
+</span></span><span style="display:flex;"><span><span style="color:#080;font-weight:bold">public</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-weight:bold">int</span> minSubArray(vector&lt;<span style="color:#888;font-weight:bold">int</span>&gt;&amp; nums) {
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-weight:bold">int</span> sum = <span style="color:#00d;font-weight:bold">0</span>, ans = nums[<span style="color:#00d;font-weight:bold">0</span>];
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-weight:bold">for</span> (<span style="color:#080;font-weight:bold">auto</span> <span style="color:#369;font-style:italic">num</span>: nums) {
+</span></span><span style="display:flex;"><span>            <span style="color:#888">// Kadane intuition!
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>            sum = min(sum, <span style="color:#00d;font-weight:bold">0</span>) + num;
+</span></span><span style="display:flex;"><span>            <span style="color:#888">// Update ans by compare with current accumulated sum
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>            ans = min(ans, sum);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-weight:bold">return</span> ans;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>Simply change <strong>max</strong> to <strong>min</strong>, and you have the answer 👌</p>
+<p>And, for something that&rsquo;s more complex like: Maximum Absolute Sum of Any Subarray (ref: <a href="https://leetcode.com/problems/maximum-absolute-sum-of-any-subarray/">leetcode#1749</a>)</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Cpp" data-lang="Cpp"><span style="display:flex;"><span><span style="color:#080;font-weight:bold">class</span> <span style="color:#b06;font-weight:bold">Solution</span> {
+</span></span><span style="display:flex;"><span><span style="color:#080;font-weight:bold">public</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#888">// AbsoluteMax = max(max_sum, abs(min_sum))
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>    <span style="color:#888;font-weight:bold">int</span> maxAbsoluteSum(vector&lt;<span style="color:#888;font-weight:bold">int</span>&gt;&amp; nums) {
+</span></span><span style="display:flex;"><span>        <span style="color:#888">// cur_max is max which stop at current index.
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>        <span style="color:#888">// cur_min is min which stop at current index.
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>        <span style="color:#888;font-weight:bold">int</span> cur_max = <span style="color:#00d;font-weight:bold">0</span>, cur_min = <span style="color:#00d;font-weight:bold">0</span>, max_sum = nums[<span style="color:#00d;font-weight:bold">0</span>], min_sum = nums[<span style="color:#00d;font-weight:bold">0</span>];
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-weight:bold">for</span> (<span style="color:#080;font-weight:bold">auto</span> <span style="color:#369;font-style:italic">num</span>: nums) {
+</span></span><span style="display:flex;"><span>            <span style="color:#888">// Kadane find max sum
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>            cur_max = max(cur_max, <span style="color:#00d;font-weight:bold">0</span>) + num;
+</span></span><span style="display:flex;"><span>            max_sum = max(max_sum, cur_max);
+</span></span><span style="display:flex;"><span>            <span style="color:#888">// Kadane find min sum
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>            cur_min = min(cur_min, <span style="color:#00d;font-weight:bold">0</span>) + num;
+</span></span><span style="display:flex;"><span>            min_sum = min(min_sum, cur_min);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-weight:bold">return</span> <span style="color:#06b;font-weight:bold">max</span>(max_sum, abs(min_sum));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>And Maximum Sum Circular Subarray (ref: <a href="https://leetcode.com/problems/maximum-sum-circular-subarray/">leetcode#918</a>)</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Cpp" data-lang="Cpp"><span style="display:flex;"><span><span style="color:#080;font-weight:bold">class</span> <span style="color:#b06;font-weight:bold">Solution</span> {
+</span></span><span style="display:flex;"><span><span style="color:#080;font-weight:bold">public</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#888">// The answer will be one of
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>    <span style="color:#888">// - Straight max sum (Kadane max sum)
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>    <span style="color:#888">// - Circular max sum which equal to (array_sum - Kadane min sum)
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>    <span style="color:#888;font-weight:bold">int</span> maxSubarraySumCircular(vector&lt;<span style="color:#888;font-weight:bold">int</span>&gt;&amp; nums) {
+</span></span><span style="display:flex;"><span>        <span style="color:#888">// cur_max is max which stop at current index.
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>        <span style="color:#888">// cur_min is min which stop at current index.
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>        <span style="color:#888;font-weight:bold">int</span> cur_max = <span style="color:#00d;font-weight:bold">0</span>, cur_min = <span style="color:#00d;font-weight:bold">0</span>, max_sum = nums[<span style="color:#00d;font-weight:bold">0</span>], min_sum = nums[<span style="color:#00d;font-weight:bold">0</span>];
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-weight:bold">int</span> sum = <span style="color:#00d;font-weight:bold">0</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-weight:bold">for</span> (<span style="color:#080;font-weight:bold">auto</span> <span style="color:#369;font-style:italic">num</span>: nums) {
+</span></span><span style="display:flex;"><span>            <span style="color:#888">// Kadane find max sum
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>            cur_max = max(cur_max, <span style="color:#00d;font-weight:bold">0</span>) + num;
+</span></span><span style="display:flex;"><span>            max_sum = max(max_sum, cur_max);
+</span></span><span style="display:flex;"><span>            <span style="color:#888">// Kadane find min sum
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>            cur_min = min(cur_min, <span style="color:#00d;font-weight:bold">0</span>) + num;
+</span></span><span style="display:flex;"><span>            min_sum = min(min_sum, cur_min);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#888">// Accumulative sum up all nums elements.
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>            sum += num;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#888">// If array sum is a min, then which ever max_sum will be max
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>        <span style="color:#888">// else max would be max_sum or sum - min_sum (circular sum).
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>        <span style="color:#080;font-weight:bold">return</span> sum == min_sum ? <span style="color:#369;font-style:italic">max_sum</span> : max(max_sum, sum - min_sum);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p><strong>Note:</strong> Try to solve these problems using the &ldquo;min maintaining approach&rdquo; by yourself as an exercise.</p>
+<p>And yes, you will see how Kadane helps us if you try to solve these problems without the Kadane&rsquo;s approach 😉</p>
+<h3 id="take-out">Take out</h3>
+<p>For subarray problem, always think about the prefix since every subarray can be calculated based on two prefix.</p>
+<p>Also remember the beautiful Kadane algorithm. It for sure will save you someday. Thanks to <a href="https://en.wikipedia.org/wiki/Joseph_Born_Kadane">Kadane</a> 🙏</p>
+
+			</div>
+			
+			<div>
+				<ul id="tags">
+					
+					<li><a href="/tags/algorithm">algorithm</a></li>
+					
+				</ul>
+			</div>
+			
+		</article>
+	</main>
+<aside>
+	<div>
+		<div>
+			<h3>LATEST POSTS</h3>
+		</div>
+		<div>
+			<ul>
+				
+				<li><a href="/posts/kadane-and-its-applications/">From subarray problems to Kadane and applications</a></li>
+				
+				<li><a href="/posts/an-approach-for-dp-problem/">An Approach for DP Problem</a></li>
+				
+				<li><a href="/posts/some-thought-about-tactics/">A breakthrough of my mind</a></li>
+				
+				<li><a href="/posts/concurrent-unit/">Process, Thread and Routine</a></li>
+				
+				<li><a href="/posts/complexity-classes/">Complexity Classes</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</aside>
+
+<aside>
+	<div>
+    		
+			<div>
+				<h3>TAGS</h3>
+			</div>
+			<div>
+				<ul>
+					
+					<li><a href="/tags/algorithm">algorithm</a></li>
+					
+					<li><a href="/tags/approx">approx</a></li>
+					
+					<li><a href="/tags/architecture">architecture</a></li>
+					
+					<li><a href="/tags/c/c&#43;&#43;">c/c&#43;&#43;</a></li>
+					
+					<li><a href="/tags/code">code</a></li>
+					
+					<li><a href="/tags/compiler">compiler</a></li>
+					
+					<li><a href="/tags/concurrent">concurrent</a></li>
+					
+					<li><a href="/tags/database">database</a></li>
+					
+					<li><a href="/tags/design">design</a></li>
+					
+					<li><a href="/tags/dev%20tool">dev tool</a></li>
+					
+					<li><a href="/tags/golang">golang</a></li>
+					
+					<li><a href="/tags/javascript">javascript</a></li>
+					
+					<li><a href="/tags/lock">lock</a></li>
+					
+					<li><a href="/tags/manual">manual</a></li>
+					
+					<li><a href="/tags/memory">memory</a></li>
+					
+					<li><a href="/tags/networks">networks</a></li>
+					
+					<li><a href="/tags/nodejs">nodejs</a></li>
+					
+					<li><a href="/tags/oop">oop</a></li>
+					
+					<li><a href="/tags/os">os</a></li>
+					
+					<li><a href="/tags/package%20manager">package manager</a></li>
+					
+					<li><a href="/tags/programming">programming</a></li>
+					
+					<li><a href="/tags/react">react</a></li>
+					
+					<li><a href="/tags/tactics">tactics</a></li>
+					
+					<li><a href="/tags/thinking">thinking</a></li>
+					
+					<li><a href="/tags/tree">tree</a></li>
+					
+					<li><a href="/tags/trick">trick</a></li>
+					
+				</ul>
+			</div>
+		
+	</div>
+</aside>
+
+
+
+	<footer id="footer">
+	<p>&copy; 2017-2024 <a href="https://khanhtc.me/">khanhtc&#39;s blog</a> | <a href="https://khanhtc.me/index.xml">RSS</a></p>
+	<section><script async src="https://cse.google.com/cse.js?cx=009971123916912295303:lpg9aljzbui"></script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+  });
+  MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+
+  MathJax.Hub.Config({
+  
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+  });
+</script>
+
+
+	</section>
+</footer>
+
+</body>
+</html>

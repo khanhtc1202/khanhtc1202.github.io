@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Database on khanhtc&#39;s blog</title>
+    <link>https://khanhtc.me/tags/database/</link>
+    <description>Recent content in Database on khanhtc&#39;s blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 10 Jul 2019 22:34:41 +0000</lastBuildDate>
+    <atom:link href="https://khanhtc.me/tags/database/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Migrate to NoSql</title>
+      <link>https://khanhtc.me/posts/migrate-to-nosql/</link>
+      <pubDate>Wed, 10 Jul 2019 22:34:41 +0000</pubDate>
+      <guid>https://khanhtc.me/posts/migrate-to-nosql/</guid>
+      <description>&lt;p&gt;Một điều được nhắc đến rất nhiệu khi chuyển từ sql sang nosql là cách để lưu trữ quan hệ giữa các đối tượng trong database. Một đối tượng thường rất ít khi tồn tại độc lâp trong một hệ thống mà nắm giữ 1 phần thông tin được sử dụng để tạo ra một đối tượng khác.&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;p&gt;Các dạng quan hệ chính giữa các đối tượng có thể lưu được trong cơ sở dữ liệu quan hệ bao gồm&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

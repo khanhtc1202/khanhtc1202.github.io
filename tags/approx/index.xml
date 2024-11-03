@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Approx on khanhtc&#39;s blog</title>
+    <link>https://khanhtc.me/tags/approx/</link>
+    <description>Recent content in Approx on khanhtc&#39;s blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 15 Aug 2019 07:18:49 +0900</lastBuildDate>
+    <atom:link href="https://khanhtc.me/tags/approx/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Boundaries for algorithm analysis</title>
+      <link>https://khanhtc.me/posts/competitive-prog-bound/</link>
+      <pubDate>Thu, 15 Aug 2019 07:18:49 +0900</pubDate>
+      <guid>https://khanhtc.me/posts/competitive-prog-bound/</guid>
+      <description>&lt;p&gt;Some boundaries you should know to approximate time and space complexity of your algorithm.&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;$2^{10} = 1,024 \approx 10^{3}, 2^{20} = 1,048,576 \approx 10^{6}$&lt;/li&gt;&#xA;&lt;li&gt;32-bit signed integers (&lt;strong&gt;int&lt;/strong&gt;) and 64-bit signed integers (&lt;strong&gt;long long&lt;/strong&gt;) have upper limits of $2^{31} − 1 \approx 2 \times 10^{9}$ (safe for up to $\approx 9$ decimal digits) and $2^{63} − 1 \approx 9 \times 10^{18}$ (safe for up to $\approx 18$ decimal digits) respectively.&lt;/li&gt;&#xA;&lt;li&gt;Unsigned integers can be used if only non-negative numbers are required. 32-bit unsigned integers (&lt;strong&gt;unsigned int&lt;/strong&gt;) and 64-bit unsigned integers (&lt;strong&gt;unsigned long long&lt;/strong&gt;) have upper limits of $2^{32} − 1 \approx 4 \times 10^{9}$ and $2^{64} − 1 \approx 1.8 \times 10^{19}$ respectively.&lt;/li&gt;&#xA;&lt;li&gt;There are $n!$ permutations and $2^{n}$ subsets (or combinations) of n elements.&lt;/li&gt;&#xA;&lt;li&gt;The best time complexity of a comparison-based sorting algorithm is $Ω(n\log_{2}{n})$.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;Notes:&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

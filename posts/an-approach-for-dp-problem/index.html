@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>An Approach for DP Problem</title>
+	<meta name="description" content="khanhtc personal&#39;s note">
+	<meta name="author" content="khanhtc">
+	
+		<link rel="preconnect" href="https://cse.google.com">
+		<link rel="preconnect" href="https://www.googleapis.com">
+		<link rel="preconnect" href="https://www.google.com">
+		<link rel="preconnect" href="https://clients1.google.com">
+	
+	
+		<link rel="preconnect" href="https://cdn.mathjax.org">
+	
+	
+</head>
+<body>
+	<header id="header">
+	<a href="https://khanhtc.me/">khanhtc&#39;s blog</a> | 📣 <a href="https://khanhtc.me/index.xml">RSS</a> | 👀 <a href="https://khanhtc.me/alive">Liveness check</a>
+	<div class="gcse-search"></div>
+	
+	<nav>
+		<ul>
+			
+			<li><a href="/about">about</a></li>
+			
+			<li><a href="https://github.com/khanhtc1202">github</a></li>
+			
+			<li><a href="https://leetcode.com/khanhtc">leetcode</a></li>
+			
+			<li><a href="https://www.linkedin.com/in/khanhtc1202">linkedin</a></li>
+			
+		</ul>
+	</nav>
+	
+</header>
+
+	
+	<main>
+		<article>
+			<h1>An Approach for DP Problem</h1>
+			<time>24.06.2023 13:00</time>
+			<div>
+				<p>Start with the problem (src: <a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/">leetcode#714</a>)</p>
+<pre tabindex="0"><code>You are given an array prices where prices[i] is the price of a given stock on the ith day, and an integer fee representing a transaction fee.
+
+Find the maximum profit you can achieve. You may complete as many transactions as you like, but you need to pay the transaction fee for each transaction.
+
+Note: You may not engage in multiple transactions simultaneously (i.e., you must sell the stock before you buy again).
+</code></pre><h3 id="how-do-we-know-its-a-dynamic-programming-dp-problem-">How do we know it&rsquo;s a Dynamic Programming (DP) problem? 💭</h3>
+<p>It&rsquo;s based on your sense ;) But there are some signs that you can follow</p>
+<ul>
+<li>You don&rsquo;t have a straight way to get the answer, let&rsquo;s say the answer of problem set size <code>i</code> can only know if you know the answer for problem set size <code>i'</code></li>
+<li>Each stage, while you try to find the answer through the input, there are multi possible choice that affects the later stages</li>
+</ul>
+<p>If you can see one of those signs clearly, you&rsquo;re better ready to face a DP problem.</p>
+<h3 id="now-how-can-we-approach-it-">Now how can we approach it? 💡</h3>
+<p>Let&rsquo;s say <strong>dp[i]</strong> represents the max profit we can get if the sequence end at index <strong>i</strong>. We can then see that it doesn&rsquo;t make sense to buy a stock at the last stage, so if <strong>i</strong> is the last stage, there is no reason to buy at <strong>i</strong>. Which mean the answer at <strong>i</strong> would be:</p>
+<ul>
+<li>Do nothing at <strong>i</strong> (no buy no sell).</li>
+<li>Sell at <strong>i</strong> (thus we have to buy previously).</li>
+</ul>
+<p>Which mean</p>
+<blockquote>
+<p>dp[i] = max(dp[i], dp[j-1] + prices[i] - prices[j] - fee)</p>
+</blockquote>
+<p>The reason why it has to be <strong>dp[j-1]</strong> instead of <strong>dp[j]</strong> is what we say previously, we have to buy previously before we can sell. So if it&rsquo;s <strong>dp[j]</strong>, the formula will be <code>dp[j] - prices[j]</code> which leads to the wrong answer if <strong>dp[j]</strong> is the max profit if we sell at <strong>j</strong> (it&rsquo;s mean to we can&rsquo;t buy j right the time we sell j).</p>
+<p>The formula represents for: the answer of sequence end at <strong>i</strong> will be calculated based on trying to sell at <strong>i</strong> with stock buy at <strong>j</strong>.</p>
+<p>And that&rsquo;s right, because <strong>dp[j-1]</strong> is the max possible profit we got right before we can buy a stock at <strong>j</strong>.</p>
+<p>Anything missed?</p>
+<p>We said that the answer at <strong>i</strong> (aka. <strong>dp[i]</strong>) must be one of either sell or do nothing at <strong>i</strong>, so for the case of do nothing at <strong>i</strong></p>
+<blockquote>
+<p>dp[i] = dp[i-1]</p>
+</blockquote>
+<p>That would be the base value we set to <strong>dp[i]</strong> before we find max with sell  previously bought stock.</p>
+<p>Then we have the code</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Cpp" data-lang="Cpp"><span style="display:flex;"><span><span style="color:#080;font-weight:bold">class</span> <span style="color:#b06;font-weight:bold">Solution</span> {
+</span></span><span style="display:flex;"><span><span style="color:#080;font-weight:bold">public</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-weight:bold">int</span> maxProfitSlow(vector&lt;<span style="color:#888;font-weight:bold">int</span>&gt;&amp; prices, <span style="color:#888;font-weight:bold">int</span> fee) {
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-weight:bold">int</span> n = prices.size();
+</span></span><span style="display:flex;"><span>        vector&lt;<span style="color:#888;font-weight:bold">int</span>&gt; dp(n, <span style="color:#00d;font-weight:bold">0</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-weight:bold">for</span> (<span style="color:#888;font-weight:bold">int</span> i = <span style="color:#00d;font-weight:bold">1</span>; i &lt; n; i++) {
+</span></span><span style="display:flex;"><span>            dp[i] = dp[i-<span style="color:#00d;font-weight:bold">1</span>];
+</span></span><span style="display:flex;"><span>            <span style="color:#080;font-weight:bold">for</span> (<span style="color:#888;font-weight:bold">int</span> j = <span style="color:#00d;font-weight:bold">0</span>; j &lt; i; j++) {
+</span></span><span style="display:flex;"><span>                <span style="color:#888;font-weight:bold">int</span> prev = j ? dp[j-<span style="color:#00d;font-weight:bold">1</span>] : <span style="color:#00d;font-weight:bold">0</span>;
+</span></span><span style="display:flex;"><span>                dp[i] = max(dp[i], prev + prices[i] - prices[j] - fee);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-weight:bold">return</span> dp[n-<span style="color:#00d;font-weight:bold">1</span>];
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The time complexity for this solution will be $O(n^{2})$ based on 2 nested for loops, and the space complexity will be $O(n)$.</p>
+<h3 id="can-we-make-it-better-">Can we make it better? 🤔</h3>
+<p><strong>One of the nice methods to optimize a DP formula is the math formula rearrangement</strong>. By combining <strong>j</strong> related operands, we have</p>
+<blockquote>
+<p>dp[i] = max(<strong>dp[j-1] - prices[j]</strong> + prices[i] - fee)</p>
+</blockquote>
+<p>The <code>(prices[i] - fee)</code> is constant for each iteration at <strong>i</strong>. That means we have to find <code>max(dp[j-1] - prices[j])</code> to maximize <strong>dp[i]</strong>.</p>
+<p>Since it&rsquo;s a simple max value and we only care about the <strong>only one greatest value before each i</strong> (i iterate 1..n so one way increasing) =&gt; We can use a variable to maintain that max 👌</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Cpp" data-lang="Cpp"><span style="display:flex;"><span><span style="color:#080;font-weight:bold">class</span> <span style="color:#b06;font-weight:bold">Solution</span> {
+</span></span><span style="display:flex;"><span><span style="color:#080;font-weight:bold">public</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-weight:bold">int</span> maxProfitOpt(vector&lt;<span style="color:#888;font-weight:bold">int</span>&gt;&amp; prices, <span style="color:#888;font-weight:bold">int</span> fee) {
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-weight:bold">int</span> n = prices.size();
+</span></span><span style="display:flex;"><span>        vector&lt;<span style="color:#888;font-weight:bold">int</span>&gt; dp(n, <span style="color:#00d;font-weight:bold">0</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-weight:bold">int</span> curMax = -prices[<span style="color:#00d;font-weight:bold">0</span>]; <span style="color:#888">// buy at 0
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-weight:bold">for</span> (<span style="color:#888;font-weight:bold">int</span> i = <span style="color:#00d;font-weight:bold">0</span>; i &lt; n; i++) {
+</span></span><span style="display:flex;"><span>            <span style="color:#080;font-weight:bold">if</span> (i) dp[i] = dp[i - <span style="color:#00d;font-weight:bold">1</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            dp[i] = max(dp[i], curMax + prices[i] - fee);
+</span></span><span style="display:flex;"><span>            <span style="color:#888">// Maintain the max dp[j-1] - prices[j]
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>            curMax = max(curMax, (i ? dp[i - <span style="color:#00d;font-weight:bold">1</span>] : <span style="color:#00d;font-weight:bold">0</span>) - prices[i]);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-weight:bold">return</span> dp[n - <span style="color:#00d;font-weight:bold">1</span>];
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The time complexity for this solution will be $O(n)$, and the space complexity will be $O(n)$.</p>
+<h3 id="anything-else-to-optimize-">Anything else to optimize? 🧐</h3>
+<p>As a DP solution, your formula would be of kind:</p>
+<blockquote>
+<p><strong>F(x) = F(x-1) ~ and something</strong></p>
+</blockquote>
+<p>The formula says that to calculate <strong>F(x)</strong>, you have to know <strong>F(x-1)</strong>, which leads to 2 things you should be aware for a better implementation:</p>
+<ul>
+<li>You need to calculate <strong>(x-1) before (x)</strong>, which mean your for loop would be <strong>i = 1..n</strong> (visit the small first then go to the bigger one)</li>
+<li>The <strong>F(x) only depends on F(x-1)</strong> (ie. this problem) or depends on other F(y)</li>
+</ul>
+<p>The first point is being used to implement the previous 2 solutions; well done 🙌.  What about the other?</p>
+<p>Since our <strong>dp[i]</strong> only depends on <strong>dp[i-1]</strong>, which means <strong>we don&rsquo;t need the whole array dp(n), we just need the previous dp[i-1] while calculating dp[i]</strong>. One simple variable can do that.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Cpp" data-lang="Cpp"><span style="display:flex;"><span><span style="color:#080;font-weight:bold">class</span> <span style="color:#b06;font-weight:bold">Solution</span> {
+</span></span><span style="display:flex;"><span><span style="color:#080;font-weight:bold">public</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-weight:bold">int</span> maxProfitBest(vector&lt;<span style="color:#888;font-weight:bold">int</span>&gt;&amp; prices, <span style="color:#888;font-weight:bold">int</span> fee) {
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-weight:bold">int</span> n = prices.size();
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-weight:bold">int</span> ans = <span style="color:#00d;font-weight:bold">0</span>, prev = <span style="color:#00d;font-weight:bold">0</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-weight:bold">int</span> curMax = -prices[<span style="color:#00d;font-weight:bold">0</span>]; <span style="color:#888">// buy at 0
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-weight:bold">for</span> (<span style="color:#888;font-weight:bold">int</span> i = <span style="color:#00d;font-weight:bold">0</span>; i &lt; n; i++) {
+</span></span><span style="display:flex;"><span>            ans = max(ans, curMax + prices[i] - fee);
+</span></span><span style="display:flex;"><span>            curMax = max(curMax, prev - prices[i]);
+</span></span><span style="display:flex;"><span>            prev = ans;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-weight:bold">return</span> ans;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The time complexity for this solution will be $O(n)$, and the space complexity will be only $O(1)$. Probably the best possible solution 🚀</p>
+<h3 id="take-out">Take out</h3>
+<p>So there are a few things from the post I guess we better remember as tools in our pocket.</p>
+<ul>
+<li>Math formula rearrangement does it work to optimize the DP solution based on the DP formula.</li>
+<li>Based on the DP formula, we can find insight for implementation, how do we iterate through the input? should we store the whole previous stages? and so on.</li>
+</ul>
+<p>That&rsquo;s all, happy coding 🙌</p>
+
+			</div>
+			
+			<div>
+				<ul id="tags">
+					
+					<li><a href="/tags/algorithm">algorithm</a></li>
+					
+				</ul>
+			</div>
+			
+		</article>
+	</main>
+<aside>
+	<div>
+		<div>
+			<h3>LATEST POSTS</h3>
+		</div>
+		<div>
+			<ul>
+				
+				<li><a href="/posts/kadane-and-its-applications/">From subarray problems to Kadane and applications</a></li>
+				
+				<li><a href="/posts/an-approach-for-dp-problem/">An Approach for DP Problem</a></li>
+				
+				<li><a href="/posts/some-thought-about-tactics/">A breakthrough of my mind</a></li>
+				
+				<li><a href="/posts/concurrent-unit/">Process, Thread and Routine</a></li>
+				
+				<li><a href="/posts/complexity-classes/">Complexity Classes</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</aside>
+
+<aside>
+	<div>
+    		
+			<div>
+				<h3>TAGS</h3>
+			</div>
+			<div>
+				<ul>
+					
+					<li><a href="/tags/algorithm">algorithm</a></li>
+					
+					<li><a href="/tags/approx">approx</a></li>
+					
+					<li><a href="/tags/architecture">architecture</a></li>
+					
+					<li><a href="/tags/c/c&#43;&#43;">c/c&#43;&#43;</a></li>
+					
+					<li><a href="/tags/code">code</a></li>
+					
+					<li><a href="/tags/compiler">compiler</a></li>
+					
+					<li><a href="/tags/concurrent">concurrent</a></li>
+					
+					<li><a href="/tags/database">database</a></li>
+					
+					<li><a href="/tags/design">design</a></li>
+					
+					<li><a href="/tags/dev%20tool">dev tool</a></li>
+					
+					<li><a href="/tags/golang">golang</a></li>
+					
+					<li><a href="/tags/javascript">javascript</a></li>
+					
+					<li><a href="/tags/lock">lock</a></li>
+					
+					<li><a href="/tags/manual">manual</a></li>
+					
+					<li><a href="/tags/memory">memory</a></li>
+					
+					<li><a href="/tags/networks">networks</a></li>
+					
+					<li><a href="/tags/nodejs">nodejs</a></li>
+					
+					<li><a href="/tags/oop">oop</a></li>
+					
+					<li><a href="/tags/os">os</a></li>
+					
+					<li><a href="/tags/package%20manager">package manager</a></li>
+					
+					<li><a href="/tags/programming">programming</a></li>
+					
+					<li><a href="/tags/react">react</a></li>
+					
+					<li><a href="/tags/tactics">tactics</a></li>
+					
+					<li><a href="/tags/thinking">thinking</a></li>
+					
+					<li><a href="/tags/tree">tree</a></li>
+					
+					<li><a href="/tags/trick">trick</a></li>
+					
+				</ul>
+			</div>
+		
+	</div>
+</aside>
+
+
+
+	<footer id="footer">
+	<p>&copy; 2017-2024 <a href="https://khanhtc.me/">khanhtc&#39;s blog</a> | <a href="https://khanhtc.me/index.xml">RSS</a></p>
+	<section><script async src="https://cse.google.com/cse.js?cx=009971123916912295303:lpg9aljzbui"></script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+  });
+  MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+
+  MathJax.Hub.Config({
+  
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+  });
+</script>
+
+
+	</section>
+</footer>
+
+</body>
+</html>

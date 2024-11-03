@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Golang on khanhtc&#39;s blog</title>
+    <link>https://khanhtc.me/tags/golang/</link>
+    <description>Recent content in Golang on khanhtc&#39;s blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 30 Sep 2019 22:57:39 +0900</lastBuildDate>
+    <atom:link href="https://khanhtc.me/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Immutable Go Object</title>
+      <link>https://khanhtc.me/posts/immutable-go-object/</link>
+      <pubDate>Mon, 30 Sep 2019 22:57:39 +0900</pubDate>
+      <guid>https://khanhtc.me/posts/immutable-go-object/</guid>
+      <description>&lt;p&gt;Every Go programmer knows about the &lt;code&gt;receiver&lt;/code&gt; in go, which be declared as:&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#080;font-weight:bold&#34;&gt;type&lt;/span&gt; X &lt;span style=&#34;color:#080;font-weight:bold&#34;&gt;struct&lt;/span&gt; {}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#080;font-weight:bold&#34;&gt;func&lt;/span&gt; (receiver X) &lt;span style=&#34;color:#06b;font-weight:bold&#34;&gt;doThing&lt;/span&gt;() {...}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We have two types of receiver in Golang, which is &lt;strong&gt;Value receiver&lt;/strong&gt; and &lt;strong&gt;Pointer receiver&lt;/strong&gt;. Basically, the receiver in Golang could be map to &lt;code&gt;self&lt;/code&gt; in other programming languages and the function which uses the receiver will be pointed from struct type of the receiver.&lt;/p&gt;&#xA;&lt;p&gt;&lt;em&gt;So, what does this means, anyway?&lt;/em&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Type embedding not inheritance</title>
+      <link>https://khanhtc.me/posts/type_embedding/</link>
+      <pubDate>Mon, 25 Mar 2019 23:00:13 +0000</pubDate>
+      <guid>https://khanhtc.me/posts/type_embedding/</guid>
+      <description>&lt;p&gt;Since we don’t have classes in go, you can say &lt;code&gt;struct&lt;/code&gt; will do a job to make objects. So how 4 principles of object-oriented programming represent in Golang? In this post, we will discuss the principle of OOP that make Golang better than others object-oriented programming language: &lt;strong&gt;inheritance&lt;/strong&gt;.&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;p&gt;A simple question, how does Golang represent inheritance principle even if it doesn&amp;rsquo;t have &lt;code&gt;extends&lt;/code&gt;? We can easily find out the answer to this question: &lt;strong&gt;embedding type&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Play around with goroutine</title>
+      <link>https://khanhtc.me/posts/play-around-with-gorountine/</link>
+      <pubDate>Sat, 21 Jul 2018 18:59:07 +0000</pubDate>
+      <guid>https://khanhtc.me/posts/play-around-with-gorountine/</guid>
+      <description>&lt;p&gt;Hôm nay trong lúc lượn lờ &lt;a href=&#34;https://tour.golang.org/list&#34;&gt;go tour&lt;/a&gt; - một guide khá đầy đủ và thú vị giới thiệu về golang, mình bắt gặp một đoạn khá thú vị :))&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;p&gt;Trong mục concurrency in golang, giới thiệu về goroutine - một điểm rất mạnh của golang dùng thay thế cho thread trong các ngôn ngữ lập trình khác - item 7 có nhắc lại kiến thức về tree. Trong đó có đưa ra 1 quiz nhỏ như sau:&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Dependency Injection in a nutshell</title>
+      <link>https://khanhtc.me/posts/dependency-injection/</link>
+      <pubDate>Mon, 21 May 2018 13:13:40 +0000</pubDate>
+      <guid>https://khanhtc.me/posts/dependency-injection/</guid>
+      <description>&lt;p&gt;As a developer, we write code day by day, try to handle many things, put all the thing in the right way it should be. Almost of our time is spent to googling usage of libraries (or frameworks), try to handle some incredible bugs or try to maintain some shitty things from other guys you may never ever met. All this mess made us forget about something that really have a meaning, it made us forget that our job is not just try to handle all the things, but our job is focused on &lt;code&gt;creating the new thing depend on another guy achievement&lt;/code&gt;. But the reason why we are so confused lies in our purpose. Just like the picture below, sometime you realize yourself that you are just a noob and trying to handle all that mess - the mess named dependencies.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

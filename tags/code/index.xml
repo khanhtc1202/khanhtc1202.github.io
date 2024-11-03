@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Code on khanhtc&#39;s blog</title>
+    <link>https://khanhtc.me/tags/code/</link>
+    <description>Recent content in Code on khanhtc&#39;s blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 05 Jun 2018 17:10:45 +0000</lastBuildDate>
+    <atom:link href="https://khanhtc.me/tags/code/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ninja Code</title>
+      <link>https://khanhtc.me/posts/ninja-code/</link>
+      <pubDate>Tue, 05 Jun 2018 17:10:45 +0000</pubDate>
+      <guid>https://khanhtc.me/posts/ninja-code/</guid>
+      <description>&lt;p&gt;Nếu coding giống như một trận chiến giữa programer và problem cần giải quyết thì, giống như những chiến binh thực thự, chúng ta tìm kiếm đạo (phương pháp chiến đấu) phù hợp cho chính mình. Trong bạt ngàn những đạo (những nguyên lý), kinh dịch (article trên blog của những blogger nổi tiếng), chú thích kinh nghiệm (những note, post được đông đảo dev &lt;code&gt;kip&lt;/code&gt; lại),&amp;hellip;đâu đó quanh đây vẫn tồn tại một đạo mà không mấy ai để ý đến nhưng số người theo thì đếm không kể hết. Có người đắc đạo hoàn toàn, có người một phần, tuy theo nhiều mức độ khác nhau nhưng tựu chung có thể coi đều là đồng đạo trong môn phái này :))&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Fun thing with browser inspect</title>
+	<meta name="description" content="khanhtc personal&#39;s note">
+	<meta name="author" content="khanhtc">
+	
+		<link rel="preconnect" href="https://cse.google.com">
+		<link rel="preconnect" href="https://www.googleapis.com">
+		<link rel="preconnect" href="https://www.google.com">
+		<link rel="preconnect" href="https://clients1.google.com">
+	
+	
+		<link rel="preconnect" href="https://cdn.mathjax.org">
+	
+	
+</head>
+<body>
+	<header id="header">
+	<a href="https://khanhtc.me/">khanhtc&#39;s blog</a> | 📣 <a href="https://khanhtc.me/index.xml">RSS</a> | 👀 <a href="https://khanhtc.me/alive">Liveness check</a>
+	<div class="gcse-search"></div>
+	
+	<nav>
+		<ul>
+			
+			<li><a href="/about">about</a></li>
+			
+			<li><a href="https://github.com/khanhtc1202">github</a></li>
+			
+			<li><a href="https://leetcode.com/khanhtc">leetcode</a></li>
+			
+			<li><a href="https://www.linkedin.com/in/khanhtc1202">linkedin</a></li>
+			
+		</ul>
+	</nav>
+	
+</header>
+
+	
+	<main>
+		<article>
+			<h1>Fun thing with browser inspect</h1>
+			<time>31.08.2018 02:55</time>
+			<div>
+				<p>Chắc hẳn ít ai có thể mạnh miệng khẳng định rằng: Trong suốt quãng thời gian từ khi biết đến internet cho đến hiện tại, chưa một lần từng tải nội dung số không vi phạm bản quyền trên internet. Nói vậy bởi vì đơn giản như một bức ảnh bạn tải từ 1 trang web đã public cũng có thể là ảnh được lấy một cách không chính thức từ một nguồn nào đó :)) Về phía người dùng, họ luôn muốn nhận nhiều hơn, ngược lại tất nhiên người sở hữu nội dung số (media content) không muốn vậy :))</p>
+<!-- more -->
+<p>Một cách chắc chắn, có thể nói, những gì đã hiển thị trên thiết bị của bạn, nó đã ở trong tay bạn - vấn đề chỉ là <strong>làm thế nào để lấy được nó thôi</strong> ( ͡° ͜ʖ ͡°) . Cũng như đã nói ở trên, việc chặn để người dùng không lấy content một cách dễ dàng là một vấn đề mà bất cứ người làm dịch vụ trực tuyến nào cũng phải giải quyết. Trong cả tá những cách hại não mà ai cũng có thể kể ra (mà chẳng biết có bao nhiêu người làm) thì một trong những phương pháp đơn giản nhưng có vẻ mang lại hiệu quả khá tốt là: chặn để người dùng <strong>không tương tác trực tiếp</strong> được với content trên thiết bị của họ. Có cả đống cách dạng này kiểu như: chặn chuột phải, chặn inspect (của browser), mã hoá content trả về cho device,&hellip;và dù là cách nào thì nếu chịu khó mò cũng có thể qua được.</p>
+<p>Chắc hẳn là developer, không ai lạ lẫm gì với công cụ inspect của trình duyệt. Nó là một công cụ tuyệt vời! Debug, view request, kiểm tra phần tử,&hellip;nếu hỏi một điểm bắt đầu tốt khi muốn &ldquo;chôm&rdquo; một cái gì đó từ web, chắc chắn là thử inspect nó :)).</p>
+<p>Mọi chuyện sẽ chẳng có gì, nếu như hôm nay, trong khi đang tìm cách <strong>lưu lại một số content đã hiển thị trên thiết bị cá nhân</strong>, mình bắt gặp được một trường hợp khá thú vị như sau:</p>
+<p><img src="https://thumbs.gfycat.com/DistantKindlyCub-size_restricted.gif" alt=""></p>
+<p>Công cụ inspect của trình duyệt gần như đã bị khoá bởi việc liên tục nhảy vào debugging mode (giống như break point mà các ide hỗ trợ) - một cách khá thông minh :)) Bất cứ khi nào next step, sẽ có 1 debugging block mới được sinh ra và trình duyệt sẽ lại nhảy vào debugging mode, đồng thời theo đó, chức năng kiểm tra phần tử hay bắt request thông qua network cũng sẽ bị khoá (do trình duyệt đang dump).</p>
+<p>Lục mò đoạn code gây ra cái cách &ldquo;khắm bựa&rdquo; trên, mình bắt được đoạn js có vẻ hack não này</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>!<span style="color:#080;font-weight:bold">function</span>() {
+</span></span><span style="display:flex;"><span>    !<span style="color:#080;font-weight:bold">function</span> t() {
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-weight:bold">try</span> {
+</span></span><span style="display:flex;"><span>            !<span style="color:#080;font-weight:bold">function</span> c(t) {
+</span></span><span style="display:flex;"><span>                (<span style="color:#00d;font-weight:bold">1</span> !== (<span style="color:#d20;background-color:#fff0f0">&#34;&#34;</span> + t / t).length || t % <span style="color:#00d;font-weight:bold">20</span> === <span style="color:#00d;font-weight:bold">0</span>) &amp;&amp; <span style="color:#080;font-weight:bold">function</span>(){}
+</span></span><span style="display:flex;"><span>                .constructor(<span style="color:#d20;background-color:#fff0f0">&#34;debugger&#34;</span>)(),
+</span></span><span style="display:flex;"><span>                    c(++t)
+</span></span><span style="display:flex;"><span>            }(<span style="color:#00d;font-weight:bold">0</span>)
+</span></span><span style="display:flex;"><span>        } <span style="color:#080;font-weight:bold">catch</span> (n) {
+</span></span><span style="display:flex;"><span>            setTimeout(t, <span style="color:#00d;font-weight:bold">1e3</span>)
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }()
+</span></span><span style="display:flex;"><span>}();
+</span></span></code></pre></div><p>Để hiểu được đoạn code trên chúng ta tạm chấp nhận một số điểm sau trong js</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>&gt; !<span style="color:#080;font-weight:bold">function</span> foo() {}()          <span style="color:#888">// will run foo()
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>&gt; <span style="color:#080;font-weight:bold">true</span> &amp;&amp; funtion foo() {}()    <span style="color:#888">// will run foo()
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>&gt; <span style="color:#080;font-weight:bold">false</span> &amp;&amp; funtion bar() {} ()  <span style="color:#888">// will not run bar()
+</span></span></span></code></pre></div><p>Giải thích chi tiết hơn cho thứ bựa bên trên có thể tìm thấy tại <a href="https://stackoverflow.com/questions/3755606/what-does-the-exclamation-mark-do-before-the-function">đây</a>.</p>
+<p>Ý tưởng chính của đoạn code trên đến từ đoạn</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>&gt; !<span style="color:#080;font-weight:bold">function</span> () {}.constructor(<span style="color:#d20;background-color:#fff0f0">&#34;debugger&#34;</span>)()
+</span></span></code></pre></div><p>Đem đoạn code trên chạy thử trên trình duyệt, kết quả sẽ na ná như sau</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>&gt; <span style="color:#080;font-weight:bold">function</span> a() {}
+</span></span><span style="display:flex;"><span><span style="color:#888">// undefined
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>&gt; a.constructor(<span style="color:#d20;background-color:#fff0f0">&#34;debugger&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#888">// ƒ anonymous() { debugger }
+</span></span></span></code></pre></div><p><code>constructor</code> property trả về hàm contructor của function a, có một đặc điểm đặc biệt ở đây là, nếu thử</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>&gt; <span style="color:#080;font-weight:bold">function</span> foo() {}
+</span></span><span style="display:flex;"><span>&gt; foo.constructor
+</span></span><span style="display:flex;"><span><span style="color:#888">// ƒ Function() { [native code] }
+</span></span></span></code></pre></div><p>Argument được truyền vào thông qua contructor được treat như là navtive code trong function :)). Do đó <code>a.constructor(&quot;debugger&quot;)</code> trong ví dụ trên sinh ra 1 hàm với thân hàm có nhiệm vụ duy nhất là trigger browser của bạn nhảy vào debug mode :)). Kết hợp với trick để run hàm phía bên trên, ta có được nhân của đoạn code block inspect là hàm <code>c()</code> như sau.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>!<span style="color:#080;font-weight:bold">function</span> c(t) {
+</span></span><span style="display:flex;"><span>    (<span style="color:#00d;font-weight:bold">1</span> !== (<span style="color:#d20;background-color:#fff0f0">&#34;&#34;</span> + t / t).length || t % <span style="color:#00d;font-weight:bold">20</span> === <span style="color:#00d;font-weight:bold">0</span>) &amp;&amp; <span style="color:#080;font-weight:bold">function</span>(){}
+</span></span><span style="display:flex;"><span>    .constructor(<span style="color:#d20;background-color:#fff0f0">&#34;debugger&#34;</span>)(),
+</span></span><span style="display:flex;"><span>        c(++t)
+</span></span><span style="display:flex;"><span>}(<span style="color:#00d;font-weight:bold">0</span>)
+</span></span></code></pre></div><ul>
+<li>bootstrap hàm <code>c()</code> với giá trị t = 0</li>
+<li>check control expression, expect giá trị <code>true</code> =&gt; gen hàm ƒ anonymous() { debugger }</li>
+<li>chạy hàm anonymous vừa gen trên, đưa browser về debug mode</li>
+<li>nếu user next step trong debug mode, gọi đệ quy hàm <code>c()</code></li>
+</ul>
+<p>Phần còn lại là <code>try catch</code> block, trong case lỗi thì tự động boostrap lại toàn bộ luồng trên sau 1s bằng <code>setTimeout()</code>. Để ý ở đây trong case biểu thức điều khiển sinh hàm <code>function(){}.constructor(&quot;debugger&quot;)()</code> nếu false và không được chạy nhiều lần, có khả năng đệ quy liên tục hàm <code>c()</code> và bạn sẽ nhận được lỗi dạng thế này</p>
+<pre tabindex="0"><code>RangeError: Maximum call stack size exceeded
+    at c (recursion.js:1)
+    at c (recursion.js:7)
+    at c (recursion.js:7)
+    at c (recursion.js:7)
+    at c (recursion.js:7)
+    at c (recursion.js:7)
+</code></pre><p><img src="https://i.imgur.com/Yixr3jv.gif" alt=""></p>
+<p>Ok đến đây coi như đã hiểu thêm được một cách block user khá thú vị, tuy nhiên content thì mình vẫn muốn lấy ( ͡° ͜ʖ ͡°) . Tất nhiên, khi đã mò được đến đoạn code gây ra kết quả trên thì <strong>chỉ cần xoá nó đi</strong> là xong :)) Tuy nhiên còn một cách khác (và nó là nguyên nhân chính khiến mình viết bài này), đó là <strong>dùng chính chức năng của browser</strong> - giống như cách mà dev &ldquo;đối phương&rdquo; dùng, lợi dụng tính năng debugger của browser!</p>
+<p><img src="https://i.imgur.com/vylppVW.png" alt=""></p>
+<p>Đáp án ở ngay bên cạnh đề bài :)) Vị trí được trỏ đến trong ảnh là chức năng <code>Deactivate breakpoints</code> của browser, tất cả các breakpoint (bao gồm cả các breakpoint sinh ra từ sau do hiệu quả của vòng đệ quy bên trên) đều sẽ bị vô hiệu ( ͡° ͜ʖ ͡°) .</p>
+<p>Khi lần đầu mình gặp cách block người dùng này, mình đã nghĩ nó là bug do đội dev quên mất chưa xoá debugger ( ͡° ͜ʖ ͡°) sau khi đọc được đoạn nguyên nhân gây ra nó, mình chắc chắn nó là do cố ý :)). <strong>Nó có sáng tạo không? Chắc chắn là có! Nó có hiệu quả không? Mình cũng không chắc nữa :))</strong> Bài học rút ra, khi bạn có ý tưởng mới nào đó, hãy chắc chắn xem xét hiệu quả của nó trước khi bỏ công ra để làm nó (điều này đúng với cả mình, thay vì bỏ công ra ngồi mò đoạn code trên thì khi biết nó là breakpoint, mình nên tắt luôn nó đi cho rồi T.T ).</p>
+<p>Hết rồi :)) Code sample của trick trên có thể tìm thấy tại <a href="https://github.com/khanhtc1202/tricks/tree/master/block">đây</a>.</p>
+
+			</div>
+			
+			<div>
+				<ul id="tags">
+					
+					<li><a href="/tags/trick">trick</a></li>
+					
+					<li><a href="/tags/javascript">javascript</a></li>
+					
+					<li><a href="/tags/dev-tool">dev tool</a></li>
+					
+				</ul>
+			</div>
+			
+		</article>
+	</main>
+<aside>
+	<div>
+		<div>
+			<h3>LATEST POSTS</h3>
+		</div>
+		<div>
+			<ul>
+				
+				<li><a href="/posts/kadane-and-its-applications/">From subarray problems to Kadane and applications</a></li>
+				
+				<li><a href="/posts/an-approach-for-dp-problem/">An Approach for DP Problem</a></li>
+				
+				<li><a href="/posts/some-thought-about-tactics/">A breakthrough of my mind</a></li>
+				
+				<li><a href="/posts/concurrent-unit/">Process, Thread and Routine</a></li>
+				
+				<li><a href="/posts/complexity-classes/">Complexity Classes</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</aside>
+
+<aside>
+	<div>
+    		
+			<div>
+				<h3>TAGS</h3>
+			</div>
+			<div>
+				<ul>
+					
+					<li><a href="/tags/algorithm">algorithm</a></li>
+					
+					<li><a href="/tags/approx">approx</a></li>
+					
+					<li><a href="/tags/architecture">architecture</a></li>
+					
+					<li><a href="/tags/c/c&#43;&#43;">c/c&#43;&#43;</a></li>
+					
+					<li><a href="/tags/code">code</a></li>
+					
+					<li><a href="/tags/compiler">compiler</a></li>
+					
+					<li><a href="/tags/concurrent">concurrent</a></li>
+					
+					<li><a href="/tags/database">database</a></li>
+					
+					<li><a href="/tags/design">design</a></li>
+					
+					<li><a href="/tags/dev%20tool">dev tool</a></li>
+					
+					<li><a href="/tags/golang">golang</a></li>
+					
+					<li><a href="/tags/javascript">javascript</a></li>
+					
+					<li><a href="/tags/lock">lock</a></li>
+					
+					<li><a href="/tags/manual">manual</a></li>
+					
+					<li><a href="/tags/memory">memory</a></li>
+					
+					<li><a href="/tags/networks">networks</a></li>
+					
+					<li><a href="/tags/nodejs">nodejs</a></li>
+					
+					<li><a href="/tags/oop">oop</a></li>
+					
+					<li><a href="/tags/os">os</a></li>
+					
+					<li><a href="/tags/package%20manager">package manager</a></li>
+					
+					<li><a href="/tags/programming">programming</a></li>
+					
+					<li><a href="/tags/react">react</a></li>
+					
+					<li><a href="/tags/tactics">tactics</a></li>
+					
+					<li><a href="/tags/thinking">thinking</a></li>
+					
+					<li><a href="/tags/tree">tree</a></li>
+					
+					<li><a href="/tags/trick">trick</a></li>
+					
+				</ul>
+			</div>
+		
+	</div>
+</aside>
+
+
+
+	<footer id="footer">
+	<p>&copy; 2017-2024 <a href="https://khanhtc.me/">khanhtc&#39;s blog</a> | <a href="https://khanhtc.me/index.xml">RSS</a></p>
+	<section><script async src="https://cse.google.com/cse.js?cx=009971123916912295303:lpg9aljzbui"></script>
+
+	</section>
+</footer>
+
+</body>
+</html>

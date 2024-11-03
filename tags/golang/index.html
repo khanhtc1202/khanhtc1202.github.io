@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Golang</title>
+	<meta name="description" content="khanhtc personal&#39;s note">
+	<meta name="author" content="khanhtc">
+	
+		<link rel="preconnect" href="https://cse.google.com">
+		<link rel="preconnect" href="https://www.googleapis.com">
+		<link rel="preconnect" href="https://www.google.com">
+		<link rel="preconnect" href="https://clients1.google.com">
+	
+	
+		<link rel="preconnect" href="https://cdn.mathjax.org">
+	
+	<link rel="alternate" type="application/rss+xml" href="/tags/golang/index.xml" title="khanhtc's blog">
+</head>
+<body>
+	<header id="header">
+	<a href="https://khanhtc.me/">khanhtc&#39;s blog</a> | 📣 <a href="https://khanhtc.me/index.xml">RSS</a> | 👀 <a href="https://khanhtc.me/alive">Liveness check</a>
+	<div class="gcse-search"></div>
+	
+	<nav>
+		<ul>
+			
+			<li><a href="/about">about</a></li>
+			
+			<li><a href="https://github.com/khanhtc1202">github</a></li>
+			
+			<li><a href="https://leetcode.com/khanhtc">leetcode</a></li>
+			
+			<li><a href="https://www.linkedin.com/in/khanhtc1202">linkedin</a></li>
+			
+		</ul>
+	</nav>
+	
+</header>
+
+	
+	<main>
+		
+		<div>
+			<h1>Golang</h1>
+			
+		</div>
+		
+
+		
+			<article>
+	<h1><a href="https://khanhtc.me/posts/immutable-go-object/">Immutable Go Object</a></h1>
+	<time>30.09.2019 22:57</time>
+	
+	<a href="/tags/golang">golang</a>
+	
+	<a href="/tags/concurrent">concurrent</a>
+	
+	<a href="/tags/oop">oop</a>
+	
+	<div>
+		<p>Every Go programmer knows about the <code>receiver</code> in go, which be declared as:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#080;font-weight:bold">type</span> X <span style="color:#080;font-weight:bold">struct</span> {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-weight:bold">func</span> (receiver X) <span style="color:#06b;font-weight:bold">doThing</span>() {...}
+</span></span></code></pre></div><p>We have two types of receiver in Golang, which is <strong>Value receiver</strong> and <strong>Pointer receiver</strong>. Basically, the receiver in Golang could be map to <code>self</code> in other programming languages and the function which uses the receiver will be pointed from struct type of the receiver.</p>
+<p><em>So, what does this means, anyway?</em></p>
+		
+			<a href="https://khanhtc.me/posts/immutable-go-object/">Read more...</a>
+		
+	</div>
+</article>
+
+		
+			<article>
+	<h1><a href="https://khanhtc.me/posts/type_embedding/">Type embedding not inheritance</a></h1>
+	<time>25.03.2019 23:00</time>
+	
+	<a href="/tags/oop">oop</a>
+	
+	<a href="/tags/golang">golang</a>
+	
+	<div>
+		<p>Since we don’t have classes in go, you can say <code>struct</code> will do a job to make objects. So how 4 principles of object-oriented programming represent in Golang? In this post, we will discuss the principle of OOP that make Golang better than others object-oriented programming language: <strong>inheritance</strong>.</p>
+<!-- more -->
+<p>A simple question, how does Golang represent inheritance principle even if it doesn&rsquo;t have <code>extends</code>? We can easily find out the answer to this question: <strong>embedding type</strong></p>
+		
+			<a href="https://khanhtc.me/posts/type_embedding/">Read more...</a>
+		
+	</div>
+</article>
+
+		
+			<article>
+	<h1><a href="https://khanhtc.me/posts/play-around-with-gorountine/">Play around with goroutine</a></h1>
+	<time>21.07.2018 18:59</time>
+	
+	<a href="/tags/tree">tree</a>
+	
+	<a href="/tags/golang">golang</a>
+	
+	<div>
+		<p>Hôm nay trong lúc lượn lờ <a href="https://tour.golang.org/list">go tour</a> - một guide khá đầy đủ và thú vị giới thiệu về golang, mình bắt gặp một đoạn khá thú vị :))</p>
+<!-- more -->
+<p>Trong mục concurrency in golang, giới thiệu về goroutine - một điểm rất mạnh của golang dùng thay thế cho thread trong các ngôn ngữ lập trình khác - item 7 có nhắc lại kiến thức về tree. Trong đó có đưa ra 1 quiz nhỏ như sau:</p>
+		
+			<a href="https://khanhtc.me/posts/play-around-with-gorountine/">Read more...</a>
+		
+	</div>
+</article>
+
+		
+			<article>
+	<h1><a href="https://khanhtc.me/posts/dependency-injection/">Dependency Injection in a nutshell</a></h1>
+	<time>21.05.2018 13:13</time>
+	
+	<a href="/tags/architecture">architecture</a>
+	
+	<a href="/tags/design">design</a>
+	
+	<a href="/tags/golang">golang</a>
+	
+	<div>
+		<p>As a developer, we write code day by day, try to handle many things, put all the thing in the right way it should be. Almost of our time is spent to googling usage of libraries (or frameworks), try to handle some incredible bugs or try to maintain some shitty things from other guys you may never ever met. All this mess made us forget about something that really have a meaning, it made us forget that our job is not just try to handle all the things, but our job is focused on <code>creating the new thing depend on another guy achievement</code>. But the reason why we are so confused lies in our purpose. Just like the picture below, sometime you realize yourself that you are just a noob and trying to handle all that mess - the mess named dependencies.</p>
+		
+			<a href="https://khanhtc.me/posts/dependency-injection/">Read more...</a>
+		
+	</div>
+</article>
+
+		
+		<div>
+	<hr />
+
+1 of 1
+
+</div>
+
+	</main>
+<aside>
+	<div>
+		<div>
+			<h3>LATEST POSTS</h3>
+		</div>
+		<div>
+			<ul>
+				
+				<li><a href="/posts/kadane-and-its-applications/">From subarray problems to Kadane and applications</a></li>
+				
+				<li><a href="/posts/an-approach-for-dp-problem/">An Approach for DP Problem</a></li>
+				
+				<li><a href="/posts/some-thought-about-tactics/">A breakthrough of my mind</a></li>
+				
+				<li><a href="/posts/concurrent-unit/">Process, Thread and Routine</a></li>
+				
+				<li><a href="/posts/complexity-classes/">Complexity Classes</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</aside>
+
+<aside>
+	<div>
+    		
+			<div>
+				<h3>TAGS</h3>
+			</div>
+			<div>
+				<ul>
+					
+					<li><a href="/tags/algorithm">algorithm</a></li>
+					
+					<li><a href="/tags/approx">approx</a></li>
+					
+					<li><a href="/tags/architecture">architecture</a></li>
+					
+					<li><a href="/tags/c/c&#43;&#43;">c/c&#43;&#43;</a></li>
+					
+					<li><a href="/tags/code">code</a></li>
+					
+					<li><a href="/tags/compiler">compiler</a></li>
+					
+					<li><a href="/tags/concurrent">concurrent</a></li>
+					
+					<li><a href="/tags/database">database</a></li>
+					
+					<li><a href="/tags/design">design</a></li>
+					
+					<li><a href="/tags/dev%20tool">dev tool</a></li>
+					
+					<li><a href="/tags/golang">golang</a></li>
+					
+					<li><a href="/tags/javascript">javascript</a></li>
+					
+					<li><a href="/tags/lock">lock</a></li>
+					
+					<li><a href="/tags/manual">manual</a></li>
+					
+					<li><a href="/tags/memory">memory</a></li>
+					
+					<li><a href="/tags/networks">networks</a></li>
+					
+					<li><a href="/tags/nodejs">nodejs</a></li>
+					
+					<li><a href="/tags/oop">oop</a></li>
+					
+					<li><a href="/tags/os">os</a></li>
+					
+					<li><a href="/tags/package%20manager">package manager</a></li>
+					
+					<li><a href="/tags/programming">programming</a></li>
+					
+					<li><a href="/tags/react">react</a></li>
+					
+					<li><a href="/tags/tactics">tactics</a></li>
+					
+					<li><a href="/tags/thinking">thinking</a></li>
+					
+					<li><a href="/tags/tree">tree</a></li>
+					
+					<li><a href="/tags/trick">trick</a></li>
+					
+				</ul>
+			</div>
+		
+	</div>
+</aside>
+
+
+
+	<footer id="footer">
+	<p>&copy; 2017-2024 <a href="https://khanhtc.me/">khanhtc&#39;s blog</a> | <a href="https://khanhtc.me/index.xml">RSS</a></p>
+	<section><script async src="https://cse.google.com/cse.js?cx=009971123916912295303:lpg9aljzbui"></script>
+
+	</section>
+</footer>
+
+</body>
+</html>

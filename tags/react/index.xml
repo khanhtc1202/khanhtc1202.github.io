@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>React on khanhtc&#39;s blog</title>
+    <link>https://khanhtc.me/tags/react/</link>
+    <description>Recent content in React on khanhtc&#39;s blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 15 Apr 2018 20:20:57 +0000</lastBuildDate>
+    <atom:link href="https://khanhtc.me/tags/react/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A Sample App for Flux Architecture</title>
+      <link>https://khanhtc.me/posts/flux-arch/</link>
+      <pubDate>Sun, 15 Apr 2018 20:20:57 +0000</pubDate>
+      <guid>https://khanhtc.me/posts/flux-arch/</guid>
+      <description>&lt;p&gt;Mình được tuyển về làm java dev nhưng do số nhọ, từ khi đi làm đến giờ số ngày dev java của mình chắc ít hơn đầu ngón tay. Bị quăng qua lại làm từ python, ruby, clojure, golang,&amp;hellip;đến giờ thì cái gì đến cũng phải đến, mình bị dí sang làm react trong một dự án mới. Mình vốn cực kì noob frontend app, nên khi nhận được cụm &lt;code&gt;flux architecture&lt;/code&gt; trong một buổi họp nọ, mình nhận ra ngay đấy là cứu cánh duy nhất của mình ( ngoài architecture ra thì mình không đặc biệt quan tâm cái gì lắm :)) ). Sau vài giờ google thì dù tìm lòi mắt mình cũng &lt;code&gt;không thấy cái sample nào tử tế hoặc đủ để noobs như mình hiểu&lt;/code&gt; nên quyết định tự làm 1 cái, dù sao thì từ hướng architecture, flux cũng khá là thú vị.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

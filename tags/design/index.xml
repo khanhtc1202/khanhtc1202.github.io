@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Design on khanhtc&#39;s blog</title>
+    <link>https://khanhtc.me/tags/design/</link>
+    <description>Recent content in Design on khanhtc&#39;s blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 17 Sep 2019 23:01:32 +0900</lastBuildDate>
+    <atom:link href="https://khanhtc.me/tags/design/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Imperative vs Functional</title>
+      <link>https://khanhtc.me/posts/imperative-vs-funcional/</link>
+      <pubDate>Tue, 17 Sep 2019 23:01:32 +0900</pubDate>
+      <guid>https://khanhtc.me/posts/imperative-vs-funcional/</guid>
+      <description>&lt;p&gt;Difference between Imperative languages and Functional languages:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;Imperative languages are based on assignment sequences whereas functional languages are based on nested function calls.&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;In imperative languages, the same name may be associated with several values, whereas in functional languages a name is only associated with one value.&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;Imperative languages have fixed evaluation orders whereas functional languages need not.(1)&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;In imperative languages, new values may be associated with the same name through command repetition whereas in functional languages new names are associated with new values through recursive function call nesting.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Migrate to NoSql</title>
+      <link>https://khanhtc.me/posts/migrate-to-nosql/</link>
+      <pubDate>Wed, 10 Jul 2019 22:34:41 +0000</pubDate>
+      <guid>https://khanhtc.me/posts/migrate-to-nosql/</guid>
+      <description>&lt;p&gt;Một điều được nhắc đến rất nhiệu khi chuyển từ sql sang nosql là cách để lưu trữ quan hệ giữa các đối tượng trong database. Một đối tượng thường rất ít khi tồn tại độc lâp trong một hệ thống mà nắm giữ 1 phần thông tin được sử dụng để tạo ra một đối tượng khác.&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;p&gt;Các dạng quan hệ chính giữa các đối tượng có thể lưu được trong cơ sở dữ liệu quan hệ bao gồm&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Why can&#39;t initialize object from abstract class (java)</title>
+      <link>https://khanhtc.me/posts/why_can_not_new_abstract_class/</link>
+      <pubDate>Sat, 23 Mar 2019 01:50:54 +0000</pubDate>
+      <guid>https://khanhtc.me/posts/why_can_not_new_abstract_class/</guid>
+      <description>&lt;p&gt;Difference between Abstract class and Interface is one of the most be confused problem when the first time I learnt Java. In which case we should use Abstract class and which case we should use Interface? Let&amp;rsquo;s take a deeper look in this two of concepts.&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;p&gt;By defination, the Abstract class (java) is a &lt;strong&gt;class but unlike a simple java class, it&amp;rsquo;s may not only contain regular defined methods but may also contain abstract methods or a mix of regular and abstract methods.&lt;/strong&gt; Some of Abstract class&amp;rsquo;s properties that make is different from Interface can be listed are:&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>How much your objects encapsulate ?</title>
+      <link>https://khanhtc.me/posts/encapsulate/</link>
+      <pubDate>Sun, 24 Feb 2019 18:46:19 +0000</pubDate>
+      <guid>https://khanhtc.me/posts/encapsulate/</guid>
+      <description>&lt;p&gt;Encapsulate ( tài liệu tiếng Việt thường dịch là &lt;code&gt;đóng gói&lt;/code&gt; ) hay được nhắc đến và ví dụ như là cách để &lt;code&gt;che giấu&lt;/code&gt; thông tin trong lập trình hướng đối tượng.&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;Tức là trạng thái của đối tượng được bảo vệ không cho các truy cập từ code bên ngoài như thay đổi trong thái hay nhìn trực tiếp. Việc cho phép môi trường bên ngoài tác động lên các dữ liệu nội tại của một đối tượng theo cách nào là hoàn toàn tùy thuộc vào người viết mã. Đây là tính chất đảm bảo sự toàn vẹn, bảo mật của đối tượng Trong Java, tính đóng gói được thể hiện thông qua phạm vi truy cập (access modifier).&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Dependency Injection in a nutshell</title>
+      <link>https://khanhtc.me/posts/dependency-injection/</link>
+      <pubDate>Mon, 21 May 2018 13:13:40 +0000</pubDate>
+      <guid>https://khanhtc.me/posts/dependency-injection/</guid>
+      <description>&lt;p&gt;As a developer, we write code day by day, try to handle many things, put all the thing in the right way it should be. Almost of our time is spent to googling usage of libraries (or frameworks), try to handle some incredible bugs or try to maintain some shitty things from other guys you may never ever met. All this mess made us forget about something that really have a meaning, it made us forget that our job is not just try to handle all the things, but our job is focused on &lt;code&gt;creating the new thing depend on another guy achievement&lt;/code&gt;. But the reason why we are so confused lies in our purpose. Just like the picture below, sometime you realize yourself that you are just a noob and trying to handle all that mess - the mess named dependencies.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

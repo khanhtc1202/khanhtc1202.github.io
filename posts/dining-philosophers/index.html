@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Dining Philosophers</title>
+	<meta name="description" content="khanhtc personal&#39;s note">
+	<meta name="author" content="khanhtc">
+	
+		<link rel="preconnect" href="https://cse.google.com">
+		<link rel="preconnect" href="https://www.googleapis.com">
+		<link rel="preconnect" href="https://www.google.com">
+		<link rel="preconnect" href="https://clients1.google.com">
+	
+	
+		<link rel="preconnect" href="https://cdn.mathjax.org">
+	
+	
+</head>
+<body>
+	<header id="header">
+	<a href="https://khanhtc.me/">khanhtc&#39;s blog</a> | 📣 <a href="https://khanhtc.me/index.xml">RSS</a> | 👀 <a href="https://khanhtc.me/alive">Liveness check</a>
+	<div class="gcse-search"></div>
+	
+	<nav>
+		<ul>
+			
+			<li><a href="/about">about</a></li>
+			
+			<li><a href="https://github.com/khanhtc1202">github</a></li>
+			
+			<li><a href="https://leetcode.com/khanhtc">leetcode</a></li>
+			
+			<li><a href="https://www.linkedin.com/in/khanhtc1202">linkedin</a></li>
+			
+		</ul>
+	</nav>
+	
+</header>
+
+	
+	<main>
+		<article>
+			<h1>Dining Philosophers</h1>
+			<time>04.11.2019 21:39</time>
+			<div>
+				<p>Bữa tối của các triết gia (dining philosophers problem) là một ví dụ nổi tiếng khi nhắc đến các vấn đề trong bài toán xử lý concurrent.</p>
+<p>Vấn đề được phát biểu như sau: Cho 5 triết gia ngồi chung một bàn tròn với 5 chiếc đũa xếp xem kẽ giữa 2 người ngồi cạnh nhau như hình</p>
+<p><img src="https://sphof.readthedocs.io/_images/philtable.png" alt="Dining Philosophers"></p>
+<p>img: sphof.readthedocs.io</p>
+<p>Mỗi triết gia tìm cách để ăn được thức ăn từ đĩa của mình với điều kiện: &ldquo;chỉ ai có 2 chiếc đũa cạnh mình mới được phép ăn&rdquo;, do đó họ lần lượt đổi trạng thái giữa ăn (eating) và đợi (thinking) :)) Mỗi người sau khi giữa đôi đũa để ăn sau 1 khoảng thời gian phải bỏ lại 2 chiếc đũa về vị trí cũ để tiếp tục quá trình này. Yêu cầu: tìm một phương pháp đảm bảo để các triết gia đều có thể đk ăn / đợi đổi lượt để không ai bị chết đói (chỉ đợi chứ không được ăn).</p>
+<h2 id="dựng-môi-trường-thí-nghiệm-với-rust">Dựng môi trường thí nghiệm với Rust</h2>
+<p>Trong bài toán này, có 2 chủ thể chính cần quan tâm là <strong>triết gia</strong> (philosopher) và <strong>đũa</strong> (chopstick).</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#080;font-weight:bold">struct</span> <span style="color:#b06;font-weight:bold">Chopstick</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>id: <span style="color:#888;font-weight:bold">usize</span>,<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>by: <span style="color:#038">Option</span>&lt;<span style="color:#888;font-weight:bold">usize</span>&gt;,<span style="color:#bbb"> </span><span style="color:#888">// philosopher&#39;s id, None in case of no owner
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span>}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#080;font-weight:bold">struct</span> <span style="color:#b06;font-weight:bold">Philosopher</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>id: <span style="color:#888;font-weight:bold">usize</span>,<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>left: <span style="color:#b06;font-weight:bold">Arc</span>&lt;Mutex&lt;Chopstick&gt;&gt;,<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>right: <span style="color:#b06;font-weight:bold">Arc</span>&lt;Mutex&lt;Chopstick&gt;&gt;,<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb">
+</span></span></span></code></pre></div><p>Sử dụng Mutex và smart pointer Arc ta có struct đại diện cho philosopher và chopstick như trên.</p>
+<p>Với chopstick, có 2 methods cơ bản cần thực thi trên nó là <em>lấy đũa</em> và <em>trả đũa</em> về vị trí ban đầu (hay từ bỏ quyền sở hữu).</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#080;font-weight:bold">impl</span><span style="color:#bbb"> </span>Chopstick<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-weight:bold">fn</span> <span style="color:#06b;font-weight:bold">get</span>(&amp;<span style="color:#080;font-weight:bold">mut</span><span style="color:#bbb"> </span>self,<span style="color:#bbb"> </span>p: <span style="color:#080">&amp;</span><span style="color:#b06;font-weight:bold">Philosopher</span>)<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span><span style="color:#080;font-weight:bold">if</span><span style="color:#bbb"> </span>self.by<span style="color:#bbb"> </span>!=<span style="color:#bbb"> </span><span style="color:#038">None</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">            </span>panic!();<span style="color:#bbb"> </span><span style="color:#888">// Invalid state. Since chopstick should not belong to anyone when a philosopher gets it
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span><span style="color:#bbb">        </span>}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>println!(<span style="color:#d20;background-color:#fff0f0">&#34;Chopstick </span><span style="color:#33b;background-color:#fff0f0">{}</span><span style="color:#d20;background-color:#fff0f0">: Picked up by Philosopher </span><span style="color:#33b;background-color:#fff0f0">{}</span><span style="color:#d20;background-color:#fff0f0">&#34;</span>,<span style="color:#bbb"> </span>self.id,<span style="color:#bbb"> </span>p.id);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>self.by<span style="color:#bbb"> </span>=<span style="color:#bbb"> </span><span style="color:#038">Some</span>(p.id);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-weight:bold">fn</span> <span style="color:#06b;font-weight:bold">put</span>(&amp;<span style="color:#080;font-weight:bold">mut</span><span style="color:#bbb"> </span>self,<span style="color:#bbb"> </span>p: <span style="color:#080">&amp;</span><span style="color:#b06;font-weight:bold">Philosopher</span>)<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span><span style="color:#080;font-weight:bold">if</span><span style="color:#bbb"> </span>self.by<span style="color:#bbb"> </span>!=<span style="color:#bbb"> </span><span style="color:#038">Some</span>(p.id)<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">            </span>panic!();<span style="color:#bbb"> </span><span style="color:#888">// Invalid state. Since chopstick should belong to philosopher who trying to put it back
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span><span style="color:#bbb">        </span>}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>println!(<span style="color:#d20;background-color:#fff0f0">&#34;Chopstick </span><span style="color:#33b;background-color:#fff0f0">{}</span><span style="color:#d20;background-color:#fff0f0">: Released by Philosopher </span><span style="color:#33b;background-color:#fff0f0">{}</span><span style="color:#d20;background-color:#fff0f0">&#34;</span>,<span style="color:#bbb"> </span>self.id,<span style="color:#bbb"> </span>p.id);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>self.by<span style="color:#bbb"> </span>=<span style="color:#bbb"> </span><span style="color:#038">None</span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb">
+</span></span></span></code></pre></div><p>Với philosopher, cũng có 2 methods cơ bản cần được thực hiện trên nó như đã nêu trong vấn đề, đó là: <em>ăn (khi có đũa)</em> (eating) và <em>đợi</em> (vì là philosopher nên sẽ nghĩ lúc đợi :) )</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#080;font-weight:bold">impl</span><span style="color:#bbb"> </span>Philosopher<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-weight:bold">fn</span> <span style="color:#06b;font-weight:bold">think</span>(&amp;self)<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>println!(<span style="color:#d20;background-color:#fff0f0">&#34;Philosopher </span><span style="color:#33b;background-color:#fff0f0">{}</span><span style="color:#d20;background-color:#fff0f0">: Thinking...&#34;</span>,<span style="color:#bbb"> </span>self.id);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>thread::sleep(Duration::from_secs(<span style="color:#00d;font-weight:bold">2</span>));<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-weight:bold">fn</span> <span style="color:#06b;font-weight:bold">eat</span>(&amp;self)<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span><span style="color:#888">// Get left chopstick if available
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span><span style="color:#bbb">        </span><span style="color:#080;font-weight:bold">let</span><span style="color:#bbb"> </span><span style="color:#080;font-weight:bold">mut</span><span style="color:#bbb"> </span>left_cs<span style="color:#bbb"> </span>=<span style="color:#bbb"> </span><span style="color:#080;font-weight:bold">if</span><span style="color:#bbb"> </span><span style="color:#080;font-weight:bold">let</span><span style="color:#bbb"> </span><span style="color:#038">Ok</span>(chopstick)<span style="color:#bbb"> </span>=<span style="color:#bbb"> </span>self.left.try_lock()<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">            </span>chopstick<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>}<span style="color:#bbb"> </span><span style="color:#080;font-weight:bold">else</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">            </span>println!(<span style="color:#d20;background-color:#fff0f0">&#34;Philosopher </span><span style="color:#33b;background-color:#fff0f0">{}</span><span style="color:#d20;background-color:#fff0f0">: OOPS! Left chopstick not available. Waiting...&#34;</span>,<span style="color:#bbb"> </span>self.id);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">            </span>self.left.lock().unwrap()<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>};<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>left_cs.get(self);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span><span style="color:#888">// Get right chopstick if available
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span><span style="color:#bbb">        </span><span style="color:#080;font-weight:bold">let</span><span style="color:#bbb"> </span><span style="color:#080;font-weight:bold">mut</span><span style="color:#bbb"> </span>right_cs<span style="color:#bbb"> </span>=<span style="color:#bbb"> </span><span style="color:#080;font-weight:bold">if</span><span style="color:#bbb"> </span><span style="color:#080;font-weight:bold">let</span><span style="color:#bbb"> </span><span style="color:#038">Ok</span>(chopstick)<span style="color:#bbb"> </span>=<span style="color:#bbb"> </span>self.right.try_lock()<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">            </span>chopstick<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>}<span style="color:#bbb"> </span><span style="color:#080;font-weight:bold">else</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">            </span>println!(<span style="color:#d20;background-color:#fff0f0">&#34;Philosopher </span><span style="color:#33b;background-color:#fff0f0">{}</span><span style="color:#d20;background-color:#fff0f0">: OOPS! Right chopstick not available. Waiting...&#34;</span>,<span style="color:#bbb"> </span>self.id);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">            </span>self.right.lock().unwrap()<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>};<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>right_cs.get(self);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span><span style="color:#888">// Eat!
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span><span style="color:#bbb">        </span>println!(<span style="color:#d20;background-color:#fff0f0">&#34;Philosopher </span><span style="color:#33b;background-color:#fff0f0">{}</span><span style="color:#d20;background-color:#fff0f0">: Eating...&#34;</span>,<span style="color:#bbb"> </span>self.id);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>thread::sleep(Duration::from_secs(<span style="color:#00d;font-weight:bold">4</span>));<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span><span style="color:#888">// Put back both chopsticks
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span><span style="color:#bbb">        </span>right_cs.put(self);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>left_cs.put(self);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb">
+</span></span></span></code></pre></div><p>Hàm eating là cần quan tâm đến ở bài toán này. Trong phiên bản trên, mỗi triết gia tìm cách lấy lần lượt đũa bên trái và phải của mình và trả lại vị trí sau khi đã ăn xong.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#080;font-weight:bold">fn</span> <span style="color:#06b;font-weight:bold">main</span>()<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-weight:bold">let</span><span style="color:#bbb"> </span>cs1<span style="color:#bbb"> </span>=<span style="color:#bbb"> </span>Arc::new(Mutex::new(Chopstick::new(<span style="color:#00d;font-weight:bold">1</span>)));<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-weight:bold">let</span><span style="color:#bbb"> </span>cs2<span style="color:#bbb"> </span>=<span style="color:#bbb"> </span>Arc::new(Mutex::new(Chopstick::new(<span style="color:#00d;font-weight:bold">2</span>)));<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-weight:bold">let</span><span style="color:#bbb"> </span>cs3<span style="color:#bbb"> </span>=<span style="color:#bbb"> </span>Arc::new(Mutex::new(Chopstick::new(<span style="color:#00d;font-weight:bold">3</span>)));<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-weight:bold">let</span><span style="color:#bbb"> </span>cs4<span style="color:#bbb"> </span>=<span style="color:#bbb"> </span>Arc::new(Mutex::new(Chopstick::new(<span style="color:#00d;font-weight:bold">4</span>)));<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-weight:bold">let</span><span style="color:#bbb"> </span>cs5<span style="color:#bbb"> </span>=<span style="color:#bbb"> </span>Arc::new(Mutex::new(Chopstick::new(<span style="color:#00d;font-weight:bold">5</span>)));<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-weight:bold">let</span><span style="color:#bbb"> </span><span style="color:#080;font-weight:bold">mut</span><span style="color:#bbb"> </span>handles<span style="color:#bbb"> </span>=<span style="color:#bbb"> </span>vec![];<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>handles.push(deploy(<span style="color:#00d;font-weight:bold">1</span>,<span style="color:#bbb"> </span>cs1.clone(),<span style="color:#bbb"> </span>cs2.clone()));<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>handles.push(deploy(<span style="color:#00d;font-weight:bold">2</span>,<span style="color:#bbb"> </span>cs2.clone(),<span style="color:#bbb"> </span>cs3.clone()));<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>handles.push(deploy(<span style="color:#00d;font-weight:bold">3</span>,<span style="color:#bbb"> </span>cs3.clone(),<span style="color:#bbb"> </span>cs4.clone()));<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>handles.push(deploy(<span style="color:#00d;font-weight:bold">4</span>,<span style="color:#bbb"> </span>cs4.clone(),<span style="color:#bbb"> </span>cs5.clone()));<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>handles.push(deploy(<span style="color:#00d;font-weight:bold">5</span>,<span style="color:#bbb"> </span>cs5.clone(),<span style="color:#bbb"> </span>cs1.clone()));<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-weight:bold">for</span><span style="color:#bbb"> </span>handle<span style="color:#bbb"> </span><span style="color:#080;font-weight:bold">in</span><span style="color:#bbb"> </span>handles<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span><span style="color:#080;font-weight:bold">let</span><span style="color:#bbb"> </span>_<span style="color:#bbb"> </span>=<span style="color:#bbb"> </span>handle.join();<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb">
+</span></span></span></code></pre></div><p>Thử nghiệm với phiên bản trên, kết quả như sau:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Philosopher 1: Thinking...
+</span></span><span style="display:flex;"><span>Philosopher 2: Thinking...
+</span></span><span style="display:flex;"><span>Philosopher 3: Thinking...
+</span></span><span style="display:flex;"><span>Philosopher 4: Thinking...
+</span></span><span style="display:flex;"><span>Philosopher 5: Thinking...
+</span></span><span style="display:flex;"><span>Chopstick 1: Picked up by Philosopher <span style="color:#00d;font-weight:bold">1</span>
+</span></span><span style="display:flex;"><span>Chopstick 4: Picked up by Philosopher <span style="color:#00d;font-weight:bold">4</span>
+</span></span><span style="display:flex;"><span>Chopstick 2: Picked up by Philosopher <span style="color:#00d;font-weight:bold">2</span>
+</span></span><span style="display:flex;"><span>Philosopher 2: OOPS! Right chopstick not available. Waiting...
+</span></span><span style="display:flex;"><span>Philosopher 4: OOPS! Right chopstick not available. Waiting...
+</span></span><span style="display:flex;"><span>Philosopher 1: OOPS! Right chopstick not available. Waiting...
+</span></span><span style="display:flex;"><span>Chopstick 5: Picked up by Philosopher <span style="color:#00d;font-weight:bold">5</span>
+</span></span><span style="display:flex;"><span>Philosopher 5: OOPS! Right chopstick not available. Waiting...
+</span></span><span style="display:flex;"><span>Chopstick 3: Picked up by Philosopher <span style="color:#00d;font-weight:bold">3</span>
+</span></span><span style="display:flex;"><span>Philosopher 3: OOPS! Right chopstick not available. Waiting...
+</span></span></code></pre></div><p>Chết đứng :)) Trạng thái hiện tại của bàn ăn như trong kết quả: mỗi triết gia giữ 1 chiếc đũa (lock) và đợi vô hạn thời gian vì không ai đủ đũa để thực hiện ăn và trả lại đũa về vị trí.</p>
+<h2 id="giải-pháp">Giải pháp</h2>
+<p>Nhìn vào kết quả trên, ta có thể nhận thấy mỗi triết gia trong lần lấy đũa đầu tiên chỉ có thể lấy đúng 1 đũa và số đũa đúng bằng số triết gia! Từ đó đưa đến cách thứ nhất để giải quyết vấn đề.</p>
+<blockquote>
+<p>Cho số đũa tối thiểu bằng với số triết gia + 1</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#080;font-weight:bold">fn</span> <span style="color:#06b;font-weight:bold">main</span>()<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>...<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-weight:bold">let</span><span style="color:#bbb"> </span><span style="color:#080;font-weight:bold">mut</span><span style="color:#bbb"> </span>handles<span style="color:#bbb"> </span>=<span style="color:#bbb"> </span>vec![];<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>handles.push(deploy(<span style="color:#00d;font-weight:bold">1</span>,<span style="color:#bbb"> </span>cs1.clone(),<span style="color:#bbb"> </span>cs2.clone()));<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>handles.push(deploy(<span style="color:#00d;font-weight:bold">2</span>,<span style="color:#bbb"> </span>cs2.clone(),<span style="color:#bbb"> </span>cs3.clone()));<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>handles.push(deploy(<span style="color:#00d;font-weight:bold">3</span>,<span style="color:#bbb"> </span>cs3.clone(),<span style="color:#bbb"> </span>cs4.clone()));<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>handles.push(deploy(<span style="color:#00d;font-weight:bold">4</span>,<span style="color:#bbb"> </span>cs4.clone(),<span style="color:#bbb"> </span>cs5.clone()));<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#888">// handles.push(deploy(5, cs5.clone(), cs1.clone()));
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#080;font-weight:bold">for</span><span style="color:#bbb"> </span>handle<span style="color:#bbb"> </span><span style="color:#080;font-weight:bold">in</span><span style="color:#bbb"> </span>handles<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span><span style="color:#080;font-weight:bold">let</span><span style="color:#bbb"> </span>_<span style="color:#bbb"> </span>=<span style="color:#bbb"> </span>handle.join();<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb">
+</span></span></span></code></pre></div><p>Như vậy ở lần lấy đũa đầu tiên; triết gia cuối cùng (thứ 4) sẽ lấy được đôi đũa có id (4, 5) do không có tranh chấp quyền sử dụng đũa thứ 5 :))</p>
+<p>Cách trên có thể đã giải quyết đk vấn đề tuy nhiên đã vi phạm điều kiện đề bài về số lượng triết gia và đũa. Nhìn lại vấn đề ta thấy: mỗi triết gia cố gắng tranh chấp quyền sở hữu 2 đũa với 2 người ngồi cạnh mình và mỗi người chỉ kịp lấy được (thắng) trong một trong 2 lần tranh chấp =&gt; lock. Từ đó dẫn đến hướng thứ 2 để giải quết</p>
+<blockquote>
+<p>Giảm số lần tranh chấp để giành đũa của ít nhất 1 triết gia để đảm bảo có ít nhất 1 người có thể ăn.</p>
+</blockquote>
+<p>Có 2 cách cơ bản để đạt được điều kiện này:</p>
+<p>2.1. Yêu cầu mỗi triết gia ưu tiên giành đũa có id nhỏ hơn trong 2 chiếc cần giành (triết gia thứ 1 ưu tiên chiếc 1, triết gia thứ 2 ưu tiên chiếc 2,&hellip;)</p>
+<p>Như vậy ở vị trí cuối cùng, triết gia thứ 5 sẽ ưu tiên chiếc đũa 1 thay vì chiếc đũa có id = 5, tránh tranh chấp với triết gia ngay trước mình (triết gia thứ 4) =&gt; triết gia thứ 4 có thể bắt đầu ăn.</p>
+<p>2.2. Yêu cầu triết gia ở vị trí lẻ ưu tiên chiếc đũa phải, triết gia ở vị trí chẵn ưu tiên giành đũa ở bên trái (triết gia 1 ưu tiên chiếc 1, triết gia 2 ưu tiên chiếc 3,&hellip;)</p>
+<p>Với cách này, các chiếc đũa 2, 4 có độ ưu tiên thấp hơn đối với tất cả các triết gia, do đó triết gia đã có trong tay 1 chiếc đũa có thể dễ dàng lấy chúng mà không gặp phải tranh chấp. Với bài toán 5 triết gia, ở lượt đầu tiên triết gia thứ nhất (đôi đũa 1,2) và thứ tư (đôi đũa 4,5) có thể bắt đầu ăn.</p>
+<p>Ở một hướng khác, có thể phát triển hướng tiếp cận giảm thiểu tránh chấp trên bằng việc:</p>
+<blockquote>
+<p>Đảm bảo khi bất cứ triết gia nào có đũa, đó sẽ là một đôi thay vì một chiếc.</p>
+</blockquote>
+<p>Như vậy mỗi triết gia sẽ: hoặc là có 1 đôi đũa và bắt đầu ăn, hoặc là không có chiếc nào và ngồi nghĩ :))</p>
+<p>Việc này đảm bảo khi đang ở trạng thái nghĩ, không có triết gia nào giữ đũa khi nghĩ gây cản trở cho những triết gia khác. Có 2 cách để thực hiện điều kiện này:</p>
+<p>3.1. Thêm vào bữa tối một bồi bàn, bất cứ triết gia muốn sở hữu đũa phải hỏi bồi bàn và người này sẽ giao cho người yêu cầu đôi đũa để bắt đầu ăn hoặc trả lời đũa đã được mượn và triết gia đó ngồi đợi trước khi tiếp tục hỏi đũa.</p>
+<p>Việc thực thi của bồi bàn cũng khá đơn giản: quản lý trạng thái của các <strong>đôi đũa</strong> xem chúng đang thuộc về ai và giao cho người yêu cầu khi đôi đũa đang <em>free</em>, khi đám đông hỗn loạn, thêm một người quản lý để điều phố là cách nghĩ thông dụng và khá hiệu quả :)) Tuy nhiên cách này yêu cầu sửa đổi khá nhiều: mỗi triết gia thay vì yêu cầu 1 chiếc đũa cần yêu cầu 1 đôi đũa; và bản thân bồi bàn cũng yêu cầu resource để thực thi (chạy trong 1 thread giống như các triết gia), đồng thời vai trò tập trung của bồi bàn khiến cho chương trình có thể crash hoặc trở lại treo trong trường hợp lỗi ở thread bồi bàn.</p>
+<p>3.2. Yêu cầu mỗi triết gia sẽ tìm cách giành lấy một đôi đũa thay vì giành từng chiếc một của một đôi.</p>
+<p>Cùng một hướng tiếp cận tránh lock khi triết gia giữ 1 chiếc đũa cản trở các triết gia khác bằng việc giành 1 đôi thay vì một chiếc; ta có thể implement một cách đơn giản như sau:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#080;font-weight:bold">fn</span> <span style="color:#06b;font-weight:bold">eat</span>(&amp;self)<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#888">// check left chopstick, wait if unavailable
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span><span style="color:#bbb">    </span><span style="color:#080;font-weight:bold">let</span><span style="color:#bbb"> </span><span style="color:#080;font-weight:bold">mut</span><span style="color:#bbb"> </span>left_cs<span style="color:#bbb"> </span>=<span style="color:#bbb"> </span><span style="color:#080;font-weight:bold">if</span><span style="color:#bbb"> </span><span style="color:#080;font-weight:bold">let</span><span style="color:#bbb"> </span><span style="color:#038">Ok</span>(chopstick)<span style="color:#bbb"> </span>=<span style="color:#bbb"> </span>self.left.try_lock()<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>chopstick<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>}<span style="color:#bbb"> </span><span style="color:#080;font-weight:bold">else</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>println!(<span style="color:#d20;background-color:#fff0f0">&#34;Philosopher </span><span style="color:#33b;background-color:#fff0f0">{}</span><span style="color:#d20;background-color:#fff0f0">: OOPS! Left chopstick not available. Waiting...&#34;</span>,<span style="color:#bbb"> </span>self.id);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>self.left.lock().unwrap()<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>};<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#888">// check right chopstick, wait if unavailable
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span><span style="color:#bbb">    </span><span style="color:#080;font-weight:bold">let</span><span style="color:#bbb"> </span><span style="color:#080;font-weight:bold">mut</span><span style="color:#bbb"> </span>right_cs<span style="color:#bbb"> </span>=<span style="color:#bbb"> </span><span style="color:#080;font-weight:bold">if</span><span style="color:#bbb"> </span><span style="color:#080;font-weight:bold">let</span><span style="color:#bbb"> </span><span style="color:#038">Ok</span>(chopstick)<span style="color:#bbb"> </span>=<span style="color:#bbb"> </span>self.right.try_lock()<span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>chopstick<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>}<span style="color:#bbb"> </span><span style="color:#080;font-weight:bold">else</span><span style="color:#bbb"> </span>{<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>println!(<span style="color:#d20;background-color:#fff0f0">&#34;Philosopher </span><span style="color:#33b;background-color:#fff0f0">{}</span><span style="color:#d20;background-color:#fff0f0">: OOPS! Right chopstick not available. Waiting...&#34;</span>,<span style="color:#bbb"> </span>self.id);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span>self.right.lock().unwrap()<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>};<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#888">// get both chopsticks if available
+</span></span></span><span style="display:flex;"><span><span style="color:#888"></span><span style="color:#bbb">    </span>left_cs.get(self);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>right_cs.get(self);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>println!(<span style="color:#d20;background-color:#fff0f0">&#34;Philosopher </span><span style="color:#33b;background-color:#fff0f0">{}</span><span style="color:#d20;background-color:#fff0f0">: Eating...&#34;</span>,<span style="color:#bbb"> </span>self.id);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>thread::sleep(Duration::from_secs(<span style="color:#00d;font-weight:bold">4</span>));<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>right_cs.put(self);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>left_cs.put(self);<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span>}<span style="color:#bbb">
+</span></span></span></code></pre></div><p>DONE! Với điều kiện này, ở lượt đầu tiên, triết gia thứ nhất (đôi đũa 1,2) và thứ ba (đôi đũa 3,4) giật được đôi đũa của mình và có thể bắt đầu ăn :))</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Philosopher 1: Thinking...
+</span></span><span style="display:flex;"><span>Philosopher 3: Thinking...
+</span></span><span style="display:flex;"><span>Philosopher 4: Thinking...
+</span></span><span style="display:flex;"><span>Philosopher 2: Thinking...
+</span></span><span style="display:flex;"><span>Philosopher 5: Thinking...
+</span></span><span style="display:flex;"><span>Chopstick 1: Picked up by Philosopher <span style="color:#00d;font-weight:bold">1</span>
+</span></span><span style="display:flex;"><span>Philosopher 2: OOPS! Left chopstick not available. Waiting...
+</span></span><span style="display:flex;"><span>Philosopher 4: OOPS! Left chopstick not available. Waiting...
+</span></span><span style="display:flex;"><span>Chopstick 2: Picked up by Philosopher <span style="color:#00d;font-weight:bold">1</span>
+</span></span><span style="display:flex;"><span>Philosopher 1: Eating...
+</span></span><span style="display:flex;"><span>Philosopher 5: OOPS! Right chopstick not available. Waiting...
+</span></span><span style="display:flex;"><span>Chopstick 3: Picked up by Philosopher <span style="color:#00d;font-weight:bold">3</span>
+</span></span><span style="display:flex;"><span>Chopstick 4: Picked up by Philosopher <span style="color:#00d;font-weight:bold">3</span>
+</span></span><span style="display:flex;"><span>Philosopher 3: Eating...
+</span></span><span style="display:flex;"><span>Chopstick 2: Released by Philosopher <span style="color:#00d;font-weight:bold">1</span>
+</span></span><span style="display:flex;"><span>Chopstick 1: Released by Philosopher <span style="color:#00d;font-weight:bold">1</span>
+</span></span><span style="display:flex;"><span>Chopstick 4: Released by Philosopher <span style="color:#00d;font-weight:bold">3</span>
+</span></span><span style="display:flex;"><span>Chopstick 3: Released by Philosopher <span style="color:#00d;font-weight:bold">3</span>
+</span></span><span style="display:flex;"><span>Philosopher 3: Thinking...
+</span></span><span style="display:flex;"><span>Philosopher 1: Thinking...
+</span></span><span style="display:flex;"><span>Philosopher 4: OOPS! Right chopstick not available. Waiting...
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p>Một cách khác là Chandy/Misra solution có thể tìm thấy ở <a href="https://en.wikipedia.org/w/index.php?title=Dining_philosophers_problem#Chandy/Misra_solution">đây</a>.</p>
+<p>Ref:</p>
+<ul>
+<li><a href="https://en.wikipedia.org/w/index.php?title=Dining_philosophers_problem">Dining philosophers problem</a></li>
+<li><a href="https://gist.github.com/khanhtc1202/261e6a48c4f6fae517914915590d3c09">Source code</a></li>
+</ul>
+
+			</div>
+			
+			<div>
+				<ul id="tags">
+					
+					<li><a href="/tags/algorithm">algorithm</a></li>
+					
+					<li><a href="/tags/lock">lock</a></li>
+					
+					<li><a href="/tags/concurrent">concurrent</a></li>
+					
+				</ul>
+			</div>
+			
+		</article>
+	</main>
+<aside>
+	<div>
+		<div>
+			<h3>LATEST POSTS</h3>
+		</div>
+		<div>
+			<ul>
+				
+				<li><a href="/posts/kadane-and-its-applications/">From subarray problems to Kadane and applications</a></li>
+				
+				<li><a href="/posts/an-approach-for-dp-problem/">An Approach for DP Problem</a></li>
+				
+				<li><a href="/posts/some-thought-about-tactics/">A breakthrough of my mind</a></li>
+				
+				<li><a href="/posts/concurrent-unit/">Process, Thread and Routine</a></li>
+				
+				<li><a href="/posts/complexity-classes/">Complexity Classes</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</aside>
+
+<aside>
+	<div>
+    		
+			<div>
+				<h3>TAGS</h3>
+			</div>
+			<div>
+				<ul>
+					
+					<li><a href="/tags/algorithm">algorithm</a></li>
+					
+					<li><a href="/tags/approx">approx</a></li>
+					
+					<li><a href="/tags/architecture">architecture</a></li>
+					
+					<li><a href="/tags/c/c&#43;&#43;">c/c&#43;&#43;</a></li>
+					
+					<li><a href="/tags/code">code</a></li>
+					
+					<li><a href="/tags/compiler">compiler</a></li>
+					
+					<li><a href="/tags/concurrent">concurrent</a></li>
+					
+					<li><a href="/tags/database">database</a></li>
+					
+					<li><a href="/tags/design">design</a></li>
+					
+					<li><a href="/tags/dev%20tool">dev tool</a></li>
+					
+					<li><a href="/tags/golang">golang</a></li>
+					
+					<li><a href="/tags/javascript">javascript</a></li>
+					
+					<li><a href="/tags/lock">lock</a></li>
+					
+					<li><a href="/tags/manual">manual</a></li>
+					
+					<li><a href="/tags/memory">memory</a></li>
+					
+					<li><a href="/tags/networks">networks</a></li>
+					
+					<li><a href="/tags/nodejs">nodejs</a></li>
+					
+					<li><a href="/tags/oop">oop</a></li>
+					
+					<li><a href="/tags/os">os</a></li>
+					
+					<li><a href="/tags/package%20manager">package manager</a></li>
+					
+					<li><a href="/tags/programming">programming</a></li>
+					
+					<li><a href="/tags/react">react</a></li>
+					
+					<li><a href="/tags/tactics">tactics</a></li>
+					
+					<li><a href="/tags/thinking">thinking</a></li>
+					
+					<li><a href="/tags/tree">tree</a></li>
+					
+					<li><a href="/tags/trick">trick</a></li>
+					
+				</ul>
+			</div>
+		
+	</div>
+</aside>
+
+
+
+	<footer id="footer">
+	<p>&copy; 2017-2024 <a href="https://khanhtc.me/">khanhtc&#39;s blog</a> | <a href="https://khanhtc.me/index.xml">RSS</a></p>
+	<section><script async src="https://cse.google.com/cse.js?cx=009971123916912295303:lpg9aljzbui"></script>
+
+	</section>
+</footer>
+
+</body>
+</html>
