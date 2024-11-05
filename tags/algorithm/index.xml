@@ -2,45 +2,45 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Algorithm on khanhtc&#39;s blog</title>
-    <link>https://khanhtc.me/tags/algorithm/</link>
+    <link>https://khanhtc1202.github.io/tags/algorithm/</link>
     <description>Recent content in Algorithm on khanhtc&#39;s blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 06 Jul 2023 21:58:23 +0700</lastBuildDate>
-    <atom:link href="https://khanhtc.me/tags/algorithm/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://khanhtc1202.github.io/tags/algorithm/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>From subarray problems to Kadane and applications</title>
-      <link>https://khanhtc.me/posts/kadane-and-its-applications/</link>
+      <link>https://khanhtc1202.github.io/posts/kadane-and-its-applications/</link>
       <pubDate>Thu, 06 Jul 2023 21:58:23 +0700</pubDate>
-      <guid>https://khanhtc.me/posts/kadane-and-its-applications/</guid>
+      <guid>https://khanhtc1202.github.io/posts/kadane-and-its-applications/</guid>
       <description>&lt;p&gt;Let&amp;rsquo;s start with a problem (src: &lt;a href=&#34;https://leetcode.com/problems/maximum-subarray/&#34;&gt;leetcode#53&lt;/a&gt;)&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Given an integer array nums, find the subarray with the largest sum, and return its sum.&#xA;&#xA;Constraints:&#xA;・ 1 &amp;lt;= nums.length &amp;lt;= 1e5&#xA;・ -1e4 &amp;lt;= nums[i] &amp;lt;= 1e4&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Since subarray means to a contiguous non-empty sequence of elements within an array. It&amp;rsquo;s easy to find the trivial solution where we try to calculate all possible subarray.&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-Cpp&#34; data-lang=&#34;Cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#080;font-weight:bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#b06;font-weight:bold&#34;&gt;Solution&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#080;font-weight:bold&#34;&gt;public&lt;/span&gt;:&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#888;font-weight:bold&#34;&gt;int&lt;/span&gt; maxSubArray(vector&amp;lt;&lt;span style=&#34;color:#888;font-weight:bold&#34;&gt;int&lt;/span&gt;&amp;gt;&amp;amp; nums) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#888;font-weight:bold&#34;&gt;int&lt;/span&gt; ans = INT_MIN;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#080;font-weight:bold&#34;&gt;for&lt;/span&gt; (&lt;span style=&#34;color:#888;font-weight:bold&#34;&gt;int&lt;/span&gt; l = &lt;span style=&#34;color:#00d;font-weight:bold&#34;&gt;0&lt;/span&gt;; l &amp;lt; nums.size(); ++l) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#080;font-weight:bold&#34;&gt;for&lt;/span&gt; (&lt;span style=&#34;color:#888;font-weight:bold&#34;&gt;int&lt;/span&gt; r = l; r &amp;lt; nums.size(); ++r) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                &lt;span style=&#34;color:#888;font-weight:bold&#34;&gt;int&lt;/span&gt; sum = &lt;span style=&#34;color:#00d;font-weight:bold&#34;&gt;0&lt;/span&gt;;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                &lt;span style=&#34;color:#080;font-weight:bold&#34;&gt;for&lt;/span&gt; (&lt;span style=&#34;color:#888;font-weight:bold&#34;&gt;int&lt;/span&gt; i = l; i &amp;lt;= r; i++) sum += nums[i];&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                ans = max(ans, sum);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#080;font-weight:bold&#34;&gt;return&lt;/span&gt; ans;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;};&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The time complexity for this solution is $O(n^{3})$ which clearly impossible to be an AC solution. Then how to update that?&lt;/p&gt;</description>
     </item>
     <item>
       <title>An Approach for DP Problem</title>
-      <link>https://khanhtc.me/posts/an-approach-for-dp-problem/</link>
+      <link>https://khanhtc1202.github.io/posts/an-approach-for-dp-problem/</link>
       <pubDate>Sat, 24 Jun 2023 13:00:04 +0700</pubDate>
-      <guid>https://khanhtc.me/posts/an-approach-for-dp-problem/</guid>
+      <guid>https://khanhtc1202.github.io/posts/an-approach-for-dp-problem/</guid>
       <description>&lt;p&gt;Start with the problem (src: &lt;a href=&#34;https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/&#34;&gt;leetcode#714&lt;/a&gt;)&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;You are given an array prices where prices[i] is the price of a given stock on the ith day, and an integer fee representing a transaction fee.&#xA;&#xA;Find the maximum profit you can achieve. You may complete as many transactions as you like, but you need to pay the transaction fee for each transaction.&#xA;&#xA;Note: You may not engage in multiple transactions simultaneously (i.e., you must sell the stock before you buy again).&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;how-do-we-know-its-a-dynamic-programming-dp-problem-&#34;&gt;How do we know it&amp;rsquo;s a Dynamic Programming (DP) problem? 💭&lt;/h3&gt;&#xA;&lt;p&gt;It&amp;rsquo;s based on your sense ;) But there are some signs that you can follow&lt;/p&gt;</description>
     </item>
     <item>
       <title>Complexity Classes</title>
-      <link>https://khanhtc.me/posts/complexity-classes/</link>
+      <link>https://khanhtc1202.github.io/posts/complexity-classes/</link>
       <pubDate>Tue, 19 Nov 2019 00:51:18 +0900</pubDate>
-      <guid>https://khanhtc.me/posts/complexity-classes/</guid>
+      <guid>https://khanhtc1202.github.io/posts/complexity-classes/</guid>
       <description>&lt;p&gt;The following list contains common time complexities of algorithms:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;O(1) The running time of a constant-time algorithm does not depend on the input size. A typical constant-time algorithm is a direct formula that calculates the answer.&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;O($\log n$) A logarithmic algorithm often halves the input size at each step. The running time of such an algorithm is logarithmic, because $\log n$ equals the number of times n must be divided by 2 to get 1.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Dining Philosophers</title>
-      <link>https://khanhtc.me/posts/dining-philosophers/</link>
+      <link>https://khanhtc1202.github.io/posts/dining-philosophers/</link>
       <pubDate>Mon, 04 Nov 2019 21:39:03 +0900</pubDate>
-      <guid>https://khanhtc.me/posts/dining-philosophers/</guid>
+      <guid>https://khanhtc1202.github.io/posts/dining-philosophers/</guid>
       <description>&lt;p&gt;Bữa tối của các triết gia (dining philosophers problem) là một ví dụ nổi tiếng khi nhắc đến các vấn đề trong bài toán xử lý concurrent.&lt;/p&gt;&#xA;&lt;p&gt;Vấn đề được phát biểu như sau: Cho 5 triết gia ngồi chung một bàn tròn với 5 chiếc đũa xếp xem kẽ giữa 2 người ngồi cạnh nhau như hình&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://sphof.readthedocs.io/_images/philtable.png&#34; alt=&#34;Dining Philosophers&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;img: sphof.readthedocs.io&lt;/p&gt;&#xA;&lt;p&gt;Mỗi triết gia tìm cách để ăn được thức ăn từ đĩa của mình với điều kiện: &amp;ldquo;chỉ ai có 2 chiếc đũa cạnh mình mới được phép ăn&amp;rdquo;, do đó họ lần lượt đổi trạng thái giữa ăn (eating) và đợi (thinking) :)) Mỗi người sau khi giữa đôi đũa để ăn sau 1 khoảng thời gian phải bỏ lại 2 chiếc đũa về vị trí cũ để tiếp tục quá trình này. Yêu cầu: tìm một phương pháp đảm bảo để các triết gia đều có thể đk ăn / đợi đổi lượt để không ai bị chết đói (chỉ đợi chứ không được ăn).&lt;/p&gt;</description>
     </item>
     <item>
       <title>Boundaries for algorithm analysis</title>
-      <link>https://khanhtc.me/posts/competitive-prog-bound/</link>
+      <link>https://khanhtc1202.github.io/posts/competitive-prog-bound/</link>
       <pubDate>Thu, 15 Aug 2019 07:18:49 +0900</pubDate>
-      <guid>https://khanhtc.me/posts/competitive-prog-bound/</guid>
+      <guid>https://khanhtc1202.github.io/posts/competitive-prog-bound/</guid>
       <description>&lt;p&gt;Some boundaries you should know to approximate time and space complexity of your algorithm.&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;$2^{10} = 1,024 \approx 10^{3}, 2^{20} = 1,048,576 \approx 10^{6}$&lt;/li&gt;&#xA;&lt;li&gt;32-bit signed integers (&lt;strong&gt;int&lt;/strong&gt;) and 64-bit signed integers (&lt;strong&gt;long long&lt;/strong&gt;) have upper limits of $2^{31} − 1 \approx 2 \times 10^{9}$ (safe for up to $\approx 9$ decimal digits) and $2^{63} − 1 \approx 9 \times 10^{18}$ (safe for up to $\approx 18$ decimal digits) respectively.&lt;/li&gt;&#xA;&lt;li&gt;Unsigned integers can be used if only non-negative numbers are required. 32-bit unsigned integers (&lt;strong&gt;unsigned int&lt;/strong&gt;) and 64-bit unsigned integers (&lt;strong&gt;unsigned long long&lt;/strong&gt;) have upper limits of $2^{32} − 1 \approx 4 \times 10^{9}$ and $2^{64} − 1 \approx 1.8 \times 10^{19}$ respectively.&lt;/li&gt;&#xA;&lt;li&gt;There are $n!$ permutations and $2^{n}$ subsets (or combinations) of n elements.&lt;/li&gt;&#xA;&lt;li&gt;The best time complexity of a comparison-based sorting algorithm is $Ω(n\log_{2}{n})$.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;Notes:&lt;/p&gt;</description>
     </item>
   </channel>

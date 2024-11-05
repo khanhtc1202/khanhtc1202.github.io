@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Dev Tool on khanhtc&#39;s blog</title>
-    <link>https://khanhtc.me/tags/dev-tool/</link>
+    <link>https://khanhtc1202.github.io/tags/dev-tool/</link>
     <description>Recent content in Dev Tool on khanhtc&#39;s blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 31 Aug 2018 02:55:20 +0000</lastBuildDate>
-    <atom:link href="https://khanhtc.me/tags/dev-tool/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://khanhtc1202.github.io/tags/dev-tool/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Fun thing with browser inspect</title>
-      <link>https://khanhtc.me/posts/content-trick/</link>
+      <link>https://khanhtc1202.github.io/posts/content-trick/</link>
       <pubDate>Fri, 31 Aug 2018 02:55:20 +0000</pubDate>
-      <guid>https://khanhtc.me/posts/content-trick/</guid>
+      <guid>https://khanhtc1202.github.io/posts/content-trick/</guid>
       <description>&lt;p&gt;Chắc hẳn ít ai có thể mạnh miệng khẳng định rằng: Trong suốt quãng thời gian từ khi biết đến internet cho đến hiện tại, chưa một lần từng tải nội dung số không vi phạm bản quyền trên internet. Nói vậy bởi vì đơn giản như một bức ảnh bạn tải từ 1 trang web đã public cũng có thể là ảnh được lấy một cách không chính thức từ một nguồn nào đó :)) Về phía người dùng, họ luôn muốn nhận nhiều hơn, ngược lại tất nhiên người sở hữu nội dung số (media content) không muốn vậy :))&lt;/p&gt;</description>
     </item>
     <item>
       <title>Using Package Manager ??</title>
-      <link>https://khanhtc.me/posts/install-nodejs/</link>
+      <link>https://khanhtc1202.github.io/posts/install-nodejs/</link>
       <pubDate>Tue, 19 Jun 2018 01:13:17 +0000</pubDate>
-      <guid>https://khanhtc.me/posts/install-nodejs/</guid>
+      <guid>https://khanhtc1202.github.io/posts/install-nodejs/</guid>
       <description>&lt;p&gt;Từ cái ngày trẻ trâu copy icon half-life vào usb cho đến khi biết click next next next trong installer của mấy cái app trên windows, bây giờ nhìn lại với mình vẫn là cả một bầu trời kỉ niệm :)) Từ hồi đó cũng gọi là có biết chút ít cái shell của windows nhưng cũng chẳng mấy khi động đến. Cho đến khi lần đầu tiếp xúc với linux, tương tác hồi đó vẫn chủ yếu là trỏ chuột. Dần dần khi đã quen và tương tác chuyển dần sang terminal, cảm giác cài app với command kể cũng ngầu ngầu :)).&lt;/p&gt;</description>
     </item>
   </channel>

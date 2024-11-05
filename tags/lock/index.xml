@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Lock on khanhtc&#39;s blog</title>
-    <link>https://khanhtc.me/tags/lock/</link>
+    <link>https://khanhtc1202.github.io/tags/lock/</link>
     <description>Recent content in Lock on khanhtc&#39;s blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 04 Nov 2019 21:39:03 +0900</lastBuildDate>
-    <atom:link href="https://khanhtc.me/tags/lock/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://khanhtc1202.github.io/tags/lock/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Dining Philosophers</title>
-      <link>https://khanhtc.me/posts/dining-philosophers/</link>
+      <link>https://khanhtc1202.github.io/posts/dining-philosophers/</link>
       <pubDate>Mon, 04 Nov 2019 21:39:03 +0900</pubDate>
-      <guid>https://khanhtc.me/posts/dining-philosophers/</guid>
+      <guid>https://khanhtc1202.github.io/posts/dining-philosophers/</guid>
       <description>&lt;p&gt;Bữa tối của các triết gia (dining philosophers problem) là một ví dụ nổi tiếng khi nhắc đến các vấn đề trong bài toán xử lý concurrent.&lt;/p&gt;&#xA;&lt;p&gt;Vấn đề được phát biểu như sau: Cho 5 triết gia ngồi chung một bàn tròn với 5 chiếc đũa xếp xem kẽ giữa 2 người ngồi cạnh nhau như hình&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://sphof.readthedocs.io/_images/philtable.png&#34; alt=&#34;Dining Philosophers&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;img: sphof.readthedocs.io&lt;/p&gt;&#xA;&lt;p&gt;Mỗi triết gia tìm cách để ăn được thức ăn từ đĩa của mình với điều kiện: &amp;ldquo;chỉ ai có 2 chiếc đũa cạnh mình mới được phép ăn&amp;rdquo;, do đó họ lần lượt đổi trạng thái giữa ăn (eating) và đợi (thinking) :)) Mỗi người sau khi giữa đôi đũa để ăn sau 1 khoảng thời gian phải bỏ lại 2 chiếc đũa về vị trí cũ để tiếp tục quá trình này. Yêu cầu: tìm một phương pháp đảm bảo để các triết gia đều có thể đk ăn / đợi đổi lượt để không ai bị chết đói (chỉ đợi chứ không được ăn).&lt;/p&gt;</description>
     </item>
   </channel>

@@ -2,164 +2,164 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on khanhtc&#39;s blog</title>
-    <link>https://khanhtc.me/posts/</link>
+    <link>https://khanhtc1202.github.io/posts/</link>
     <description>Recent content in Posts on khanhtc&#39;s blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 06 Jul 2023 21:58:23 +0700</lastBuildDate>
-    <atom:link href="https://khanhtc.me/posts/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://khanhtc1202.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>From subarray problems to Kadane and applications</title>
-      <link>https://khanhtc.me/posts/kadane-and-its-applications/</link>
+      <link>https://khanhtc1202.github.io/posts/kadane-and-its-applications/</link>
       <pubDate>Thu, 06 Jul 2023 21:58:23 +0700</pubDate>
-      <guid>https://khanhtc.me/posts/kadane-and-its-applications/</guid>
+      <guid>https://khanhtc1202.github.io/posts/kadane-and-its-applications/</guid>
       <description>&lt;p&gt;Let&amp;rsquo;s start with a problem (src: &lt;a href=&#34;https://leetcode.com/problems/maximum-subarray/&#34;&gt;leetcode#53&lt;/a&gt;)&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Given an integer array nums, find the subarray with the largest sum, and return its sum.&#xA;&#xA;Constraints:&#xA;・ 1 &amp;lt;= nums.length &amp;lt;= 1e5&#xA;・ -1e4 &amp;lt;= nums[i] &amp;lt;= 1e4&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Since subarray means to a contiguous non-empty sequence of elements within an array. It&amp;rsquo;s easy to find the trivial solution where we try to calculate all possible subarray.&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-Cpp&#34; data-lang=&#34;Cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#080;font-weight:bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#b06;font-weight:bold&#34;&gt;Solution&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#080;font-weight:bold&#34;&gt;public&lt;/span&gt;:&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#888;font-weight:bold&#34;&gt;int&lt;/span&gt; maxSubArray(vector&amp;lt;&lt;span style=&#34;color:#888;font-weight:bold&#34;&gt;int&lt;/span&gt;&amp;gt;&amp;amp; nums) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#888;font-weight:bold&#34;&gt;int&lt;/span&gt; ans = INT_MIN;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#080;font-weight:bold&#34;&gt;for&lt;/span&gt; (&lt;span style=&#34;color:#888;font-weight:bold&#34;&gt;int&lt;/span&gt; l = &lt;span style=&#34;color:#00d;font-weight:bold&#34;&gt;0&lt;/span&gt;; l &amp;lt; nums.size(); ++l) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#080;font-weight:bold&#34;&gt;for&lt;/span&gt; (&lt;span style=&#34;color:#888;font-weight:bold&#34;&gt;int&lt;/span&gt; r = l; r &amp;lt; nums.size(); ++r) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                &lt;span style=&#34;color:#888;font-weight:bold&#34;&gt;int&lt;/span&gt; sum = &lt;span style=&#34;color:#00d;font-weight:bold&#34;&gt;0&lt;/span&gt;;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                &lt;span style=&#34;color:#080;font-weight:bold&#34;&gt;for&lt;/span&gt; (&lt;span style=&#34;color:#888;font-weight:bold&#34;&gt;int&lt;/span&gt; i = l; i &amp;lt;= r; i++) sum += nums[i];&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                ans = max(ans, sum);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#080;font-weight:bold&#34;&gt;return&lt;/span&gt; ans;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;};&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The time complexity for this solution is $O(n^{3})$ which clearly impossible to be an AC solution. Then how to update that?&lt;/p&gt;</description>
     </item>
     <item>
       <title>An Approach for DP Problem</title>
-      <link>https://khanhtc.me/posts/an-approach-for-dp-problem/</link>
+      <link>https://khanhtc1202.github.io/posts/an-approach-for-dp-problem/</link>
       <pubDate>Sat, 24 Jun 2023 13:00:04 +0700</pubDate>
-      <guid>https://khanhtc.me/posts/an-approach-for-dp-problem/</guid>
+      <guid>https://khanhtc1202.github.io/posts/an-approach-for-dp-problem/</guid>
       <description>&lt;p&gt;Start with the problem (src: &lt;a href=&#34;https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/&#34;&gt;leetcode#714&lt;/a&gt;)&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;You are given an array prices where prices[i] is the price of a given stock on the ith day, and an integer fee representing a transaction fee.&#xA;&#xA;Find the maximum profit you can achieve. You may complete as many transactions as you like, but you need to pay the transaction fee for each transaction.&#xA;&#xA;Note: You may not engage in multiple transactions simultaneously (i.e., you must sell the stock before you buy again).&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;how-do-we-know-its-a-dynamic-programming-dp-problem-&#34;&gt;How do we know it&amp;rsquo;s a Dynamic Programming (DP) problem? 💭&lt;/h3&gt;&#xA;&lt;p&gt;It&amp;rsquo;s based on your sense ;) But there are some signs that you can follow&lt;/p&gt;</description>
     </item>
     <item>
       <title>A breakthrough of my mind</title>
-      <link>https://khanhtc.me/posts/some-thought-about-tactics/</link>
+      <link>https://khanhtc1202.github.io/posts/some-thought-about-tactics/</link>
       <pubDate>Sun, 24 Jan 2021 21:21:01 +0900</pubDate>
-      <guid>https://khanhtc.me/posts/some-thought-about-tactics/</guid>
+      <guid>https://khanhtc1202.github.io/posts/some-thought-about-tactics/</guid>
       <description>&lt;p&gt;Today I got a really nice chess puzzle that makes me review all of my knowledge, or even more important - the way I should think strategically. 🤔&lt;/p&gt;&#xA;&lt;img width=&#34;100%&#34; alt=&#34;chess puzzle 1&#34; src=&#34;https://user-images.githubusercontent.com/32532742/105636360-6614f480-5eab-11eb-98bc-d526e991537a.png&#34;&gt;&#xA;&lt;p&gt;via &lt;a href=&#34;https://chess.com&#34;&gt;chess.com&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;The puzzle starts with black makes Na5, white to move.&lt;/p&gt;&#xA;&lt;p&gt;To this day, what I have learned about chess strategies could be shortened into: seek to prevail. There are many shapes of prevail, that is:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;checkmate the opposite king&lt;/li&gt;&#xA;&lt;li&gt;gain the advantage in trading pieces (sacrifice)&lt;/li&gt;&#xA;&lt;li&gt;take the advantage of space (suppress, narrow the opponent&amp;rsquo;s scope of activity)&lt;/li&gt;&#xA;&lt;li&gt;promotion&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;Apply to the current situation, white wins one piece (a pawn which means 1 point but it&amp;rsquo;s just a gambit), a little bit advantage of space (a pawn in d5 followed by Bishop at c4), a bad move of black pawn f7. And on top of that, white has a strong Bishop - Bc4 which makes a threat to Kg8 indirectly.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Process, Thread and Routine</title>
-      <link>https://khanhtc.me/posts/concurrent-unit/</link>
+      <link>https://khanhtc1202.github.io/posts/concurrent-unit/</link>
       <pubDate>Fri, 28 Feb 2020 03:56:38 +0900</pubDate>
-      <guid>https://khanhtc.me/posts/concurrent-unit/</guid>
+      <guid>https://khanhtc1202.github.io/posts/concurrent-unit/</guid>
       <description>&lt;h2 id=&#34;process-and-thread&#34;&gt;Process and Thread&lt;/h2&gt;&#xA;&lt;h3 id=&#34;process&#34;&gt;Process&lt;/h3&gt;&#xA;&lt;p&gt;Tiến trình có thể hiểu đơn giản là một chương trình đang chạy trong máy tính. Khi chúng ta mở một trang web trình duyệt thì đây được xem là một tiến trình. Khi chúng ta viết 1 chương trình máy tính bằng ngôn ngữ lập trình như C, Java, hay Go, sau khi tiến hành biên dịch và chạy chương trình thì hệ điều hành sẽ cấp cho chương trình một không gian bộ nhớ nhất định, PID (process ID),&amp;hellip; Mỗi tiến trình có ít nhất một luồng chính (main thread) để chạy chương trình, nó như là xương sống của chương trình vậy. Khi luồng chính này ngừng hoạt động tương ứng với việc chương trình bị tắt.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Complexity Classes</title>
-      <link>https://khanhtc.me/posts/complexity-classes/</link>
+      <link>https://khanhtc1202.github.io/posts/complexity-classes/</link>
       <pubDate>Tue, 19 Nov 2019 00:51:18 +0900</pubDate>
-      <guid>https://khanhtc.me/posts/complexity-classes/</guid>
+      <guid>https://khanhtc1202.github.io/posts/complexity-classes/</guid>
       <description>&lt;p&gt;The following list contains common time complexities of algorithms:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;O(1) The running time of a constant-time algorithm does not depend on the input size. A typical constant-time algorithm is a direct formula that calculates the answer.&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;O($\log n$) A logarithmic algorithm often halves the input size at each step. The running time of such an algorithm is logarithmic, because $\log n$ equals the number of times n must be divided by 2 to get 1.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Dining Philosophers</title>
-      <link>https://khanhtc.me/posts/dining-philosophers/</link>
+      <link>https://khanhtc1202.github.io/posts/dining-philosophers/</link>
       <pubDate>Mon, 04 Nov 2019 21:39:03 +0900</pubDate>
-      <guid>https://khanhtc.me/posts/dining-philosophers/</guid>
+      <guid>https://khanhtc1202.github.io/posts/dining-philosophers/</guid>
       <description>&lt;p&gt;Bữa tối của các triết gia (dining philosophers problem) là một ví dụ nổi tiếng khi nhắc đến các vấn đề trong bài toán xử lý concurrent.&lt;/p&gt;&#xA;&lt;p&gt;Vấn đề được phát biểu như sau: Cho 5 triết gia ngồi chung một bàn tròn với 5 chiếc đũa xếp xem kẽ giữa 2 người ngồi cạnh nhau như hình&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://sphof.readthedocs.io/_images/philtable.png&#34; alt=&#34;Dining Philosophers&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;img: sphof.readthedocs.io&lt;/p&gt;&#xA;&lt;p&gt;Mỗi triết gia tìm cách để ăn được thức ăn từ đĩa của mình với điều kiện: &amp;ldquo;chỉ ai có 2 chiếc đũa cạnh mình mới được phép ăn&amp;rdquo;, do đó họ lần lượt đổi trạng thái giữa ăn (eating) và đợi (thinking) :)) Mỗi người sau khi giữa đôi đũa để ăn sau 1 khoảng thời gian phải bỏ lại 2 chiếc đũa về vị trí cũ để tiếp tục quá trình này. Yêu cầu: tìm một phương pháp đảm bảo để các triết gia đều có thể đk ăn / đợi đổi lượt để không ai bị chết đói (chỉ đợi chứ không được ăn).&lt;/p&gt;</description>
     </item>
     <item>
       <title>Immutable Go Object</title>
-      <link>https://khanhtc.me/posts/immutable-go-object/</link>
+      <link>https://khanhtc1202.github.io/posts/immutable-go-object/</link>
       <pubDate>Mon, 30 Sep 2019 22:57:39 +0900</pubDate>
-      <guid>https://khanhtc.me/posts/immutable-go-object/</guid>
+      <guid>https://khanhtc1202.github.io/posts/immutable-go-object/</guid>
       <description>&lt;p&gt;Every Go programmer knows about the &lt;code&gt;receiver&lt;/code&gt; in go, which be declared as:&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#080;font-weight:bold&#34;&gt;type&lt;/span&gt; X &lt;span style=&#34;color:#080;font-weight:bold&#34;&gt;struct&lt;/span&gt; {}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#080;font-weight:bold&#34;&gt;func&lt;/span&gt; (receiver X) &lt;span style=&#34;color:#06b;font-weight:bold&#34;&gt;doThing&lt;/span&gt;() {...}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We have two types of receiver in Golang, which is &lt;strong&gt;Value receiver&lt;/strong&gt; and &lt;strong&gt;Pointer receiver&lt;/strong&gt;. Basically, the receiver in Golang could be map to &lt;code&gt;self&lt;/code&gt; in other programming languages and the function which uses the receiver will be pointed from struct type of the receiver.&lt;/p&gt;&#xA;&lt;p&gt;&lt;em&gt;So, what does this means, anyway?&lt;/em&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>Imperative vs Functional</title>
-      <link>https://khanhtc.me/posts/imperative-vs-funcional/</link>
+      <link>https://khanhtc1202.github.io/posts/imperative-vs-funcional/</link>
       <pubDate>Tue, 17 Sep 2019 23:01:32 +0900</pubDate>
-      <guid>https://khanhtc.me/posts/imperative-vs-funcional/</guid>
+      <guid>https://khanhtc1202.github.io/posts/imperative-vs-funcional/</guid>
       <description>&lt;p&gt;Difference between Imperative languages and Functional languages:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;Imperative languages are based on assignment sequences whereas functional languages are based on nested function calls.&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;In imperative languages, the same name may be associated with several values, whereas in functional languages a name is only associated with one value.&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;Imperative languages have fixed evaluation orders whereas functional languages need not.(1)&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;In imperative languages, new values may be associated with the same name through command repetition whereas in functional languages new names are associated with new values through recursive function call nesting.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Boundaries for algorithm analysis</title>
-      <link>https://khanhtc.me/posts/competitive-prog-bound/</link>
+      <link>https://khanhtc1202.github.io/posts/competitive-prog-bound/</link>
       <pubDate>Thu, 15 Aug 2019 07:18:49 +0900</pubDate>
-      <guid>https://khanhtc.me/posts/competitive-prog-bound/</guid>
+      <guid>https://khanhtc1202.github.io/posts/competitive-prog-bound/</guid>
       <description>&lt;p&gt;Some boundaries you should know to approximate time and space complexity of your algorithm.&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;$2^{10} = 1,024 \approx 10^{3}, 2^{20} = 1,048,576 \approx 10^{6}$&lt;/li&gt;&#xA;&lt;li&gt;32-bit signed integers (&lt;strong&gt;int&lt;/strong&gt;) and 64-bit signed integers (&lt;strong&gt;long long&lt;/strong&gt;) have upper limits of $2^{31} − 1 \approx 2 \times 10^{9}$ (safe for up to $\approx 9$ decimal digits) and $2^{63} − 1 \approx 9 \times 10^{18}$ (safe for up to $\approx 18$ decimal digits) respectively.&lt;/li&gt;&#xA;&lt;li&gt;Unsigned integers can be used if only non-negative numbers are required. 32-bit unsigned integers (&lt;strong&gt;unsigned int&lt;/strong&gt;) and 64-bit unsigned integers (&lt;strong&gt;unsigned long long&lt;/strong&gt;) have upper limits of $2^{32} − 1 \approx 4 \times 10^{9}$ and $2^{64} − 1 \approx 1.8 \times 10^{19}$ respectively.&lt;/li&gt;&#xA;&lt;li&gt;There are $n!$ permutations and $2^{n}$ subsets (or combinations) of n elements.&lt;/li&gt;&#xA;&lt;li&gt;The best time complexity of a comparison-based sorting algorithm is $Ω(n\log_{2}{n})$.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;Notes:&lt;/p&gt;</description>
     </item>
     <item>
       <title>Migrate to NoSql</title>
-      <link>https://khanhtc.me/posts/migrate-to-nosql/</link>
+      <link>https://khanhtc1202.github.io/posts/migrate-to-nosql/</link>
       <pubDate>Wed, 10 Jul 2019 22:34:41 +0000</pubDate>
-      <guid>https://khanhtc.me/posts/migrate-to-nosql/</guid>
+      <guid>https://khanhtc1202.github.io/posts/migrate-to-nosql/</guid>
       <description>&lt;p&gt;Một điều được nhắc đến rất nhiệu khi chuyển từ sql sang nosql là cách để lưu trữ quan hệ giữa các đối tượng trong database. Một đối tượng thường rất ít khi tồn tại độc lâp trong một hệ thống mà nắm giữ 1 phần thông tin được sử dụng để tạo ra một đối tượng khác.&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;p&gt;Các dạng quan hệ chính giữa các đối tượng có thể lưu được trong cơ sở dữ liệu quan hệ bao gồm&lt;/p&gt;</description>
     </item>
     <item>
       <title>Type embedding not inheritance</title>
-      <link>https://khanhtc.me/posts/type_embedding/</link>
+      <link>https://khanhtc1202.github.io/posts/type_embedding/</link>
       <pubDate>Mon, 25 Mar 2019 23:00:13 +0000</pubDate>
-      <guid>https://khanhtc.me/posts/type_embedding/</guid>
+      <guid>https://khanhtc1202.github.io/posts/type_embedding/</guid>
       <description>&lt;p&gt;Since we don’t have classes in go, you can say &lt;code&gt;struct&lt;/code&gt; will do a job to make objects. So how 4 principles of object-oriented programming represent in Golang? In this post, we will discuss the principle of OOP that make Golang better than others object-oriented programming language: &lt;strong&gt;inheritance&lt;/strong&gt;.&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;p&gt;A simple question, how does Golang represent inheritance principle even if it doesn&amp;rsquo;t have &lt;code&gt;extends&lt;/code&gt;? We can easily find out the answer to this question: &lt;strong&gt;embedding type&lt;/strong&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>Why can&#39;t initialize object from abstract class (java)</title>
-      <link>https://khanhtc.me/posts/why_can_not_new_abstract_class/</link>
+      <link>https://khanhtc1202.github.io/posts/why_can_not_new_abstract_class/</link>
       <pubDate>Sat, 23 Mar 2019 01:50:54 +0000</pubDate>
-      <guid>https://khanhtc.me/posts/why_can_not_new_abstract_class/</guid>
+      <guid>https://khanhtc1202.github.io/posts/why_can_not_new_abstract_class/</guid>
       <description>&lt;p&gt;Difference between Abstract class and Interface is one of the most be confused problem when the first time I learnt Java. In which case we should use Abstract class and which case we should use Interface? Let&amp;rsquo;s take a deeper look in this two of concepts.&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;p&gt;By defination, the Abstract class (java) is a &lt;strong&gt;class but unlike a simple java class, it&amp;rsquo;s may not only contain regular defined methods but may also contain abstract methods or a mix of regular and abstract methods.&lt;/strong&gt; Some of Abstract class&amp;rsquo;s properties that make is different from Interface can be listed are:&lt;/p&gt;</description>
     </item>
     <item>
       <title>How much your objects encapsulate ?</title>
-      <link>https://khanhtc.me/posts/encapsulate/</link>
+      <link>https://khanhtc1202.github.io/posts/encapsulate/</link>
       <pubDate>Sun, 24 Feb 2019 18:46:19 +0000</pubDate>
-      <guid>https://khanhtc.me/posts/encapsulate/</guid>
+      <guid>https://khanhtc1202.github.io/posts/encapsulate/</guid>
       <description>&lt;p&gt;Encapsulate ( tài liệu tiếng Việt thường dịch là &lt;code&gt;đóng gói&lt;/code&gt; ) hay được nhắc đến và ví dụ như là cách để &lt;code&gt;che giấu&lt;/code&gt; thông tin trong lập trình hướng đối tượng.&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;Tức là trạng thái của đối tượng được bảo vệ không cho các truy cập từ code bên ngoài như thay đổi trong thái hay nhìn trực tiếp. Việc cho phép môi trường bên ngoài tác động lên các dữ liệu nội tại của một đối tượng theo cách nào là hoàn toàn tùy thuộc vào người viết mã. Đây là tính chất đảm bảo sự toàn vẹn, bảo mật của đối tượng Trong Java, tính đóng gói được thể hiện thông qua phạm vi truy cập (access modifier).&lt;/p&gt;</description>
     </item>
     <item>
       <title>Fun thing with browser inspect</title>
-      <link>https://khanhtc.me/posts/content-trick/</link>
+      <link>https://khanhtc1202.github.io/posts/content-trick/</link>
       <pubDate>Fri, 31 Aug 2018 02:55:20 +0000</pubDate>
-      <guid>https://khanhtc.me/posts/content-trick/</guid>
+      <guid>https://khanhtc1202.github.io/posts/content-trick/</guid>
       <description>&lt;p&gt;Chắc hẳn ít ai có thể mạnh miệng khẳng định rằng: Trong suốt quãng thời gian từ khi biết đến internet cho đến hiện tại, chưa một lần từng tải nội dung số không vi phạm bản quyền trên internet. Nói vậy bởi vì đơn giản như một bức ảnh bạn tải từ 1 trang web đã public cũng có thể là ảnh được lấy một cách không chính thức từ một nguồn nào đó :)) Về phía người dùng, họ luôn muốn nhận nhiều hơn, ngược lại tất nhiên người sở hữu nội dung số (media content) không muốn vậy :))&lt;/p&gt;</description>
     </item>
     <item>
       <title>Play around with goroutine</title>
-      <link>https://khanhtc.me/posts/play-around-with-gorountine/</link>
+      <link>https://khanhtc1202.github.io/posts/play-around-with-gorountine/</link>
       <pubDate>Sat, 21 Jul 2018 18:59:07 +0000</pubDate>
-      <guid>https://khanhtc.me/posts/play-around-with-gorountine/</guid>
+      <guid>https://khanhtc1202.github.io/posts/play-around-with-gorountine/</guid>
       <description>&lt;p&gt;Hôm nay trong lúc lượn lờ &lt;a href=&#34;https://tour.golang.org/list&#34;&gt;go tour&lt;/a&gt; - một guide khá đầy đủ và thú vị giới thiệu về golang, mình bắt gặp một đoạn khá thú vị :))&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;p&gt;Trong mục concurrency in golang, giới thiệu về goroutine - một điểm rất mạnh của golang dùng thay thế cho thread trong các ngôn ngữ lập trình khác - item 7 có nhắc lại kiến thức về tree. Trong đó có đưa ra 1 quiz nhỏ như sau:&lt;/p&gt;</description>
     </item>
     <item>
       <title>Using Package Manager ??</title>
-      <link>https://khanhtc.me/posts/install-nodejs/</link>
+      <link>https://khanhtc1202.github.io/posts/install-nodejs/</link>
       <pubDate>Tue, 19 Jun 2018 01:13:17 +0000</pubDate>
-      <guid>https://khanhtc.me/posts/install-nodejs/</guid>
+      <guid>https://khanhtc1202.github.io/posts/install-nodejs/</guid>
       <description>&lt;p&gt;Từ cái ngày trẻ trâu copy icon half-life vào usb cho đến khi biết click next next next trong installer của mấy cái app trên windows, bây giờ nhìn lại với mình vẫn là cả một bầu trời kỉ niệm :)) Từ hồi đó cũng gọi là có biết chút ít cái shell của windows nhưng cũng chẳng mấy khi động đến. Cho đến khi lần đầu tiếp xúc với linux, tương tác hồi đó vẫn chủ yếu là trỏ chuột. Dần dần khi đã quen và tương tác chuyển dần sang terminal, cảm giác cài app với command kể cũng ngầu ngầu :)).&lt;/p&gt;</description>
     </item>
     <item>
       <title>Ninja Code</title>
-      <link>https://khanhtc.me/posts/ninja-code/</link>
+      <link>https://khanhtc1202.github.io/posts/ninja-code/</link>
       <pubDate>Tue, 05 Jun 2018 17:10:45 +0000</pubDate>
-      <guid>https://khanhtc.me/posts/ninja-code/</guid>
+      <guid>https://khanhtc1202.github.io/posts/ninja-code/</guid>
       <description>&lt;p&gt;Nếu coding giống như một trận chiến giữa programer và problem cần giải quyết thì, giống như những chiến binh thực thự, chúng ta tìm kiếm đạo (phương pháp chiến đấu) phù hợp cho chính mình. Trong bạt ngàn những đạo (những nguyên lý), kinh dịch (article trên blog của những blogger nổi tiếng), chú thích kinh nghiệm (những note, post được đông đảo dev &lt;code&gt;kip&lt;/code&gt; lại),&amp;hellip;đâu đó quanh đây vẫn tồn tại một đạo mà không mấy ai để ý đến nhưng số người theo thì đếm không kể hết. Có người đắc đạo hoàn toàn, có người một phần, tuy theo nhiều mức độ khác nhau nhưng tựu chung có thể coi đều là đồng đạo trong môn phái này :))&lt;/p&gt;</description>
     </item>
     <item>
       <title>Dependency Injection in a nutshell</title>
-      <link>https://khanhtc.me/posts/dependency-injection/</link>
+      <link>https://khanhtc1202.github.io/posts/dependency-injection/</link>
       <pubDate>Mon, 21 May 2018 13:13:40 +0000</pubDate>
-      <guid>https://khanhtc.me/posts/dependency-injection/</guid>
+      <guid>https://khanhtc1202.github.io/posts/dependency-injection/</guid>
       <description>&lt;p&gt;As a developer, we write code day by day, try to handle many things, put all the thing in the right way it should be. Almost of our time is spent to googling usage of libraries (or frameworks), try to handle some incredible bugs or try to maintain some shitty things from other guys you may never ever met. All this mess made us forget about something that really have a meaning, it made us forget that our job is not just try to handle all the things, but our job is focused on &lt;code&gt;creating the new thing depend on another guy achievement&lt;/code&gt;. But the reason why we are so confused lies in our purpose. Just like the picture below, sometime you realize yourself that you are just a noob and trying to handle all that mess - the mess named dependencies.&lt;/p&gt;</description>
     </item>
     <item>
       <title>A Sample App for Flux Architecture</title>
-      <link>https://khanhtc.me/posts/flux-arch/</link>
+      <link>https://khanhtc1202.github.io/posts/flux-arch/</link>
       <pubDate>Sun, 15 Apr 2018 20:20:57 +0000</pubDate>
-      <guid>https://khanhtc.me/posts/flux-arch/</guid>
+      <guid>https://khanhtc1202.github.io/posts/flux-arch/</guid>
       <description>&lt;p&gt;Mình được tuyển về làm java dev nhưng do số nhọ, từ khi đi làm đến giờ số ngày dev java của mình chắc ít hơn đầu ngón tay. Bị quăng qua lại làm từ python, ruby, clojure, golang,&amp;hellip;đến giờ thì cái gì đến cũng phải đến, mình bị dí sang làm react trong một dự án mới. Mình vốn cực kì noob frontend app, nên khi nhận được cụm &lt;code&gt;flux architecture&lt;/code&gt; trong một buổi họp nọ, mình nhận ra ngay đấy là cứu cánh duy nhất của mình ( ngoài architecture ra thì mình không đặc biệt quan tâm cái gì lắm :)) ). Sau vài giờ google thì dù tìm lòi mắt mình cũng &lt;code&gt;không thấy cái sample nào tử tế hoặc đủ để noobs như mình hiểu&lt;/code&gt; nên quyết định tự làm 1 cái, dù sao thì từ hướng architecture, flux cũng khá là thú vị.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Log Viewer via HTTP</title>
-      <link>https://khanhtc.me/posts/view-log/</link>
+      <link>https://khanhtc1202.github.io/posts/view-log/</link>
       <pubDate>Fri, 30 Mar 2018 17:17:44 +0000</pubDate>
-      <guid>https://khanhtc.me/posts/view-log/</guid>
+      <guid>https://khanhtc1202.github.io/posts/view-log/</guid>
       <description>&lt;p&gt;Nhân một cuối tuần rảnh rỗi cao hứng nào đấy, mình đã build một hệ thống nhỏ - mục đích chính để nó giúp mình &lt;strong&gt;clone tự động anime mới&lt;/strong&gt; từ các trang mình đã thu thập rss (phần vì mình lười down từng tập, phần do đợt này mình hay quên nên 🤣).&lt;/p&gt;&#xA;&lt;p&gt;Do là cái hệ thống viết chơi bời trong 2 ngày nghỉ nên nó thiếu đủ thứ 🤧&amp;hellip; Lúc đầu, mình chỉ tập trung vào viết cho nó chạy, nhưng thời gian đầu - do một số lý do khó nói - mà nó chết sập liên tục 😟 mình bắt đầu nghĩ đến logging, tất nhiên là log ra file thôi&amp;hellip;Sau đấy một thời gian khi đã chạy khá ổn định, dần dần bản thân việc &lt;strong&gt;mò vào server để mở file log ra đọc&lt;/strong&gt; mình cũng lười nốt 🤤 nên bắt đầu nghĩ xem có cách nào đơn giản (không phải cài hay dùng thêm dịch vụ ngoài nào) mà có thể giúp xem luôn log file ở server từ trình duyệt không 🧐&lt;/p&gt;</description>
     </item>
     <item>
       <title>Compile C program in manual way</title>
-      <link>https://khanhtc.me/posts/compile-c-source/</link>
+      <link>https://khanhtc1202.github.io/posts/compile-c-source/</link>
       <pubDate>Mon, 26 Mar 2018 01:09:47 +0000</pubDate>
-      <guid>https://khanhtc.me/posts/compile-c-source/</guid>
+      <guid>https://khanhtc1202.github.io/posts/compile-c-source/</guid>
       <description>&lt;p&gt;After hard coding your program hour by hour (sometime, it becomes year by year :) ), one of the most uncomfortable time is compiling it into executable file. As usually, we are going to compile a program by the hardest way to do it, just because it will make us knows that in some case, &lt;code&gt;gcc&lt;/code&gt; is really a hero :))&lt;/p&gt;&#xA;&lt;p&gt;The post&amp;rsquo;s content is about compiling a C program by manual way. In that program, we use an external lib, defined by yourself.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Memory trick</title>
-      <link>https://khanhtc.me/posts/mem-trick/</link>
+      <link>https://khanhtc1202.github.io/posts/mem-trick/</link>
       <pubDate>Fri, 22 Dec 2017 18:42:41 +0000</pubDate>
-      <guid>https://khanhtc.me/posts/mem-trick/</guid>
+      <guid>https://khanhtc1202.github.io/posts/mem-trick/</guid>
       <description>&lt;p&gt;Nếu đã từng có thời gian làm việc với C (hay ông nào kinh hơn làm hẳn với Assembly :) ) chắc ai cũng nhớ sự kinh hoàng của &lt;strong&gt;core dump fail&lt;/strong&gt; :&amp;rsquo;( . Dù có sử dụng &lt;a href=&#34;https://en.wikipedia.org/wiki/GNU_Debugger&#34;&gt;&lt;code&gt;gdb&lt;/code&gt;&lt;/a&gt; debug thì chắc cũng phải bỏ ra cả mớ thời gian và công sức mà nhiều khi lỗi bắt nguồn từ những cái vớ vẩn nào đó mà bình thường ta không để ý :&amp;rsquo;( . Mặt khác bạn nên thấy may mắn khi ít ra còn biết chương trình đã lỗi ở đâu đó để mà sửa, có những lỗi nằm ở nhưng nơi hiểm hơn - không làm cho chương trình dừng nhưng kết quả thì sai lè. Một trong số những nguyên nhân chính dẫn đến nó là vấn đề &lt;a href=&#34;https://en.wikipedia.org/wiki/Overflow&#34;&gt;&lt;code&gt;tràn số&lt;/code&gt;&lt;/a&gt;&lt;/p&gt;</description>
     </item>
   </channel>

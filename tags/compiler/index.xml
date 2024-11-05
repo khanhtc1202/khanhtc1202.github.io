@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Compiler on khanhtc&#39;s blog</title>
-    <link>https://khanhtc.me/tags/compiler/</link>
+    <link>https://khanhtc1202.github.io/tags/compiler/</link>
     <description>Recent content in Compiler on khanhtc&#39;s blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 26 Mar 2018 01:09:47 +0000</lastBuildDate>
-    <atom:link href="https://khanhtc.me/tags/compiler/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://khanhtc1202.github.io/tags/compiler/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Compile C program in manual way</title>
-      <link>https://khanhtc.me/posts/compile-c-source/</link>
+      <link>https://khanhtc1202.github.io/posts/compile-c-source/</link>
       <pubDate>Mon, 26 Mar 2018 01:09:47 +0000</pubDate>
-      <guid>https://khanhtc.me/posts/compile-c-source/</guid>
+      <guid>https://khanhtc1202.github.io/posts/compile-c-source/</guid>
       <description>&lt;p&gt;After hard coding your program hour by hour (sometime, it becomes year by year :) ), one of the most uncomfortable time is compiling it into executable file. As usually, we are going to compile a program by the hardest way to do it, just because it will make us knows that in some case, &lt;code&gt;gcc&lt;/code&gt; is really a hero :))&lt;/p&gt;&#xA;&lt;p&gt;The post&amp;rsquo;s content is about compiling a C program by manual way. In that program, we use an external lib, defined by yourself.&lt;/p&gt;</description>
     </item>
   </channel>

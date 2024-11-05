@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Javascript on khanhtc&#39;s blog</title>
-    <link>https://khanhtc.me/tags/javascript/</link>
+    <link>https://khanhtc1202.github.io/tags/javascript/</link>
     <description>Recent content in Javascript on khanhtc&#39;s blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 31 Aug 2018 02:55:20 +0000</lastBuildDate>
-    <atom:link href="https://khanhtc.me/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://khanhtc1202.github.io/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Fun thing with browser inspect</title>
-      <link>https://khanhtc.me/posts/content-trick/</link>
+      <link>https://khanhtc1202.github.io/posts/content-trick/</link>
       <pubDate>Fri, 31 Aug 2018 02:55:20 +0000</pubDate>
-      <guid>https://khanhtc.me/posts/content-trick/</guid>
+      <guid>https://khanhtc1202.github.io/posts/content-trick/</guid>
       <description>&lt;p&gt;Chắc hẳn ít ai có thể mạnh miệng khẳng định rằng: Trong suốt quãng thời gian từ khi biết đến internet cho đến hiện tại, chưa một lần từng tải nội dung số không vi phạm bản quyền trên internet. Nói vậy bởi vì đơn giản như một bức ảnh bạn tải từ 1 trang web đã public cũng có thể là ảnh được lấy một cách không chính thức từ một nguồn nào đó :)) Về phía người dùng, họ luôn muốn nhận nhiều hơn, ngược lại tất nhiên người sở hữu nội dung số (media content) không muốn vậy :))&lt;/p&gt;</description>
     </item>
     <item>
       <title>Ninja Code</title>
-      <link>https://khanhtc.me/posts/ninja-code/</link>
+      <link>https://khanhtc1202.github.io/posts/ninja-code/</link>
       <pubDate>Tue, 05 Jun 2018 17:10:45 +0000</pubDate>
-      <guid>https://khanhtc.me/posts/ninja-code/</guid>
+      <guid>https://khanhtc1202.github.io/posts/ninja-code/</guid>
       <description>&lt;p&gt;Nếu coding giống như một trận chiến giữa programer và problem cần giải quyết thì, giống như những chiến binh thực thự, chúng ta tìm kiếm đạo (phương pháp chiến đấu) phù hợp cho chính mình. Trong bạt ngàn những đạo (những nguyên lý), kinh dịch (article trên blog của những blogger nổi tiếng), chú thích kinh nghiệm (những note, post được đông đảo dev &lt;code&gt;kip&lt;/code&gt; lại),&amp;hellip;đâu đó quanh đây vẫn tồn tại một đạo mà không mấy ai để ý đến nhưng số người theo thì đếm không kể hết. Có người đắc đạo hoàn toàn, có người một phần, tuy theo nhiều mức độ khác nhau nhưng tựu chung có thể coi đều là đồng đạo trong môn phái này :))&lt;/p&gt;</description>
     </item>
   </channel>

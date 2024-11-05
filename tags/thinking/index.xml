@@ -2,38 +2,38 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Thinking on khanhtc&#39;s blog</title>
-    <link>https://khanhtc.me/tags/thinking/</link>
+    <link>https://khanhtc1202.github.io/tags/thinking/</link>
     <description>Recent content in Thinking on khanhtc&#39;s blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 24 Jan 2021 21:21:01 +0900</lastBuildDate>
-    <atom:link href="https://khanhtc.me/tags/thinking/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://khanhtc1202.github.io/tags/thinking/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>A breakthrough of my mind</title>
-      <link>https://khanhtc.me/posts/some-thought-about-tactics/</link>
+      <link>https://khanhtc1202.github.io/posts/some-thought-about-tactics/</link>
       <pubDate>Sun, 24 Jan 2021 21:21:01 +0900</pubDate>
-      <guid>https://khanhtc.me/posts/some-thought-about-tactics/</guid>
+      <guid>https://khanhtc1202.github.io/posts/some-thought-about-tactics/</guid>
       <description>&lt;p&gt;Today I got a really nice chess puzzle that makes me review all of my knowledge, or even more important - the way I should think strategically. 🤔&lt;/p&gt;&#xA;&lt;img width=&#34;100%&#34; alt=&#34;chess puzzle 1&#34; src=&#34;https://user-images.githubusercontent.com/32532742/105636360-6614f480-5eab-11eb-98bc-d526e991537a.png&#34;&gt;&#xA;&lt;p&gt;via &lt;a href=&#34;https://chess.com&#34;&gt;chess.com&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;The puzzle starts with black makes Na5, white to move.&lt;/p&gt;&#xA;&lt;p&gt;To this day, what I have learned about chess strategies could be shortened into: seek to prevail. There are many shapes of prevail, that is:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;checkmate the opposite king&lt;/li&gt;&#xA;&lt;li&gt;gain the advantage in trading pieces (sacrifice)&lt;/li&gt;&#xA;&lt;li&gt;take the advantage of space (suppress, narrow the opponent&amp;rsquo;s scope of activity)&lt;/li&gt;&#xA;&lt;li&gt;promotion&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;Apply to the current situation, white wins one piece (a pawn which means 1 point but it&amp;rsquo;s just a gambit), a little bit advantage of space (a pawn in d5 followed by Bishop at c4), a bad move of black pawn f7. And on top of that, white has a strong Bishop - Bc4 which makes a threat to Kg8 indirectly.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Imperative vs Functional</title>
-      <link>https://khanhtc.me/posts/imperative-vs-funcional/</link>
+      <link>https://khanhtc1202.github.io/posts/imperative-vs-funcional/</link>
       <pubDate>Tue, 17 Sep 2019 23:01:32 +0900</pubDate>
-      <guid>https://khanhtc.me/posts/imperative-vs-funcional/</guid>
+      <guid>https://khanhtc1202.github.io/posts/imperative-vs-funcional/</guid>
       <description>&lt;p&gt;Difference between Imperative languages and Functional languages:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;Imperative languages are based on assignment sequences whereas functional languages are based on nested function calls.&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;In imperative languages, the same name may be associated with several values, whereas in functional languages a name is only associated with one value.&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;Imperative languages have fixed evaluation orders whereas functional languages need not.(1)&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;In imperative languages, new values may be associated with the same name through command repetition whereas in functional languages new names are associated with new values through recursive function call nesting.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Why can&#39;t initialize object from abstract class (java)</title>
-      <link>https://khanhtc.me/posts/why_can_not_new_abstract_class/</link>
+      <link>https://khanhtc1202.github.io/posts/why_can_not_new_abstract_class/</link>
       <pubDate>Sat, 23 Mar 2019 01:50:54 +0000</pubDate>
-      <guid>https://khanhtc.me/posts/why_can_not_new_abstract_class/</guid>
+      <guid>https://khanhtc1202.github.io/posts/why_can_not_new_abstract_class/</guid>
       <description>&lt;p&gt;Difference between Abstract class and Interface is one of the most be confused problem when the first time I learnt Java. In which case we should use Abstract class and which case we should use Interface? Let&amp;rsquo;s take a deeper look in this two of concepts.&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;p&gt;By defination, the Abstract class (java) is a &lt;strong&gt;class but unlike a simple java class, it&amp;rsquo;s may not only contain regular defined methods but may also contain abstract methods or a mix of regular and abstract methods.&lt;/strong&gt; Some of Abstract class&amp;rsquo;s properties that make is different from Interface can be listed are:&lt;/p&gt;</description>
     </item>
     <item>
       <title>How much your objects encapsulate ?</title>
-      <link>https://khanhtc.me/posts/encapsulate/</link>
+      <link>https://khanhtc1202.github.io/posts/encapsulate/</link>
       <pubDate>Sun, 24 Feb 2019 18:46:19 +0000</pubDate>
-      <guid>https://khanhtc.me/posts/encapsulate/</guid>
+      <guid>https://khanhtc1202.github.io/posts/encapsulate/</guid>
       <description>&lt;p&gt;Encapsulate ( tài liệu tiếng Việt thường dịch là &lt;code&gt;đóng gói&lt;/code&gt; ) hay được nhắc đến và ví dụ như là cách để &lt;code&gt;che giấu&lt;/code&gt; thông tin trong lập trình hướng đối tượng.&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;Tức là trạng thái của đối tượng được bảo vệ không cho các truy cập từ code bên ngoài như thay đổi trong thái hay nhìn trực tiếp. Việc cho phép môi trường bên ngoài tác động lên các dữ liệu nội tại của một đối tượng theo cách nào là hoàn toàn tùy thuộc vào người viết mã. Đây là tính chất đảm bảo sự toàn vẹn, bảo mật của đối tượng Trong Java, tính đóng gói được thể hiện thông qua phạm vi truy cập (access modifier).&lt;/p&gt;</description>
     </item>
   </channel>

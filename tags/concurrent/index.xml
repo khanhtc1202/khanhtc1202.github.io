@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Concurrent on khanhtc&#39;s blog</title>
-    <link>https://khanhtc.me/tags/concurrent/</link>
+    <link>https://khanhtc1202.github.io/tags/concurrent/</link>
     <description>Recent content in Concurrent on khanhtc&#39;s blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 28 Feb 2020 03:56:38 +0900</lastBuildDate>
-    <atom:link href="https://khanhtc.me/tags/concurrent/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://khanhtc1202.github.io/tags/concurrent/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Process, Thread and Routine</title>
-      <link>https://khanhtc.me/posts/concurrent-unit/</link>
+      <link>https://khanhtc1202.github.io/posts/concurrent-unit/</link>
       <pubDate>Fri, 28 Feb 2020 03:56:38 +0900</pubDate>
-      <guid>https://khanhtc.me/posts/concurrent-unit/</guid>
+      <guid>https://khanhtc1202.github.io/posts/concurrent-unit/</guid>
       <description>&lt;h2 id=&#34;process-and-thread&#34;&gt;Process and Thread&lt;/h2&gt;&#xA;&lt;h3 id=&#34;process&#34;&gt;Process&lt;/h3&gt;&#xA;&lt;p&gt;Tiến trình có thể hiểu đơn giản là một chương trình đang chạy trong máy tính. Khi chúng ta mở một trang web trình duyệt thì đây được xem là một tiến trình. Khi chúng ta viết 1 chương trình máy tính bằng ngôn ngữ lập trình như C, Java, hay Go, sau khi tiến hành biên dịch và chạy chương trình thì hệ điều hành sẽ cấp cho chương trình một không gian bộ nhớ nhất định, PID (process ID),&amp;hellip; Mỗi tiến trình có ít nhất một luồng chính (main thread) để chạy chương trình, nó như là xương sống của chương trình vậy. Khi luồng chính này ngừng hoạt động tương ứng với việc chương trình bị tắt.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Dining Philosophers</title>
-      <link>https://khanhtc.me/posts/dining-philosophers/</link>
+      <link>https://khanhtc1202.github.io/posts/dining-philosophers/</link>
       <pubDate>Mon, 04 Nov 2019 21:39:03 +0900</pubDate>
-      <guid>https://khanhtc.me/posts/dining-philosophers/</guid>
+      <guid>https://khanhtc1202.github.io/posts/dining-philosophers/</guid>
       <description>&lt;p&gt;Bữa tối của các triết gia (dining philosophers problem) là một ví dụ nổi tiếng khi nhắc đến các vấn đề trong bài toán xử lý concurrent.&lt;/p&gt;&#xA;&lt;p&gt;Vấn đề được phát biểu như sau: Cho 5 triết gia ngồi chung một bàn tròn với 5 chiếc đũa xếp xem kẽ giữa 2 người ngồi cạnh nhau như hình&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://sphof.readthedocs.io/_images/philtable.png&#34; alt=&#34;Dining Philosophers&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;img: sphof.readthedocs.io&lt;/p&gt;&#xA;&lt;p&gt;Mỗi triết gia tìm cách để ăn được thức ăn từ đĩa của mình với điều kiện: &amp;ldquo;chỉ ai có 2 chiếc đũa cạnh mình mới được phép ăn&amp;rdquo;, do đó họ lần lượt đổi trạng thái giữa ăn (eating) và đợi (thinking) :)) Mỗi người sau khi giữa đôi đũa để ăn sau 1 khoảng thời gian phải bỏ lại 2 chiếc đũa về vị trí cũ để tiếp tục quá trình này. Yêu cầu: tìm một phương pháp đảm bảo để các triết gia đều có thể đk ăn / đợi đổi lượt để không ai bị chết đói (chỉ đợi chứ không được ăn).&lt;/p&gt;</description>
     </item>
     <item>
       <title>Immutable Go Object</title>
-      <link>https://khanhtc.me/posts/immutable-go-object/</link>
+      <link>https://khanhtc1202.github.io/posts/immutable-go-object/</link>
       <pubDate>Mon, 30 Sep 2019 22:57:39 +0900</pubDate>
-      <guid>https://khanhtc.me/posts/immutable-go-object/</guid>
+      <guid>https://khanhtc1202.github.io/posts/immutable-go-object/</guid>
       <description>&lt;p&gt;Every Go programmer knows about the &lt;code&gt;receiver&lt;/code&gt; in go, which be declared as:&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#080;font-weight:bold&#34;&gt;type&lt;/span&gt; X &lt;span style=&#34;color:#080;font-weight:bold&#34;&gt;struct&lt;/span&gt; {}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#080;font-weight:bold&#34;&gt;func&lt;/span&gt; (receiver X) &lt;span style=&#34;color:#06b;font-weight:bold&#34;&gt;doThing&lt;/span&gt;() {...}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We have two types of receiver in Golang, which is &lt;strong&gt;Value receiver&lt;/strong&gt; and &lt;strong&gt;Pointer receiver&lt;/strong&gt;. Basically, the receiver in Golang could be map to &lt;code&gt;self&lt;/code&gt; in other programming languages and the function which uses the receiver will be pointed from struct type of the receiver.&lt;/p&gt;&#xA;&lt;p&gt;&lt;em&gt;So, what does this means, anyway?&lt;/em&gt;&lt;/p&gt;</description>
     </item>
   </channel>

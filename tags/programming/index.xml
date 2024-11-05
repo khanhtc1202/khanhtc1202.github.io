@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Programming on khanhtc&#39;s blog</title>
-    <link>https://khanhtc.me/tags/programming/</link>
+    <link>https://khanhtc1202.github.io/tags/programming/</link>
     <description>Recent content in Programming on khanhtc&#39;s blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 17 Sep 2019 23:01:32 +0900</lastBuildDate>
-    <atom:link href="https://khanhtc.me/tags/programming/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://khanhtc1202.github.io/tags/programming/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Imperative vs Functional</title>
-      <link>https://khanhtc.me/posts/imperative-vs-funcional/</link>
+      <link>https://khanhtc1202.github.io/posts/imperative-vs-funcional/</link>
       <pubDate>Tue, 17 Sep 2019 23:01:32 +0900</pubDate>
-      <guid>https://khanhtc.me/posts/imperative-vs-funcional/</guid>
+      <guid>https://khanhtc1202.github.io/posts/imperative-vs-funcional/</guid>
       <description>&lt;p&gt;Difference between Imperative languages and Functional languages:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;Imperative languages are based on assignment sequences whereas functional languages are based on nested function calls.&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;In imperative languages, the same name may be associated with several values, whereas in functional languages a name is only associated with one value.&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;Imperative languages have fixed evaluation orders whereas functional languages need not.(1)&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;In imperative languages, new values may be associated with the same name through command repetition whereas in functional languages new names are associated with new values through recursive function call nesting.&lt;/p&gt;</description>
     </item>
   </channel>
