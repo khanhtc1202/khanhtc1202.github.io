@@ -6,8 +6,15 @@
     <description>Recent content on khanhtc&#39;s blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 06 Jul 2023 21:58:23 +0700</lastBuildDate>
+    <lastBuildDate>Mon, 02 Dec 2024 16:50:23 +0700</lastBuildDate>
     <atom:link href="https://khanhtc1202.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CNCF Ambassador Annoucement</title>
+      <link>https://khanhtc1202.github.io/posts/cncf-ambassador-annoucement/</link>
+      <pubDate>Mon, 02 Dec 2024 16:50:23 +0700</pubDate>
+      <guid>https://khanhtc1202.github.io/posts/cncf-ambassador-annoucement/</guid>
+      <description>&lt;p&gt;Starting from November 2024, I have been officially appointed as the first CNCF ambassador in Vietnam 🎉🎉&lt;/p&gt;&#xA;&lt;p&gt;This is an important milestone for me and I hope I can contribute more and more to the CNCF as well as OSS communities in vietnam with this new role 💪&lt;/p&gt;&#xA;&lt;p&gt;Bắt đầu từ tháng 11 năm 2024, tôi chính thức được bổ nhiệm làm đại sứ CNCF đầu tiên tại Việt Nam 🎉🎉&lt;/p&gt;</description>
+    </item>
     <item>
       <title>From subarray problems to Kadane and applications</title>
       <link>https://khanhtc1202.github.io/posts/kadane-and-its-applications/</link>
