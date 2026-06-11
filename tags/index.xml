@@ -2,213 +2,213 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on khanhtc&#39;s blog</title>
-    <link>https://khanhtc1202.github.io/tags/</link>
+    <link>http://localhost:1313/tags/</link>
     <description>Recent content in Tags on khanhtc&#39;s blog</description>
-    <generator>Hugo</generator>
+    <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 02 Dec 2024 16:50:23 +0700</lastBuildDate>
-    <atom:link href="https://khanhtc1202.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Annoucement</title>
-      <link>https://khanhtc1202.github.io/tags/annoucement/</link>
+      <link>http://localhost:1313/tags/annoucement/</link>
       <pubDate>Mon, 02 Dec 2024 16:50:23 +0700</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/annoucement/</guid>
+      <guid>http://localhost:1313/tags/annoucement/</guid>
       <description></description>
     </item>
     <item>
       <title>Cncf</title>
-      <link>https://khanhtc1202.github.io/tags/cncf/</link>
+      <link>http://localhost:1313/tags/cncf/</link>
       <pubDate>Mon, 02 Dec 2024 16:50:23 +0700</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/cncf/</guid>
+      <guid>http://localhost:1313/tags/cncf/</guid>
       <description></description>
     </item>
     <item>
       <title>Community</title>
-      <link>https://khanhtc1202.github.io/tags/community/</link>
+      <link>http://localhost:1313/tags/community/</link>
       <pubDate>Mon, 02 Dec 2024 16:50:23 +0700</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/community/</guid>
+      <guid>http://localhost:1313/tags/community/</guid>
       <description></description>
     </item>
     <item>
       <title>Algorithm</title>
-      <link>https://khanhtc1202.github.io/tags/algorithm/</link>
+      <link>http://localhost:1313/tags/algorithm/</link>
       <pubDate>Thu, 06 Jul 2023 21:58:23 +0700</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/algorithm/</guid>
+      <guid>http://localhost:1313/tags/algorithm/</guid>
       <description></description>
     </item>
     <item>
       <title>Tactics</title>
-      <link>https://khanhtc1202.github.io/tags/tactics/</link>
+      <link>http://localhost:1313/tags/tactics/</link>
       <pubDate>Sun, 24 Jan 2021 21:21:01 +0900</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/tactics/</guid>
+      <guid>http://localhost:1313/tags/tactics/</guid>
       <description></description>
     </item>
     <item>
       <title>Thinking</title>
-      <link>https://khanhtc1202.github.io/tags/thinking/</link>
+      <link>http://localhost:1313/tags/thinking/</link>
       <pubDate>Sun, 24 Jan 2021 21:21:01 +0900</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/thinking/</guid>
+      <guid>http://localhost:1313/tags/thinking/</guid>
       <description></description>
     </item>
     <item>
       <title>Concurrent</title>
-      <link>https://khanhtc1202.github.io/tags/concurrent/</link>
+      <link>http://localhost:1313/tags/concurrent/</link>
       <pubDate>Fri, 28 Feb 2020 03:56:38 +0900</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/concurrent/</guid>
+      <guid>http://localhost:1313/tags/concurrent/</guid>
       <description></description>
     </item>
     <item>
       <title>Os</title>
-      <link>https://khanhtc1202.github.io/tags/os/</link>
+      <link>http://localhost:1313/tags/os/</link>
       <pubDate>Fri, 28 Feb 2020 03:56:38 +0900</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/os/</guid>
+      <guid>http://localhost:1313/tags/os/</guid>
       <description></description>
     </item>
     <item>
       <title>Lock</title>
-      <link>https://khanhtc1202.github.io/tags/lock/</link>
+      <link>http://localhost:1313/tags/lock/</link>
       <pubDate>Mon, 04 Nov 2019 21:39:03 +0900</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/lock/</guid>
+      <guid>http://localhost:1313/tags/lock/</guid>
       <description></description>
     </item>
     <item>
       <title>Golang</title>
-      <link>https://khanhtc1202.github.io/tags/golang/</link>
+      <link>http://localhost:1313/tags/golang/</link>
       <pubDate>Mon, 30 Sep 2019 22:57:39 +0900</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/golang/</guid>
+      <guid>http://localhost:1313/tags/golang/</guid>
       <description></description>
     </item>
     <item>
       <title>Oop</title>
-      <link>https://khanhtc1202.github.io/tags/oop/</link>
+      <link>http://localhost:1313/tags/oop/</link>
       <pubDate>Mon, 30 Sep 2019 22:57:39 +0900</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/oop/</guid>
+      <guid>http://localhost:1313/tags/oop/</guid>
       <description></description>
     </item>
     <item>
       <title>Design</title>
-      <link>https://khanhtc1202.github.io/tags/design/</link>
+      <link>http://localhost:1313/tags/design/</link>
       <pubDate>Tue, 17 Sep 2019 23:01:32 +0900</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/design/</guid>
+      <guid>http://localhost:1313/tags/design/</guid>
       <description></description>
     </item>
     <item>
       <title>Programming</title>
-      <link>https://khanhtc1202.github.io/tags/programming/</link>
+      <link>http://localhost:1313/tags/programming/</link>
       <pubDate>Tue, 17 Sep 2019 23:01:32 +0900</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/programming/</guid>
+      <guid>http://localhost:1313/tags/programming/</guid>
       <description></description>
     </item>
     <item>
       <title>Approx</title>
-      <link>https://khanhtc1202.github.io/tags/approx/</link>
+      <link>http://localhost:1313/tags/approx/</link>
       <pubDate>Thu, 15 Aug 2019 07:18:49 +0900</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/approx/</guid>
+      <guid>http://localhost:1313/tags/approx/</guid>
       <description></description>
     </item>
     <item>
       <title>Database</title>
-      <link>https://khanhtc1202.github.io/tags/database/</link>
+      <link>http://localhost:1313/tags/database/</link>
       <pubDate>Wed, 10 Jul 2019 22:34:41 +0000</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/database/</guid>
+      <guid>http://localhost:1313/tags/database/</guid>
       <description></description>
     </item>
     <item>
       <title>Dev Tool</title>
-      <link>https://khanhtc1202.github.io/tags/dev-tool/</link>
+      <link>http://localhost:1313/tags/dev-tool/</link>
       <pubDate>Fri, 31 Aug 2018 02:55:20 +0000</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/dev-tool/</guid>
+      <guid>http://localhost:1313/tags/dev-tool/</guid>
       <description></description>
     </item>
     <item>
       <title>Javascript</title>
-      <link>https://khanhtc1202.github.io/tags/javascript/</link>
+      <link>http://localhost:1313/tags/javascript/</link>
       <pubDate>Fri, 31 Aug 2018 02:55:20 +0000</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/javascript/</guid>
+      <guid>http://localhost:1313/tags/javascript/</guid>
       <description></description>
     </item>
     <item>
       <title>Trick</title>
-      <link>https://khanhtc1202.github.io/tags/trick/</link>
+      <link>http://localhost:1313/tags/trick/</link>
       <pubDate>Fri, 31 Aug 2018 02:55:20 +0000</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/trick/</guid>
+      <guid>http://localhost:1313/tags/trick/</guid>
       <description></description>
     </item>
     <item>
       <title>Tree</title>
-      <link>https://khanhtc1202.github.io/tags/tree/</link>
+      <link>http://localhost:1313/tags/tree/</link>
       <pubDate>Sat, 21 Jul 2018 18:59:07 +0000</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/tree/</guid>
+      <guid>http://localhost:1313/tags/tree/</guid>
       <description></description>
     </item>
     <item>
       <title>Manual</title>
-      <link>https://khanhtc1202.github.io/tags/manual/</link>
+      <link>http://localhost:1313/tags/manual/</link>
       <pubDate>Tue, 19 Jun 2018 01:13:17 +0000</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/manual/</guid>
+      <guid>http://localhost:1313/tags/manual/</guid>
       <description></description>
     </item>
     <item>
       <title>Package Manager</title>
-      <link>https://khanhtc1202.github.io/tags/package-manager/</link>
+      <link>http://localhost:1313/tags/package-manager/</link>
       <pubDate>Tue, 19 Jun 2018 01:13:17 +0000</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/package-manager/</guid>
+      <guid>http://localhost:1313/tags/package-manager/</guid>
       <description></description>
     </item>
     <item>
       <title>Code</title>
-      <link>https://khanhtc1202.github.io/tags/code/</link>
+      <link>http://localhost:1313/tags/code/</link>
       <pubDate>Tue, 05 Jun 2018 17:10:45 +0000</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/code/</guid>
+      <guid>http://localhost:1313/tags/code/</guid>
       <description></description>
     </item>
     <item>
       <title>Architecture</title>
-      <link>https://khanhtc1202.github.io/tags/architecture/</link>
+      <link>http://localhost:1313/tags/architecture/</link>
       <pubDate>Mon, 21 May 2018 13:13:40 +0000</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/architecture/</guid>
+      <guid>http://localhost:1313/tags/architecture/</guid>
       <description></description>
     </item>
     <item>
       <title>React</title>
-      <link>https://khanhtc1202.github.io/tags/react/</link>
+      <link>http://localhost:1313/tags/react/</link>
       <pubDate>Sun, 15 Apr 2018 20:20:57 +0000</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/react/</guid>
+      <guid>http://localhost:1313/tags/react/</guid>
       <description></description>
     </item>
     <item>
       <title>Networks</title>
-      <link>https://khanhtc1202.github.io/tags/networks/</link>
+      <link>http://localhost:1313/tags/networks/</link>
       <pubDate>Fri, 30 Mar 2018 17:17:44 +0000</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/networks/</guid>
+      <guid>http://localhost:1313/tags/networks/</guid>
       <description></description>
     </item>
     <item>
       <title>Nodejs</title>
-      <link>https://khanhtc1202.github.io/tags/nodejs/</link>
+      <link>http://localhost:1313/tags/nodejs/</link>
       <pubDate>Fri, 30 Mar 2018 17:17:44 +0000</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/nodejs/</guid>
+      <guid>http://localhost:1313/tags/nodejs/</guid>
       <description></description>
     </item>
     <item>
       <title>C/C&#43;&#43;</title>
-      <link>https://khanhtc1202.github.io/tags/c/c&#43;&#43;/</link>
+      <link>http://localhost:1313/tags/c/c&#43;&#43;/</link>
       <pubDate>Mon, 26 Mar 2018 01:09:47 +0000</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/c/c&#43;&#43;/</guid>
+      <guid>http://localhost:1313/tags/c/c&#43;&#43;/</guid>
       <description></description>
     </item>
     <item>
       <title>Compiler</title>
-      <link>https://khanhtc1202.github.io/tags/compiler/</link>
+      <link>http://localhost:1313/tags/compiler/</link>
       <pubDate>Mon, 26 Mar 2018 01:09:47 +0000</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/compiler/</guid>
+      <guid>http://localhost:1313/tags/compiler/</guid>
       <description></description>
     </item>
     <item>
       <title>Memory</title>
-      <link>https://khanhtc1202.github.io/tags/memory/</link>
+      <link>http://localhost:1313/tags/memory/</link>
       <pubDate>Fri, 22 Dec 2017 18:42:41 +0000</pubDate>
-      <guid>https://khanhtc1202.github.io/tags/memory/</guid>
+      <guid>http://localhost:1313/tags/memory/</guid>
       <description></description>
     </item>
   </channel>

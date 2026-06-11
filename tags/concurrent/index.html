@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,7 +20,7 @@
 </head>
 <body>
 	<header id="header">
-	<a href="https://khanhtc1202.github.io/">khanhtc&#39;s blog</a> | 📣 <a href="https://khanhtc1202.github.io/index.xml">RSS</a> | 👀 <a href="https://khanhtc1202.github.io/alive">Liveness check</a>
+	<a href="http://localhost:1313/">khanhtc&#39;s blog</a> | 📣 <a href="http://localhost:1313/index.xml">RSS</a> | 👀 <a href="http://localhost:1313/alive">Liveness check</a>
 	<div class="gcse-search"></div>
 	
 	<nav>
@@ -50,7 +50,7 @@
 
 		
 			<article>
-	<h1><a href="https://khanhtc1202.github.io/posts/concurrent-unit/">Process, Thread and Routine</a></h1>
+	<h1><a href="http://localhost:1313/posts/concurrent-unit/">Process, Thread and Routine</a></h1>
 	<time>28.02.2020 03:56</time>
 	
 	<a href="/tags/concurrent">concurrent</a>
@@ -58,18 +58,16 @@
 	<a href="/tags/os">os</a>
 	
 	<div>
-		<h2 id="process-and-thread">Process and Thread</h2>
-<h3 id="process">Process</h3>
-<p>Tiến trình có thể hiểu đơn giản là một chương trình đang chạy trong máy tính. Khi chúng ta mở một trang web trình duyệt thì đây được xem là một tiến trình. Khi chúng ta viết 1 chương trình máy tính bằng ngôn ngữ lập trình như C, Java, hay Go, sau khi tiến hành biên dịch và chạy chương trình thì hệ điều hành sẽ cấp cho chương trình một không gian bộ nhớ nhất định, PID (process ID),&hellip; Mỗi tiến trình có ít nhất một luồng chính (main thread) để chạy chương trình, nó như là xương sống của chương trình vậy. Khi luồng chính này ngừng hoạt động tương ứng với việc chương trình bị tắt.</p>
+		Process and Thread Process Tiến trình có thể hiểu đơn giản là một chương trình đang chạy trong máy tính. Khi chúng ta mở một trang web trình duyệt thì đây được xem là một tiến trình. Khi chúng ta viết 1 chương trình máy tính bằng ngôn ngữ lập trình như C, Java, hay Go, sau khi tiến hành biên dịch và chạy chương trình thì hệ điều hành sẽ cấp cho chương trình một không gian bộ nhớ nhất định, PID (process ID),&hellip; Mỗi tiến trình có ít nhất một luồng chính (main thread) để chạy chương trình, nó như là xương sống của chương trình vậy.
 		
-			<a href="https://khanhtc1202.github.io/posts/concurrent-unit/">Read more...</a>
+			<a href="http://localhost:1313/posts/concurrent-unit/">Read more...</a>
 		
 	</div>
 </article>
 
 		
 			<article>
-	<h1><a href="https://khanhtc1202.github.io/posts/dining-philosophers/">Dining Philosophers</a></h1>
+	<h1><a href="http://localhost:1313/posts/dining-philosophers/">Dining Philosophers</a></h1>
 	<time>04.11.2019 21:39</time>
 	
 	<a href="/tags/algorithm">algorithm</a>
@@ -79,20 +77,19 @@
 	<a href="/tags/concurrent">concurrent</a>
 	
 	<div>
-		<p>Bữa tối của các triết gia (dining philosophers problem) là một ví dụ nổi tiếng khi nhắc đến các vấn đề trong bài toán xử lý concurrent.</p>
-<p>Vấn đề được phát biểu như sau: Cho 5 triết gia ngồi chung một bàn tròn với 5 chiếc đũa xếp xem kẽ giữa 2 người ngồi cạnh nhau như hình</p>
-<p><img src="https://sphof.readthedocs.io/_images/philtable.png" alt="Dining Philosophers"></p>
-<p>img: sphof.readthedocs.io</p>
-<p>Mỗi triết gia tìm cách để ăn được thức ăn từ đĩa của mình với điều kiện: &ldquo;chỉ ai có 2 chiếc đũa cạnh mình mới được phép ăn&rdquo;, do đó họ lần lượt đổi trạng thái giữa ăn (eating) và đợi (thinking) :)) Mỗi người sau khi giữa đôi đũa để ăn sau 1 khoảng thời gian phải bỏ lại 2 chiếc đũa về vị trí cũ để tiếp tục quá trình này. Yêu cầu: tìm một phương pháp đảm bảo để các triết gia đều có thể đk ăn / đợi đổi lượt để không ai bị chết đói (chỉ đợi chứ không được ăn).</p>
+		Bữa tối của các triết gia (dining philosophers problem) là một ví dụ nổi tiếng khi nhắc đến các vấn đề trong bài toán xử lý concurrent.
+Vấn đề được phát biểu như sau: Cho 5 triết gia ngồi chung một bàn tròn với 5 chiếc đũa xếp xem kẽ giữa 2 người ngồi cạnh nhau như hình
+img: sphof.readthedocs.io
+Mỗi triết gia tìm cách để ăn được thức ăn từ đĩa của mình với điều kiện: &ldquo;chỉ ai có 2 chiếc đũa cạnh mình mới được phép ăn&rdquo;, do đó họ lần lượt đổi trạng thái giữa ăn (eating) và đợi (thinking) :)) Mỗi người sau khi giữa đôi đũa để ăn sau 1 khoảng thời gian phải bỏ lại 2 chiếc đũa về vị trí cũ để tiếp tục quá trình này.
 		
-			<a href="https://khanhtc1202.github.io/posts/dining-philosophers/">Read more...</a>
+			<a href="http://localhost:1313/posts/dining-philosophers/">Read more...</a>
 		
 	</div>
 </article>
 
 		
 			<article>
-	<h1><a href="https://khanhtc1202.github.io/posts/immutable-go-object/">Immutable Go Object</a></h1>
+	<h1><a href="http://localhost:1313/posts/immutable-go-object/">Immutable Go Object</a></h1>
 	<time>30.09.2019 22:57</time>
 	
 	<a href="/tags/golang">golang</a>
@@ -102,14 +99,11 @@
 	<a href="/tags/oop">oop</a>
 	
 	<div>
-		<p>Every Go programmer knows about the <code>receiver</code> in go, which be declared as:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#080;font-weight:bold">type</span> X <span style="color:#080;font-weight:bold">struct</span> {}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;font-weight:bold">func</span> (receiver X) <span style="color:#06b;font-weight:bold">doThing</span>() {...}
-</span></span></code></pre></div><p>We have two types of receiver in Golang, which is <strong>Value receiver</strong> and <strong>Pointer receiver</strong>. Basically, the receiver in Golang could be map to <code>self</code> in other programming languages and the function which uses the receiver will be pointed from struct type of the receiver.</p>
-<p><em>So, what does this means, anyway?</em></p>
+		Every Go programmer knows about the receiver in go, which be declared as:
+type X struct {} func (receiver X) doThing() {...} We have two types of receiver in Golang, which is Value receiver and Pointer receiver. Basically, the receiver in Golang could be map to self in other programming languages and the function which uses the receiver will be pointed from struct type of the receiver.
+So, what does this means, anyway?
 		
-			<a href="https://khanhtc1202.github.io/posts/immutable-go-object/">Read more...</a>
+			<a href="http://localhost:1313/posts/immutable-go-object/">Read more...</a>
 		
 	</div>
 </article>
@@ -222,7 +216,7 @@
 
 
 	<footer id="footer">
-	<p>&copy; 2017-2025 <a href="https://khanhtc1202.github.io/">khanhtc&#39;s blog</a> | <a href="https://khanhtc1202.github.io/index.xml">RSS</a></p>
+	<p>&copy; 2017-2026 <a href="http://localhost:1313/">khanhtc&#39;s blog</a> | <a href="http://localhost:1313/index.xml">RSS</a></p>
 	<section><script async src="https://cse.google.com/cse.js?cx=009971123916912295303:lpg9aljzbui"></script>
 
 	</section>

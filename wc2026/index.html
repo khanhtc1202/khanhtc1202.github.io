@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FIFA World Cup 2026 — Match Tracker (GMT+7)</title>
+  <style>
+    :root {
+      --bg: #0a0e1a;
+      --card: #141824;
+      --card2: #1c2235;
+      --gold: #f0c040;
+      --green: #27ae60;
+      --blue: #4a90e2;
+      --red: #e74c3c;
+      --gray: #8899aa;
+      --text: #e8eaf0;
+      --text-dim: #8899aa;
+      --border: #252d40;
+      --today: #2a2000;
+      --today-border: #f0c040;
+      --done: #0d2015;
+      --done-border: #27ae60;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; }
+
+     
+    header {
+      background: linear-gradient(135deg, #0d1526 0%, #1a2540 100%);
+      border-bottom: 2px solid var(--gold);
+      padding: 16px 20px;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+    }
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .header-logo { font-size: 2rem; }
+    .header-title h1 { font-size: 1.3rem; color: var(--gold); letter-spacing: 1px; }
+    .header-title p { font-size: 0.75rem; color: var(--text-dim); }
+    .header-stats { display: flex; gap: 16px; }
+    .stat { text-align: center; }
+    .stat-num { font-size: 1.4rem; font-weight: 700; color: var(--gold); line-height: 1; }
+    .stat-lbl { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }
+
+     
+    #backup-bar {
+      background: #0e1420; border-bottom: 1px solid var(--border);
+      padding: 7px 20px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    }
+    #backup-bar span { font-size: 0.72rem; color: var(--text-dim); margin-right: 4px; }
+    .backup-btn {
+      background: var(--card2); border: 1px solid var(--border); color: var(--text);
+      border-radius: 6px; padding: 4px 12px; font-size: 0.75rem; cursor: pointer;
+      transition: border-color 0.2s, color 0.2s; display: flex; align-items: center; gap: 5px;
+    }
+    .backup-btn:hover { border-color: var(--gold); color: var(--gold); }
+    .backup-btn.import { border-color: var(--green); }
+    .backup-btn.import:hover { background: rgba(39,174,96,0.1); color: var(--green); }
+    #backup-status {
+      font-size: 0.72rem; margin-left: auto; padding: 2px 8px;
+      border-radius: 4px; opacity: 0; transition: opacity 0.3s;
+    }
+    #backup-status.show { opacity: 1; }
+    #backup-status.ok  { background: rgba(39,174,96,0.15); color: var(--green); }
+    #backup-status.err { background: rgba(231,76,60,0.15);  color: var(--red); }
+
+     
+    nav { background: var(--card); border-bottom: 1px solid var(--border); display: flex; overflow-x: auto; }
+    nav button {
+      background: none; border: none; color: var(--text-dim); padding: 12px 18px;
+      cursor: pointer; white-space: nowrap; font-size: 0.85rem; font-weight: 500;
+      border-bottom: 3px solid transparent; transition: all 0.2s; position: relative;
+    }
+    nav button:hover { color: var(--text); }
+    nav button.active { color: var(--gold); border-bottom-color: var(--gold); }
+    .nav-dot {
+      display: inline-block; width: 6px; height: 6px; background: var(--gold);
+      border-radius: 50%; margin-left: 5px; vertical-align: middle; flex-shrink: 0;
+    }
+    .nav-count {
+      display: inline-block; background: var(--gold); color: #000;
+      font-size: 0.65rem; font-weight: 700; border-radius: 10px;
+      padding: 1px 6px; margin-left: 5px; vertical-align: middle;
+    }
+
+     
+    .today-header {
+      display: flex; align-items: baseline; gap: 12px; margin-bottom: 6px;
+    }
+    .today-header h2 { font-size: 1rem; font-weight: 700; color: var(--gold); }
+    .today-header .today-subtitle { font-size: 0.78rem; color: var(--text-dim); }
+    .today-section-label {
+      font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+      color: var(--text-dim); padding: 14px 0 6px; border-bottom: 1px solid var(--border); margin-bottom: 8px;
+    }
+    .today-empty {
+      text-align: center; padding: 40px 20px;
+      background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+    }
+    .today-empty .empty-icon { font-size: 2.5rem; margin-bottom: 10px; }
+    .today-empty p { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 6px; }
+    .today-empty strong { color: var(--text); }
+
+     
+    main { padding: 20px; max-width: 1000px; margin: 0 auto; }
+
+     
+    .group-nav { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+    .group-btn {
+      background: var(--card); border: 1px solid var(--border); color: var(--text-dim);
+      border-radius: 6px; padding: 6px 14px; cursor: pointer; font-size: 0.85rem; font-weight: 600;
+      transition: all 0.2s;
+    }
+    .group-btn:hover { border-color: var(--gray); color: var(--text); }
+    .group-btn.active { background: var(--gold); color: #000; border-color: var(--gold); }
+
+     
+    .standings { background: var(--card); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 20px; overflow: hidden; }
+    .standings h3 { padding: 10px 14px; font-size: 0.8rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border); }
+    .standings table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+    .standings th { padding: 6px 10px; color: var(--text-dim); font-weight: 500; text-align: center; border-bottom: 1px solid var(--border); }
+    .standings th:first-child { text-align: left; }
+    .standings td { padding: 7px 10px; text-align: center; border-bottom: 1px solid #1a2030; }
+    .standings td:first-child { text-align: left; }
+    .standings tr:last-child td { border-bottom: none; }
+    .standings tr.qualified td { background: rgba(39,174,96,0.07); }
+    .standings tr.qualified td:first-child { border-left: 3px solid var(--green); }
+    .standings .pts { font-weight: 700; color: var(--gold); }
+    .team-flag { margin-right: 5px; }
+
+     
+    .matchday-section { margin-bottom: 24px; }
+    .matchday-label {
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+      color: var(--text-dim); margin-bottom: 10px; padding: 0 2px;
+    }
+    .date-group { margin-bottom: 20px; }
+    .date-header {
+      font-size: 0.75rem; color: var(--text-dim); margin-bottom: 8px;
+      padding: 4px 0; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .date-header span { font-weight: 600; color: var(--text); }
+
+     
+    .match-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+      padding: 12px 14px; margin-bottom: 8px; display: flex; align-items: center;
+      gap: 10px; cursor: pointer; transition: all 0.2s; position: relative;
+    }
+    .match-card:hover { border-color: var(--gray); background: var(--card2); }
+    .match-card.today { background: var(--today); border-color: var(--today-border); }
+    .match-card.done { background: var(--done); border-color: var(--done-border); }
+    .match-card.done:hover { border-color: #3cb371; }
+
+    .mc-time { min-width: 54px; text-align: center; }
+    .mc-time .time { font-size: 0.85rem; font-weight: 700; color: var(--gold); }
+    .mc-time .badge {
+      font-size: 0.6rem; text-transform: uppercase; font-weight: 700;
+      padding: 1px 5px; border-radius: 3px; margin-top: 2px; display: inline-block;
+    }
+    .badge-today { background: var(--gold); color: #000; }
+    .badge-done { background: var(--green); color: #fff; }
+    .badge-soon { background: var(--blue); color: #fff; }
+
+    .mc-divider { width: 1px; height: 36px; background: var(--border); flex-shrink: 0; }
+
+    .mc-teams { flex: 1; min-width: 0; }
+    .mc-team { display: flex; align-items: center; justify-content: space-between; padding: 2px 0; }
+    .mc-team-name { font-size: 0.9rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mc-team-name .flag { margin-right: 5px; }
+    .mc-score { font-size: 1rem; font-weight: 700; min-width: 20px; text-align: right; }
+    .mc-score.winner { color: var(--gold); }
+    .mc-vs { font-size: 0.7rem; color: var(--text-dim); text-align: center; margin: 2px 0; }
+     
+    .team-provisional { opacity: 0.75; }
+    .team-provisional .prov-mark { font-size: 0.65rem; color: var(--gold); margin-right: 2px; }
+    .team-unresolved  { color: var(--text-dim); font-style: italic; font-size: 0.82rem; }
+    .pen-tag { font-size: 0.58rem; background: var(--blue); color:#fff; border-radius:3px; padding:1px 4px; margin-left:4px; vertical-align:middle; }
+    .mc-score.pen-winner::after { content:'🥅'; font-size:0.55rem; margin-left:3px; }
+
+    .mc-venue { font-size: 0.68rem; color: var(--text-dim); margin-top: 2px; }
+    .mc-group-tag { font-size: 0.65rem; background: var(--card2); color: var(--text-dim); border-radius: 4px; padding: 2px 6px; flex-shrink: 0; }
+    .mc-edit-hint { font-size: 0.65rem; color: var(--text-dim); opacity: 0.5; margin-left: 4px; }
+
+     
+    .knockout-match { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 10px; }
+    .km-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .km-match-num { font-size: 0.7rem; color: var(--gold); font-weight: 700; }
+    .km-datetime { font-size: 0.75rem; color: var(--text-dim); }
+    .km-body { display: flex; align-items: center; gap: 10px; }
+    .km-team { flex: 1; }
+    .km-team-name { font-size: 0.9rem; font-weight: 600; }
+    .km-team-sub { font-size: 0.7rem; color: var(--text-dim); }
+    .km-score-box { text-align: center; min-width: 80px; }
+    .km-score { font-size: 1.4rem; font-weight: 700; color: var(--gold); }
+    .km-vs { font-size: 0.9rem; color: var(--text-dim); }
+    .km-venue { font-size: 0.68rem; color: var(--text-dim); margin-top: 6px; }
+
+     
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.75); z-index: 100;
+      align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--card2); border: 1px solid var(--border); border-radius: 12px;
+      padding: 24px; width: 90%; max-width: 420px; animation: fadeIn 0.2s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
+    .modal-title { font-size: 0.75rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .modal-date { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 16px; }
+    .modal-teams { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .modal-team { flex: 1; text-align: center; }
+    .modal-team-flag { font-size: 1.8rem; }
+    .modal-team-name { font-size: 0.85rem; font-weight: 600; margin-top: 4px; }
+    .modal-vs { font-size: 0.9rem; color: var(--text-dim); }
+    .modal-score { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; justify-content: center; }
+    .modal-score input {
+      width: 64px; height: 56px; text-align: center; font-size: 1.5rem; font-weight: 700;
+      background: var(--card); border: 2px solid var(--border); border-radius: 8px; color: var(--text);
+      outline: none; transition: border-color 0.2s;
+    }
+    .modal-score input:focus { border-color: var(--gold); }
+    .modal-score-sep { font-size: 1.5rem; color: var(--text-dim); }
+    .modal-score-label { text-align: center; font-size: 0.75rem; color: var(--text-dim); margin-bottom: 4px; }
+     
+    .modal-penalty { margin-bottom: 16px; text-align: center; }
+    .modal-penalty-label { font-size: 0.72rem; color: var(--text-dim); margin-bottom: 8px; }
+    .pen-btns { display: flex; gap: 8px; justify-content: center; }
+    .pen-btn {
+      flex: 1; max-width: 130px; padding: 7px 6px; border: 2px solid var(--border);
+      border-radius: 8px; background: var(--card); color: var(--text-dim);
+      cursor: pointer; font-size: 0.78rem; transition: all 0.2s;
+    }
+    .pen-btn:hover { border-color: var(--blue); color: var(--text); }
+    .pen-btn.selected { border-color: var(--blue); background: rgba(74,144,226,0.18); color: var(--blue); font-weight: 700; }
+    .modal-venue { font-size: 0.75rem; color: var(--text-dim); text-align: center; margin-bottom: 20px; }
+    .modal-actions { display: flex; gap: 10px; }
+    .btn {
+      flex: 1; padding: 10px; border: none; border-radius: 8px; font-size: 0.85rem;
+      font-weight: 600; cursor: pointer; transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn-save { background: var(--gold); color: #000; }
+    .btn-clear { background: var(--card); color: var(--text-dim); border: 1px solid var(--border); }
+    .btn-cancel { background: var(--card); color: var(--text-dim); border: 1px solid var(--border); }
+    .modal-note { font-size: 0.7rem; color: var(--text-dim); text-align: center; margin-top: 12px; }
+
+     
+    .section-title { font-size: 1rem; font-weight: 700; color: var(--gold); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+    .empty { color: var(--text-dim); font-size: 0.85rem; padding: 20px 0; }
+    .stage-intro { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 16px; padding: 10px 12px; background: var(--card); border-radius: 6px; border-left: 3px solid var(--gold); }
+
+    @media (max-width: 480px) {
+      header { padding: 10px 14px; }
+      main { padding: 12px; }
+      .mc-team-name { font-size: 0.82rem; }
+      nav button { padding: 10px 12px; font-size: 0.78rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <div class="header-logo">⚽</div>
+    <div class="header-title">
+      <h1>FIFA WORLD CUP 2026</h1>
+      <p>Match Tracker · All times in GMT+7</p>
+    </div>
+  </div>
+  <div class="header-stats">
+    <div class="stat">
+      <div class="stat-num" id="stat-played">0</div>
+      <div class="stat-lbl">Played</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" id="stat-goals">0</div>
+      <div class="stat-lbl">Goals</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">104</div>
+      <div class="stat-lbl">Total</div>
+    </div>
+  </div>
+</header>
+
+<div id="backup-bar">
+  <span>💾 Results backup:</span>
+  <button class="backup-btn" onclick="exportResults()">⬇ Export JSON</button>
+  <button class="backup-btn import" onclick="document.getElementById('import-input').click()">⬆ Import JSON</button>
+  <input type="file" id="import-input" accept=".json" style="display:none" onchange="importResults(event)">
+  <div id="backup-status"></div>
+</div>
+
+<nav id="stage-nav">
+  <button class="active" onclick="showStage('today')" id="nav-today">📅 Today</button>
+  <button onclick="showStage('group')" id="nav-group">Group Stage</button>
+  <button onclick="showStage('r32')"   id="nav-r32">Round of 32</button>
+  <button onclick="showStage('r16')"   id="nav-r16">Round of 16</button>
+  <button onclick="showStage('qf')"    id="nav-qf">Quarterfinals</button>
+  <button onclick="showStage('sf')"    id="nav-sf">Semifinals</button>
+  <button onclick="showStage('final')" id="nav-final">Final</button>
+</nav>
+
+<main id="main-content"></main>
+
+
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalIfOverlay(event)">
+  <div class="modal">
+    <div class="modal-title" id="modal-stage"></div>
+    <div class="modal-date" id="modal-date"></div>
+    <div class="modal-teams">
+      <div class="modal-team">
+        <div class="modal-team-flag" id="modal-home-flag"></div>
+        <div class="modal-team-name" id="modal-home-name"></div>
+      </div>
+      <div class="modal-vs">VS</div>
+      <div class="modal-team">
+        <div class="modal-team-flag" id="modal-away-flag"></div>
+        <div class="modal-team-name" id="modal-away-name"></div>
+      </div>
+    </div>
+    <div class="modal-score-label">Enter final score</div>
+    <div class="modal-score">
+      <input type="number" id="modal-home-score" min="0" max="99" placeholder="–" oninput="onScoreInput()">
+      <span class="modal-score-sep">–</span>
+      <input type="number" id="modal-away-score" min="0" max="99" placeholder="–" oninput="onScoreInput()">
+    </div>
+    <div id="modal-penalty" class="modal-penalty" style="display:none">
+      <div class="modal-penalty-label">🥅 Score is tied — who won on penalties?</div>
+      <div class="pen-btns">
+        <button class="pen-btn" id="pen-btn-home" onclick="setPenWinner('home')">Home wins</button>
+        <button class="pen-btn selected" id="pen-btn-none" onclick="setPenWinner(null)">No penalties</button>
+        <button class="pen-btn" id="pen-btn-away" onclick="setPenWinner('away')">Away wins</button>
+      </div>
+    </div>
+    <div class="modal-venue" id="modal-venue"></div>
+    <div class="modal-actions">
+      <button class="btn btn-clear" onclick="clearResult()">Clear</button>
+      <button class="btn btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-save" onclick="saveResult()">Save</button>
+    </div>
+    <div class="modal-note">Click anywhere outside to cancel · Results saved locally in your browser</div>
+  </div>
+</div>
+
+<script>
+
+
+
+const FLAGS = {
+  'Mexico': '🇲🇽', 'South Africa': '🇿🇦', 'South Korea': '🇰🇷', 'Czechia': '🇨🇿',
+  'Canada': '🇨🇦', 'Bosnia & Herzegovina': '🇧🇦', 'Qatar': '🇶🇦', 'Switzerland': '🇨🇭',
+  'Brazil': '🇧🇷', 'Morocco': '🇲🇦', 'Haiti': '🇭🇹', 'Scotland': '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
+  'USA': '🇺🇸', 'Paraguay': '🇵🇾', 'Australia': '🇦🇺', 'Türkiye': '🇹🇷',
+  'Germany': '🇩🇪', 'Curaçao': '🇨🇼', 'Ivory Coast': '🇨🇮', 'Ecuador': '🇪🇨',
+  'Netherlands': '🇳🇱', 'Japan': '🇯🇵', 'Sweden': '🇸🇪', 'Tunisia': '🇹🇳',
+  'Belgium': '🇧🇪', 'Egypt': '🇪🇬', 'Iran': '🇮🇷', 'New Zealand': '🇳🇿',
+  'Spain': '🇪🇸', 'Cape Verde': '🇨🇻', 'Saudi Arabia': '🇸🇦', 'Uruguay': '🇺🇾',
+  'France': '🇫🇷', 'Senegal': '🇸🇳', 'Iraq': '🇮🇶', 'Norway': '🇳🇴',
+  'Argentina': '🇦🇷', 'Algeria': '🇩🇿', 'Austria': '🇦🇹', 'Jordan': '🇯🇴',
+  'Portugal': '🇵🇹', 'DR Congo': '🇨🇩', 'Uzbekistan': '🇺🇿', 'Colombia': '🇨🇴',
+  'England': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'Croatia': '🇭🇷', 'Ghana': '🇬🇭', 'Panama': '🇵🇦',
+};
+
+const GROUPS = {
+  A: ['Mexico','South Africa','South Korea','Czechia'],
+  B: ['Canada','Bosnia & Herzegovina','Qatar','Switzerland'],
+  C: ['Brazil','Morocco','Haiti','Scotland'],
+  D: ['USA','Paraguay','Australia','Türkiye'],
+  E: ['Germany','Curaçao','Ivory Coast','Ecuador'],
+  F: ['Netherlands','Japan','Sweden','Tunisia'],
+  G: ['Belgium','Egypt','Iran','New Zealand'],
+  H: ['Spain','Cape Verde','Saudi Arabia','Uruguay'],
+  I: ['France','Senegal','Iraq','Norway'],
+  J: ['Argentina','Algeria','Austria','Jordan'],
+  K: ['Portugal','DR Congo','Uzbekistan','Colombia'],
+  L: ['England','Croatia','Ghana','Panama'],
+};
+
+
+
+
+const MATCHES = [
+  
+  { id:1,  stage:'group', group:'A', matchday:1, dt:'2026-06-12T02:00', home:'Mexico',       away:'South Africa', venue:'Estadio Azteca, Mexico City, Mexico' },
+  { id:2,  stage:'group', group:'A', matchday:1, dt:'2026-06-12T09:00', home:'South Korea',  away:'Czechia',      venue:'Estadio Akron, Zapopan, Mexico' },
+  { id:25, stage:'group', group:'A', matchday:2, dt:'2026-06-18T23:00', home:'Czechia',      away:'South Africa', venue:'Mercedes-Benz Stadium, Atlanta, USA' },
+  { id:28, stage:'group', group:'A', matchday:2, dt:'2026-06-19T08:00', home:'Mexico',       away:'South Korea',  venue:'Estadio Akron, Zapopan, Mexico' },
+  { id:53, stage:'group', group:'A', matchday:3, dt:'2026-06-25T08:00', home:'Czechia',      away:'Mexico',       venue:'Estadio Azteca, Mexico City, Mexico' },
+  { id:54, stage:'group', group:'A', matchday:3, dt:'2026-06-25T08:00', home:'South Africa', away:'South Korea',  venue:'Estadio BBVA, Monterrey, Mexico' },
+  
+  { id:3,  stage:'group', group:'B', matchday:1, dt:'2026-06-13T02:00', home:'Canada',              away:'Bosnia & Herzegovina', venue:'BMO Field, Toronto, Canada' },
+  { id:5,  stage:'group', group:'B', matchday:1, dt:'2026-06-14T02:00', home:'Qatar',               away:'Switzerland',          venue:"Levi's Stadium, Santa Clara, USA" },
+  { id:26, stage:'group', group:'B', matchday:2, dt:'2026-06-19T02:00', home:'Switzerland',         away:'Bosnia & Herzegovina', venue:'SoFi Stadium, Inglewood, USA' },
+  { id:27, stage:'group', group:'B', matchday:2, dt:'2026-06-19T05:00', home:'Canada',              away:'Qatar',                venue:'BC Place, Vancouver, Canada' },
+  { id:49, stage:'group', group:'B', matchday:3, dt:'2026-06-25T02:00', home:'Switzerland',         away:'Canada',               venue:'BC Place, Vancouver, Canada' },
+  { id:50, stage:'group', group:'B', matchday:3, dt:'2026-06-25T02:00', home:'Bosnia & Herzegovina',away:'Qatar',                venue:'Lumen Field, Seattle, USA' },
+  
+  { id:6,  stage:'group', group:'C', matchday:1, dt:'2026-06-14T05:00', home:'Brazil',   away:'Morocco', venue:'MetLife Stadium, East Rutherford, USA' },
+  { id:7,  stage:'group', group:'C', matchday:1, dt:'2026-06-14T08:00', home:'Haiti',    away:'Scotland', venue:'Gillette Stadium, Foxborough, USA' },
+  { id:30, stage:'group', group:'C', matchday:2, dt:'2026-06-20T05:00', home:'Scotland', away:'Morocco', venue:'Gillette Stadium, Foxborough, USA' },
+  { id:31, stage:'group', group:'C', matchday:2, dt:'2026-06-20T07:30', home:'Brazil',   away:'Haiti',   venue:'Lincoln Financial Field, Philadelphia, USA' },
+  { id:51, stage:'group', group:'C', matchday:3, dt:'2026-06-25T05:00', home:'Scotland', away:'Brazil',  venue:'Hard Rock Stadium, Miami Gardens, USA' },
+  { id:52, stage:'group', group:'C', matchday:3, dt:'2026-06-25T05:00', home:'Morocco',  away:'Haiti',   venue:'Mercedes-Benz Stadium, Atlanta, USA' },
+  
+  { id:4,  stage:'group', group:'D', matchday:1, dt:'2026-06-13T08:00', home:'USA',       away:'Paraguay',  venue:'SoFi Stadium, Inglewood, USA' },
+  { id:8,  stage:'group', group:'D', matchday:1, dt:'2026-06-14T11:00', home:'Australia', away:'Türkiye',   venue:'BC Place, Vancouver, Canada' },
+  { id:29, stage:'group', group:'D', matchday:2, dt:'2026-06-20T02:00', home:'USA',       away:'Australia', venue:'Lumen Field, Seattle, USA' },
+  { id:32, stage:'group', group:'D', matchday:2, dt:'2026-06-20T10:00', home:'Türkiye',   away:'Paraguay',  venue:"Levi's Stadium, Santa Clara, USA" },
+  { id:59, stage:'group', group:'D', matchday:3, dt:'2026-06-26T09:00', home:'Türkiye',   away:'USA',       venue:'SoFi Stadium, Inglewood, USA' },
+  { id:60, stage:'group', group:'D', matchday:3, dt:'2026-06-26T09:00', home:'Paraguay',  away:'Australia', venue:"Levi's Stadium, Santa Clara, USA" },
+  
+  { id:9,  stage:'group', group:'E', matchday:1, dt:'2026-06-15T00:00', home:'Germany',     away:'Curaçao',     venue:'NRG Stadium, Houston, USA' },
+  { id:11, stage:'group', group:'E', matchday:1, dt:'2026-06-15T06:00', home:'Ivory Coast', away:'Ecuador',     venue:'Lincoln Financial Field, Philadelphia, USA' },
+  { id:34, stage:'group', group:'E', matchday:2, dt:'2026-06-21T03:00', home:'Germany',     away:'Ivory Coast', venue:'BMO Field, Toronto, Canada' },
+  { id:35, stage:'group', group:'E', matchday:2, dt:'2026-06-21T07:00', home:'Ecuador',     away:'Curaçao',     venue:'Arrowhead Stadium, Kansas City, USA' },
+  { id:55, stage:'group', group:'E', matchday:3, dt:'2026-06-26T03:00', home:'Curaçao',     away:'Ivory Coast', venue:'Lincoln Financial Field, Philadelphia, USA' },
+  { id:56, stage:'group', group:'E', matchday:3, dt:'2026-06-26T03:00', home:'Ecuador',     away:'Germany',     venue:'MetLife Stadium, East Rutherford, USA' },
+  
+  { id:10, stage:'group', group:'F', matchday:1, dt:'2026-06-15T03:00', home:'Netherlands', away:'Japan',        venue:'AT&T Stadium, Arlington, USA' },
+  { id:12, stage:'group', group:'F', matchday:1, dt:'2026-06-15T09:00', home:'Sweden',      away:'Tunisia',      venue:'Estadio BBVA, Monterrey, Mexico' },
+  { id:33, stage:'group', group:'F', matchday:2, dt:'2026-06-21T00:00', home:'Netherlands', away:'Sweden',       venue:'NRG Stadium, Houston, USA' },
+  { id:36, stage:'group', group:'F', matchday:2, dt:'2026-06-21T11:00', home:'Tunisia',     away:'Japan',        venue:'Estadio BBVA, Monterrey, Mexico' },
+  { id:57, stage:'group', group:'F', matchday:3, dt:'2026-06-26T06:00', home:'Japan',       away:'Sweden',       venue:'AT&T Stadium, Arlington, USA' },
+  { id:58, stage:'group', group:'F', matchday:3, dt:'2026-06-26T06:00', home:'Tunisia',     away:'Netherlands',  venue:'Arrowhead Stadium, Kansas City, USA' },
+  
+  { id:14, stage:'group', group:'G', matchday:1, dt:'2026-06-16T02:00', home:'Belgium',     away:'Egypt',        venue:'Lumen Field, Seattle, USA' },
+  { id:16, stage:'group', group:'G', matchday:1, dt:'2026-06-16T08:00', home:'Iran',        away:'New Zealand',  venue:'SoFi Stadium, Inglewood, USA' },
+  { id:38, stage:'group', group:'G', matchday:2, dt:'2026-06-22T02:00', home:'Belgium',     away:'Iran',         venue:'SoFi Stadium, Inglewood, USA' },
+  { id:40, stage:'group', group:'G', matchday:2, dt:'2026-06-22T08:00', home:'New Zealand', away:'Egypt',        venue:'BC Place, Vancouver, Canada' },
+  { id:65, stage:'group', group:'G', matchday:3, dt:'2026-06-27T10:00', home:'Egypt',       away:'Iran',         venue:'Lumen Field, Seattle, USA' },
+  { id:66, stage:'group', group:'G', matchday:3, dt:'2026-06-27T10:00', home:'New Zealand', away:'Belgium',      venue:'BC Place, Vancouver, Canada' },
+  
+  { id:13, stage:'group', group:'H', matchday:1, dt:'2026-06-15T23:00', home:'Spain',        away:'Cape Verde',  venue:'Mercedes-Benz Stadium, Atlanta, USA' },
+  { id:15, stage:'group', group:'H', matchday:1, dt:'2026-06-16T05:00', home:'Saudi Arabia', away:'Uruguay',     venue:'Hard Rock Stadium, Miami Gardens, USA' },
+  { id:37, stage:'group', group:'H', matchday:2, dt:'2026-06-21T23:00', home:'Spain',        away:'Saudi Arabia',venue:'Mercedes-Benz Stadium, Atlanta, USA' },
+  { id:39, stage:'group', group:'H', matchday:2, dt:'2026-06-22T05:00', home:'Uruguay',      away:'Cape Verde',  venue:'Hard Rock Stadium, Miami Gardens, USA' },
+  { id:63, stage:'group', group:'H', matchday:3, dt:'2026-06-27T07:00', home:'Cape Verde',   away:'Saudi Arabia',venue:'NRG Stadium, Houston, USA' },
+  { id:64, stage:'group', group:'H', matchday:3, dt:'2026-06-27T07:00', home:'Uruguay',      away:'Spain',       venue:'Estadio Akron, Zapopan, Mexico' },
+  
+  { id:17, stage:'group', group:'I', matchday:1, dt:'2026-06-17T02:00', home:'France',   away:'Senegal', venue:'MetLife Stadium, East Rutherford, USA' },
+  { id:18, stage:'group', group:'I', matchday:1, dt:'2026-06-17T05:00', home:'Iraq',     away:'Norway',  venue:'Gillette Stadium, Foxborough, USA' },
+  { id:42, stage:'group', group:'I', matchday:2, dt:'2026-06-23T04:00', home:'France',   away:'Iraq',    venue:'Lincoln Financial Field, Philadelphia, USA' },
+  { id:43, stage:'group', group:'I', matchday:2, dt:'2026-06-23T07:00', home:'Norway',   away:'Senegal', venue:'MetLife Stadium, East Rutherford, USA' },
+  { id:61, stage:'group', group:'I', matchday:3, dt:'2026-06-27T02:00', home:'Norway',   away:'France',  venue:'Gillette Stadium, Foxborough, USA' },
+  { id:62, stage:'group', group:'I', matchday:3, dt:'2026-06-27T02:00', home:'Senegal',  away:'Iraq',    venue:'BMO Field, Toronto, Canada' },
+  
+  { id:19, stage:'group', group:'J', matchday:1, dt:'2026-06-17T08:00', home:'Argentina', away:'Algeria',  venue:'Arrowhead Stadium, Kansas City, USA' },
+  { id:20, stage:'group', group:'J', matchday:1, dt:'2026-06-17T11:00', home:'Austria',   away:'Jordan',   venue:"Levi's Stadium, Santa Clara, USA" },
+  { id:41, stage:'group', group:'J', matchday:2, dt:'2026-06-23T00:00', home:'Argentina', away:'Austria',  venue:'AT&T Stadium, Arlington, USA' },
+  { id:44, stage:'group', group:'J', matchday:2, dt:'2026-06-23T10:00', home:'Jordan',    away:'Algeria',  venue:"Levi's Stadium, Santa Clara, USA" },
+  { id:71, stage:'group', group:'J', matchday:3, dt:'2026-06-28T09:00', home:'Algeria',   away:'Austria',  venue:'Arrowhead Stadium, Kansas City, USA' },
+  { id:72, stage:'group', group:'J', matchday:3, dt:'2026-06-28T09:00', home:'Jordan',    away:'Argentina',venue:'AT&T Stadium, Arlington, USA' },
+  
+  { id:21, stage:'group', group:'K', matchday:1, dt:'2026-06-18T00:00', home:'Portugal',  away:'DR Congo',   venue:'NRG Stadium, Houston, USA' },
+  { id:24, stage:'group', group:'K', matchday:1, dt:'2026-06-18T09:00', home:'Uzbekistan',away:'Colombia',   venue:'Estadio Azteca, Mexico City, Mexico' },
+  { id:45, stage:'group', group:'K', matchday:2, dt:'2026-06-24T00:00', home:'Portugal',  away:'Uzbekistan', venue:'NRG Stadium, Houston, USA' },
+  { id:48, stage:'group', group:'K', matchday:2, dt:'2026-06-24T09:00', home:'Colombia',  away:'DR Congo',   venue:'Estadio Akron, Zapopan, Mexico' },
+  { id:69, stage:'group', group:'K', matchday:3, dt:'2026-06-28T06:30', home:'Colombia',  away:'Portugal',   venue:'Hard Rock Stadium, Miami Gardens, USA' },
+  { id:70, stage:'group', group:'K', matchday:3, dt:'2026-06-28T06:30', home:'DR Congo',  away:'Uzbekistan', venue:'Mercedes-Benz Stadium, Atlanta, USA' },
+  
+  { id:22, stage:'group', group:'L', matchday:1, dt:'2026-06-18T03:00', home:'England', away:'Croatia', venue:'AT&T Stadium, Arlington, USA' },
+  { id:23, stage:'group', group:'L', matchday:1, dt:'2026-06-18T06:00', home:'Ghana',   away:'Panama',  venue:'BMO Field, Toronto, Canada' },
+  { id:46, stage:'group', group:'L', matchday:2, dt:'2026-06-24T03:00', home:'England', away:'Ghana',   venue:'Gillette Stadium, Foxborough, USA' },
+  { id:47, stage:'group', group:'L', matchday:2, dt:'2026-06-24T06:00', home:'Panama',  away:'Croatia', venue:'BMO Field, Toronto, Canada' },
+  { id:67, stage:'group', group:'L', matchday:3, dt:'2026-06-28T04:00', home:'Panama',  away:'England', venue:'MetLife Stadium, East Rutherford, USA' },
+  { id:68, stage:'group', group:'L', matchday:3, dt:'2026-06-28T04:00', home:'Croatia', away:'Ghana',   venue:'Lincoln Financial Field, Philadelphia, USA' },
+
+  
+  { id:73, stage:'r32', dt:'2026-06-29T02:00', home:'Runner-up A',       away:'Runner-up B',           venue:'SoFi Stadium, Inglewood, USA' },
+  { id:76, stage:'r32', dt:'2026-06-30T00:00', home:'Winner C',          away:'Runner-up F',           venue:'NRG Stadium, Houston, USA' },
+  { id:74, stage:'r32', dt:'2026-06-30T03:30', home:'Winner E',          away:'Best 3rd (A/B/C/D/F)',  venue:'Gillette Stadium, Foxborough, USA' },
+  { id:75, stage:'r32', dt:'2026-06-30T08:00', home:'Winner F',          away:'Runner-up C',           venue:'Estadio BBVA, Monterrey, Mexico' },
+  { id:78, stage:'r32', dt:'2026-07-01T00:00', home:'Runner-up E',       away:'Runner-up I',           venue:'AT&T Stadium, Arlington, USA' },
+  { id:77, stage:'r32', dt:'2026-07-01T04:00', home:'Winner I',          away:'Best 3rd (C/D/F/G/H)',  venue:'MetLife Stadium, East Rutherford, USA' },
+  { id:79, stage:'r32', dt:'2026-07-01T08:00', home:'Winner A',          away:'Best 3rd (C/E/F/H/I)',  venue:'Estadio Azteca, Mexico City, Mexico' },
+  { id:80, stage:'r32', dt:'2026-07-01T23:00', home:'Winner L',          away:'Best 3rd (E/H/I/J/K)',  venue:'Mercedes-Benz Stadium, Atlanta, USA' },
+  { id:82, stage:'r32', dt:'2026-07-02T03:00', home:'Winner G',          away:'Best 3rd (A/E/H/I/J)',  venue:'Lumen Field, Seattle, USA' },
+  { id:81, stage:'r32', dt:'2026-07-02T07:00', home:'Winner D',          away:'Best 3rd (B/E/F/I/J)',  venue:"Levi's Stadium, Santa Clara, USA" },
+  { id:84, stage:'r32', dt:'2026-07-03T02:00', home:'Winner H',          away:'Runner-up J',           venue:'SoFi Stadium, Inglewood, USA' },
+  { id:83, stage:'r32', dt:'2026-07-03T06:00', home:'Runner-up K',       away:'Runner-up L',           venue:'BMO Field, Toronto, Canada' },
+  { id:85, stage:'r32', dt:'2026-07-03T10:00', home:'Winner B',          away:'Best 3rd (E/F/G/I/J)',  venue:'BC Place, Vancouver, Canada' },
+  { id:88, stage:'r32', dt:'2026-07-04T01:00', home:'Runner-up D',       away:'Runner-up G',           venue:'AT&T Stadium, Arlington, USA' },
+  { id:86, stage:'r32', dt:'2026-07-04T05:00', home:'Winner J',          away:'Runner-up H',           venue:'Hard Rock Stadium, Miami Gardens, USA' },
+  { id:87, stage:'r32', dt:'2026-07-04T08:30', home:'Winner K',          away:'Best 3rd (D/E/I/J/L)',  venue:'Arrowhead Stadium, Kansas City, USA' },
+
+  
+  { id:90, stage:'r16', dt:'2026-07-05T00:00', home:'Winner M73', away:'Winner M75', venue:'NRG Stadium, Houston, USA' },
+  { id:89, stage:'r16', dt:'2026-07-05T04:00', home:'Winner M74', away:'Winner M77', venue:'Lincoln Financial Field, Philadelphia, USA' },
+  { id:91, stage:'r16', dt:'2026-07-06T03:00', home:'Winner M76', away:'Winner M78', venue:'MetLife Stadium, East Rutherford, USA' },
+  { id:92, stage:'r16', dt:'2026-07-06T07:00', home:'Winner M79', away:'Winner M80', venue:'Estadio Azteca, Mexico City, Mexico' },
+  { id:93, stage:'r16', dt:'2026-07-07T02:00', home:'Winner M83', away:'Winner M84', venue:'AT&T Stadium, Arlington, USA' },
+  { id:94, stage:'r16', dt:'2026-07-07T07:00', home:'Winner M81', away:'Winner M82', venue:'Lumen Field, Seattle, USA' },
+  { id:95, stage:'r16', dt:'2026-07-07T23:00', home:'Winner M86', away:'Winner M88', venue:'Mercedes-Benz Stadium, Atlanta, USA' },
+  { id:96, stage:'r16', dt:'2026-07-08T03:00', home:'Winner M85', away:'Winner M87', venue:'BC Place, Vancouver, Canada' },
+
+  
+  { id:97,  stage:'qf', dt:'2026-07-10T03:00', home:'Winner M89', away:'Winner M90', venue:'Gillette Stadium, Foxborough, USA' },
+  { id:98,  stage:'qf', dt:'2026-07-11T02:00', home:'Winner M93', away:'Winner M94', venue:'SoFi Stadium, Inglewood, USA' },
+  { id:99,  stage:'qf', dt:'2026-07-12T04:00', home:'Winner M91', away:'Winner M92', venue:'Hard Rock Stadium, Miami Gardens, USA' },
+  { id:100, stage:'qf', dt:'2026-07-12T08:00', home:'Winner M95', away:'Winner M96', venue:'Arrowhead Stadium, Kansas City, USA' },
+
+  
+  { id:101, stage:'sf', dt:'2026-07-15T02:00', home:'Winner M97', away:'Winner M98',  venue:'AT&T Stadium, Arlington (Dallas), USA' },
+  { id:102, stage:'sf', dt:'2026-07-16T02:00', home:'Winner M99', away:'Winner M100', venue:'Mercedes-Benz Stadium, Atlanta, USA' },
+
+  
+  { id:103, stage:'3rd', dt:'2026-07-19T04:00', home:'Loser M101', away:'Loser M102', venue:'Hard Rock Stadium, Miami Gardens, USA' },
+
+  
+  { id:104, stage:'final', dt:'2026-07-20T02:00', home:'Winner M101', away:'Winner M102', venue:'MetLife Stadium, East Rutherford, USA' },
+];
+
+
+
+
+function getResult(id) {
+  const raw = localStorage.getItem(`wc2026_m${id}`);
+  return raw ? JSON.parse(raw) : null;
+}
+function saveResultData(id, h, a, pen) {
+  const data = { h, a };
+  if (pen) data.pen = pen;
+  localStorage.setItem(`wc2026_m${id}`, JSON.stringify(data));
+}
+function clearResultData(id) {
+  localStorage.removeItem(`wc2026_m${id}`);
+}
+
+
+
+
+function exportResults() {
+  const data = {};
+  MATCHES.forEach(m => {
+    const r = getResult(m.id);
+    if (r !== null) data[m.id] = r;
+  });
+  if (!Object.keys(data).length) {
+    showBackupStatus('No results to export yet', 'err');
+    return;
+  }
+  const payload = JSON.stringify({ version: 1, exported: new Date().toISOString(), results: data }, null, 2);
+  const blob = new Blob([payload], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = `wc2026-results-${todayStr()}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showBackupStatus(`✓ Exported ${Object.keys(data).length} results`, 'ok');
+}
+
+function importResults(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const payload = JSON.parse(e.target.result);
+      const results = payload.results || payload; 
+      let count = 0;
+      Object.entries(results).forEach(([id, r]) => {
+        const matchId = parseInt(id, 10);
+        if (MATCHES.some(m => m.id === matchId) && typeof r.h === 'number' && typeof r.a === 'number') {
+          saveResultData(matchId, r.h, r.a);
+          count++;
+        }
+      });
+      invalidateResolutionCache();
+      updateStats();
+      updateNavDots();
+      renderContent();
+      showBackupStatus(`✓ Imported ${count} results`, 'ok');
+    } catch (err) {
+      showBackupStatus('✗ Invalid file', 'err');
+    }
+    
+    event.target.value = '';
+  };
+  reader.readAsText(file);
+}
+
+function showBackupStatus(msg, type) {
+  const el = document.getElementById('backup-status');
+  el.textContent = msg;
+  el.className = 'show ' + type;
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => { el.className = ''; }, 3000);
+}
+
+
+
+
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const DAYS   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+function parseDT(dt) {
+  const [d, t] = dt.split('T');
+  const [yr, mo, dy] = d.split('-').map(Number);
+  const [hr, mn] = t.split(':').map(Number);
+  return { yr, mo, dy, hr, mn };
+}
+
+function fmtTime(dt) {
+  const { hr, mn } = parseDT(dt);
+  const ap = hr >= 12 ? 'PM' : 'AM';
+  const h  = hr % 12 || 12;
+  return `${h}:${String(mn).padStart(2,'0')} ${ap}`;
+}
+
+function fmtDate(dt) {
+  const { yr, mo, dy } = parseDT(dt);
+  const d = new Date(yr, mo - 1, dy);
+  return `${DAYS[d.getDay()]}, ${dy} ${MONTHS[mo-1]} ${yr}`;
+}
+
+function todayStr() {
+  
+  const n = new Date();
+  const utcMs = n.getTime() + n.getTimezoneOffset() * 60000;
+  const gmt7  = new Date(utcMs + 7 * 3600000);
+  const yr = gmt7.getFullYear();
+  const mo = String(gmt7.getMonth() + 1).padStart(2, '0');
+  const dy = String(gmt7.getDate()).padStart(2, '0');
+  return `${yr}-${mo}-${dy}`;
+}
+
+function nowGMT7Minutes() {
+  const n = new Date();
+  const utcMs = n.getTime() + n.getTimezoneOffset() * 60000;
+  const gmt7  = new Date(utcMs + 7 * 3600000);
+  return gmt7.getHours() * 60 + gmt7.getMinutes();
+}
+
+function matchStatus(m) {
+  const today = todayStr();
+  const mDate = m.dt.slice(0, 10);
+  if (mDate < today) return 'past';
+  if (mDate > today) return 'future';
+  
+  const { hr, mn } = parseDT(m.dt);
+  const matchMinutes = hr * 60 + mn;
+  const nowMin = nowGMT7Minutes();
+  if (nowMin < matchMinutes - 5) return 'today-soon';
+  if (nowMin < matchMinutes + 115) return 'live';
+  return 'today-done';
+}
+
+
+
+
+function updateStats() {
+  let played = 0, goals = 0;
+  MATCHES.forEach(m => {
+    const r = getResult(m.id);
+    if (r !== null) { played++; goals += r.h + r.a; }
+  });
+  document.getElementById('stat-played').textContent = played;
+  document.getElementById('stat-goals').textContent  = goals;
+}
+
+
+
+
+
+
+const BEST3RD_ELIGIBLE = {
+  74: ['A','B','C','D','F'],
+  77: ['C','D','F','G','H'],
+  79: ['C','E','F','H','I'],
+  80: ['E','H','I','J','K'],
+  81: ['B','E','F','I','J'],
+  82: ['A','E','H','I','J'],
+  85: ['E','F','G','I','J'],
+  87: ['D','E','I','J','L'],
+};
+let _best3rdCache = null; 
+
+function invalidateResolutionCache() { _best3rdCache = null; }
+
+
+function getRankedThirds() {
+  const thirds = [];
+  'ABCDEFGHIJKL'.split('').forEach(g => {
+    const st = getStandings(g);
+    if (st.length >= 3 && st[2].p > 0) thirds.push({ ...st[2], group: g });
+  });
+  return thirds.sort((a, b) =>
+    b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || a.ga - b.ga || a.team.localeCompare(b.team)
+  );
+}
+
+
+function computeBest3rdAssignments() {
+  if (_best3rdCache) return _best3rdCache;
+  const top8 = getRankedThirds().slice(0, 8);
+  const assigned = {};
+  const usedGroups = new Set();
+  Object.entries(BEST3RD_ELIGIBLE).forEach(([slotId, eligible]) => {
+    const c = top8.find(t => eligible.includes(t.group) && !usedGroups.has(t.group));
+    if (c) { assigned[slotId] = c; usedGroups.add(c.group); }
+  });
+  _best3rdCache = assigned;
+  return assigned;
+}
+
+
+function resolveTeam(placeholder) {
+  
+  if (FLAGS[placeholder] !== undefined) return { name: placeholder, confirmed: true };
+
+  let m;
+  if (m = placeholder.match(/^Winner ([A-L])$/))     return resolveGroupPos(m[1], 0);
+  if (m = placeholder.match(/^Runner-up ([A-L])$/))  return resolveGroupPos(m[1], 1);
+  if (m = placeholder.match(/^Best 3rd \(([^)]+)\)$/)) {
+    const groups = m[1].split('/');
+    return resolveBestThird(groups);
+  }
+  if (m = placeholder.match(/^Winner M(\d+)$/))  return resolveKnockout(parseInt(m[1]), false);
+  if (m = placeholder.match(/^Loser M(\d+)$/))   return resolveKnockout(parseInt(m[1]), true);
+  return null;
+}
+
+function resolveGroupPos(group, pos) {
+  const st = getStandings(group);
+  const groupMatches = MATCHES.filter(m => m.stage === 'group' && m.group === group);
+  const played = groupMatches.filter(m => getResult(m.id) !== null).length;
+  if (played === 0) return null;
+  const entry = st[pos];
+  if (!entry || entry.p === 0) return null;
+  return { name: entry.team, confirmed: played === groupMatches.length };
+}
+
+function resolveBestThird(eligibleGroups) {
+  
+  const slotEntry = Object.entries(BEST3RD_ELIGIBLE).find(
+    ([, g]) => g.join('/') === eligibleGroups.join('/')
+  );
+  if (slotEntry) {
+    const assignments = computeBest3rdAssignments();
+    const entry = assignments[slotEntry[0]];
+    if (entry) {
+      const allComplete = 'ABCDEFGHIJKL'.split('').every(g =>
+        MATCHES.filter(m => m.stage === 'group' && m.group === g).every(m => getResult(m.id) !== null)
+      );
+      return { name: entry.team, confirmed: allComplete };
+    }
+  }
+  
+  const candidates = getRankedThirds().filter(t => eligibleGroups.includes(t.group));
+  if (!candidates.length) return null;
+  return { name: candidates[0].team, confirmed: false };
+}
+
+function resolveKnockout(matchId, wantLoser) {
+  const match = MATCHES.find(m => m.id === matchId);
+  if (!match) return null;
+  const r = getResult(matchId);
+  if (!r) return null;
+
+  let winnerSide, loserSide;
+  if (r.h > r.a)           { winnerSide = match.home; loserSide = match.away; }
+  else if (r.a > r.h)      { winnerSide = match.away; loserSide = match.home; }
+  else if (r.pen === 'home'){ winnerSide = match.home; loserSide = match.away; }
+  else if (r.pen === 'away'){ winnerSide = match.away; loserSide = match.home; }
+  else return null; 
+
+  const target   = wantLoser ? loserSide : winnerSide;
+  const resolved = resolveTeam(target);
+  return resolved ?? (FLAGS[target] ? { name: target, confirmed: true } : { name: target, confirmed: false });
+}
+
+
+function getDisplayTeam(placeholder) {
+  if (FLAGS[placeholder] !== undefined)
+    return { name: placeholder, flag: FLAGS[placeholder], confirmed: true };
+  const r = resolveTeam(placeholder);
+  if (r) return { name: r.name, flag: FLAGS[r.name] || '', confirmed: r.confirmed, resolvedFrom: placeholder };
+  return { name: placeholder, flag: '', confirmed: false, unresolved: true };
+}
+
+
+function teamNameHtml(placeholder, side) {
+  const d = getDisplayTeam(placeholder);
+  if (d.unresolved) {
+    return `<span class="mc-team-name team-unresolved">${d.name}</span>`;
+  }
+  const flagHtml = d.flag ? `<span class="flag">${d.flag}</span>` : '';
+  if (!d.confirmed) {
+    return `<span class="mc-team-name team-provisional"><span class="prov-mark">~</span>${flagHtml}${d.name}</span>`;
+  }
+  return `<span class="mc-team-name">${flagHtml}${d.name}</span>`;
+}
+
+
+
+
+function getStandings(grp) {
+  const teams = GROUPS[grp].map(t => ({ team: t, p:0, w:0, d:0, l:0, gf:0, ga:0, gd:0, pts:0 }));
+  MATCHES.filter(m => m.stage === 'group' && m.group === grp).forEach(m => {
+    const r = getResult(m.id);
+    if (!r) return;
+    const ht = teams.find(t => t.team === m.home);
+    const at = teams.find(t => t.team === m.away);
+    ht.p++; at.p++;
+    ht.gf += r.h; ht.ga += r.a;
+    at.gf += r.a; at.ga += r.h;
+    if (r.h > r.a)      { ht.w++; ht.pts += 3; at.l++; }
+    else if (r.h < r.a) { at.w++; at.pts += 3; ht.l++; }
+    else                { ht.d++; ht.pts++; at.d++; at.pts++; }
+    ht.gd = ht.gf - ht.ga;
+    at.gd = at.gf - at.ga;
+  });
+  return teams.sort((a,b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || a.team.localeCompare(b.team));
+}
+
+function renderStandings(grp) {
+  const rows = getStandings(grp);
+  return `<div class="standings">
+    <h3>Group ${grp} Standings</h3>
+    <table>
+      <thead><tr>
+        <th style="width:44%">Team</th>
+        <th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
+      </tr></thead>
+      <tbody>
+        ${rows.map((r,i) => `
+          <tr class="${i < 2 ? 'qualified' : ''}">
+            <td>${FLAGS[r.team]??''} ${r.team}</td>
+            <td>${r.p}</td><td>${r.w}</td><td>${r.d}</td><td>${r.l}</td>
+            <td>${r.gf}</td><td>${r.ga}</td>
+            <td>${r.gd > 0 ? '+' : ''}${r.gd}</td>
+            <td class="pts">${r.pts}</td>
+          </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+
+
+
+function flag(team) { return FLAGS[team] ? `<span class="flag">${FLAGS[team]}</span>` : ''; }
+
+function renderMatchCard(m) {
+  const r   = getResult(m.id);
+  const st  = matchStatus(m);
+  const hasResult = r !== null;
+
+  let cardClass = 'match-card';
+  if (st === 'live' || st === 'today-soon' || st === 'today-done') cardClass += ' today';
+  else if (hasResult) cardClass += ' done';
+
+  let badge = '';
+  if (st === 'live')            badge = '<span class="badge badge-today">🔴 LIVE</span>';
+  else if (st === 'today-soon') badge = '<span class="badge badge-soon">Today</span>';
+  else if (st === 'today-done') badge = '<span class="badge badge-today">Today</span>';
+  else if (hasResult)           badge = '<span class="badge badge-done">✓</span>';
+
+  
+  const hWin = hasResult && r.h > r.a;
+  const aWin = hasResult && r.a > r.h;
+  const hScore = hasResult ? `<span class="mc-score ${hWin ? 'winner' : ''}">${r.h}</span>` : '';
+  const aScore = hasResult ? `<span class="mc-score ${aWin ? 'winner' : ''}">${r.a}</span>` : '';
+
+  return `<div class="${cardClass}" onclick="openModal(${m.id})" title="Click to enter result">
+    <div class="mc-time"><div class="time">${fmtTime(m.dt)}</div>${badge}</div>
+    <div class="mc-divider"></div>
+    <div class="mc-teams">
+      <div class="mc-team"><span class="mc-team-name">${flag(m.home)}${m.home}</span>${hScore}</div>
+      <div class="mc-vs">vs</div>
+      <div class="mc-team"><span class="mc-team-name">${flag(m.away)}${m.away}</span>${aScore}</div>
+      <div class="mc-venue">${m.venue}</div>
+    </div>
+    <span class="mc-edit-hint">✎</span>
+  </div>`;
+}
+
+
+
+
+function renderKnockoutCard(m) {
+  const r  = getResult(m.id);
+  const st = matchStatus(m);
+  const hasResult = r !== null;
+
+  let cardClass = 'match-card';
+  if (st === 'live' || st === 'today-soon' || st === 'today-done') cardClass += ' today';
+  else if (hasResult) cardClass += ' done';
+
+  let badge = '';
+  if (st === 'live')            badge = '<span class="badge badge-today">🔴 LIVE</span>';
+  else if (st === 'today-soon') badge = '<span class="badge badge-soon">Today</span>';
+  else if (hasResult)           badge = '<span class="badge badge-done">✓</span>';
+
+  
+  let hWin = false, aWin = false;
+  if (hasResult) {
+    if (r.h > r.a)            { hWin = true; }
+    else if (r.a > r.h)       { aWin = true; }
+    else if (r.pen === 'home') { hWin = true; }
+    else if (r.pen === 'away') { aWin = true; }
+  }
+  const penH = hasResult && r.h === r.a && r.pen === 'home';
+  const penA = hasResult && r.h === r.a && r.pen === 'away';
+
+  const hScore = hasResult ? `<span class="mc-score ${hWin ? 'winner' : ''} ${penH ? 'pen-winner' : ''}">${r.h}${penH ? '' : ''}</span>` : '';
+  const aScore = hasResult ? `<span class="mc-score ${aWin ? 'winner' : ''} ${penA ? 'pen-winner' : ''}">${r.a}</span>` : '';
+  const penLabel = penH || penA ? `<span class="pen-tag">pens</span>` : '';
+
+  return `<div class="${cardClass}" onclick="openModal(${m.id})" title="Click to enter result">
+    <div class="mc-time"><div class="time">${fmtTime(m.dt)}</div>${badge}</div>
+    <div class="mc-divider"></div>
+    <div class="mc-teams">
+      <div class="mc-team">${teamNameHtml(m.home)}${hScore}</div>
+      <div class="mc-vs">vs${penLabel}</div>
+      <div class="mc-team">${teamNameHtml(m.away)}${aScore}</div>
+      <div class="mc-venue">${m.venue}</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+      <span class="mc-group-tag">M${m.id}</span>
+      <span class="mc-edit-hint">✎</span>
+    </div>
+  </div>`;
+}
+
+
+
+
+let currentGroup = 'A';
+
+function renderGroupStage(grp) {
+  const today = todayStr();
+
+  
+  const hasDot = g => MATCHES.some(m => m.stage === 'group' && m.group === g && m.dt.slice(0,10) === today);
+
+  const groupBtns = 'ABCDEFGHIJKL'.split('').map(g =>
+    `<button class="group-btn ${g===grp?'active':''}" onclick="switchGroup('${g}')">
+      Group ${g}${hasDot(g) ? '<span class="nav-dot"></span>' : ''}
+    </button>`
+  ).join('');
+
+  const matchesByDay = {};
+  MATCHES.filter(m => m.stage === 'group' && m.group === grp)
+    .sort((a,b) => a.dt.localeCompare(b.dt))
+    .forEach(m => {
+      const day = m.dt.slice(0,10);
+      if (!matchesByDay[day]) matchesByDay[day] = { md: m.matchday, matches: [] };
+      matchesByDay[day].matches.push(m);
+    });
+
+  let daysHtml = '';
+  let lastMD = 0;
+  Object.keys(matchesByDay).sort().forEach(day => {
+    const { md, matches } = matchesByDay[day];
+    const simul = matches.length > 1 && matches[0].dt === matches[1]?.dt;
+    if (md !== lastMD) {
+      if (lastMD) daysHtml += '</div>';
+      daysHtml += `<div class="matchday-section"><div class="matchday-label">Matchday ${md}</div>`;
+      lastMD = md;
+    }
+    daysHtml += `<div class="date-header">
+      <span>${fmtDate(day + 'T00:00')}</span>
+      ${simul ? '<span style="font-size:0.65rem;color:var(--gold)">⚡ Simultaneous</span>' : ''}
+    </div>`;
+    matches.forEach(m => { daysHtml += renderMatchCard(m); });
+  });
+  if (lastMD) daysHtml += '</div>';
+
+  return `
+    <div class="group-nav">${groupBtns}</div>
+    ${renderStandings(grp)}
+    ${daysHtml}
+  `;
+}
+
+function switchGroup(g) {
+  currentGroup = g;
+  renderContent();
+}
+
+
+
+
+const STAGE_META = {
+  r32:   { label: 'Round of 32',    dates: 'June 28 – July 3',   note: '16 matches · Win or go home · Extra time & penalties if tied after 90 min' },
+  r16:   { label: 'Round of 16',    dates: 'July 4 – July 7',    note: '8 matches · Top 32 teams compete' },
+  qf:    { label: 'Quarterfinals',  dates: 'July 9 – July 11',   note: '4 matches · Last 8 teams' },
+  sf:    { label: 'Semifinals',     dates: 'July 14 – July 15',  note: '2 matches · Final four' },
+  final: { label: 'Final & 3rd Place', dates: 'July 18 – July 19', note: 'MetLife Stadium, New Jersey · July 20 02:00 GMT+7' },
+};
+
+function renderKnockoutStage(stage) {
+  const meta = STAGE_META[stage] || {};
+  let matches = MATCHES.filter(m => m.stage === stage || (stage === 'final' && (m.stage === 'final' || m.stage === '3rd')));
+  matches.sort((a,b) => a.dt.localeCompare(b.dt));
+
+  const matchesByDay = {};
+  matches.forEach(m => {
+    const day = m.dt.slice(0,10);
+    if (!matchesByDay[day]) matchesByDay[day] = [];
+    matchesByDay[day].push(m);
+  });
+
+  let html = `<div class="section-title">${meta.label || stage}</div>
+    <div class="stage-intro">📅 ${meta.dates} &nbsp;·&nbsp; ${meta.note}</div>`;
+
+  Object.keys(matchesByDay).sort().forEach(day => {
+    html += `<div class="date-header"><span>${fmtDate(day + 'T00:00')}</span></div>`;
+    matchesByDay[day].forEach(m => { html += renderKnockoutCard(m); });
+  });
+
+  return html;
+}
+
+
+
+
+function renderTodayView() {
+  const today = todayStr();
+  const todayMatches = MATCHES.filter(m => m.dt.slice(0,10) === today)
+    .sort((a,b) => a.dt.localeCompare(b.dt));
+
+  
+  const { yr, mo, dy } = parseDT(today + 'T00:00');
+  const d = new Date(yr, mo - 1, dy);
+  const dateLabel = `${DAYS[d.getDay()]}, ${dy} ${MONTHS[mo-1]} ${yr}`;
+
+  if (todayMatches.length === 0) {
+    
+    const future = MATCHES.filter(m => m.dt.slice(0,10) > today)
+      .sort((a,b) => a.dt.localeCompare(b.dt));
+    if (!future.length) {
+      return `<div class="today-empty">
+        <div class="empty-icon">🏆</div>
+        <p>The tournament is over!</p>
+      </div>`;
+    }
+    const nextDay = future[0].dt.slice(0,10);
+    const nextMatches = future.filter(m => m.dt.slice(0,10) === nextDay)
+      .sort((a,b) => a.dt.localeCompare(b.dt));
+    const np = parseDT(nextDay + 'T00:00');
+    const nd = new Date(np.yr, np.mo - 1, np.dy);
+    const nextLabel = `${DAYS[nd.getDay()]}, ${np.dy} ${MONTHS[np.mo-1]} ${np.yr}`;
+
+    return `<div class="today-empty" style="text-align:left;padding:20px">
+        <div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:4px">No matches today (${dateLabel})</div>
+        <div style="font-size:0.9rem;color:var(--gold);font-weight:700;margin-bottom:14px">⏭ Next match day: ${nextLabel}</div>
+      </div>
+      <div class="today-section-label">Coming up · ${nextLabel}</div>
+      ${nextMatches.map(m => renderAnyCard(m)).join('')}`;
+  }
+
+  
+  const blocks = [
+    { label: '🌙 Early Morning (midnight – 6 AM)', check: h => h < 6 },
+    { label: '🌅 Morning (6 AM – 12 PM)',          check: h => h >= 6 && h < 12 },
+    { label: '☀️ Afternoon / Evening (12 PM +)',   check: h => h >= 12 },
+  ];
+
+  let html = `<div class="today-header">
+    <h2>Today's Matches</h2>
+    <span class="today-subtitle">${dateLabel} · ${todayMatches.length} match${todayMatches.length > 1 ? 'es' : ''} · GMT+7</span>
+  </div>`;
+
+  blocks.forEach(block => {
+    const bm = todayMatches.filter(m => block.check(parseDT(m.dt).hr));
+    if (!bm.length) return;
+    html += `<div class="today-section-label">${block.label}</div>`;
+    bm.forEach(m => { html += renderAnyCard(m); });
+  });
+
+  return html;
+}
+
+function renderAnyCard(m) {
+  return m.stage === 'group' ? renderMatchCard(m) : renderKnockoutCard(m);
+}
+
+
+
+
+function updateNavDots() {
+  const today = todayStr();
+  const stageMap = {
+    'nav-group': m => m.stage === 'group',
+    'nav-r32':   m => m.stage === 'r32',
+    'nav-r16':   m => m.stage === 'r16',
+    'nav-qf':    m => m.stage === 'qf',
+    'nav-sf':    m => m.stage === 'sf',
+    'nav-final': m => m.stage === 'final' || m.stage === '3rd',
+  };
+
+  
+  const todayCount = MATCHES.filter(m => m.dt.slice(0,10) === today).length;
+  const todayBtn = document.getElementById('nav-today');
+  if (todayBtn) {
+    const existing = todayBtn.querySelector('.nav-count');
+    if (existing) existing.remove();
+    if (todayCount > 0) {
+      todayBtn.innerHTML = `📅 Today <span class="nav-count">${todayCount}</span>`;
+    } else {
+      todayBtn.textContent = '📅 Today';
+    }
+  }
+
+  
+  Object.entries(stageMap).forEach(([btnId, filter]) => {
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
+    const hasToday = MATCHES.some(m => filter(m) && m.dt.slice(0,10) === today);
+    const existing = btn.querySelector('.nav-dot');
+    if (hasToday && !existing) {
+      btn.insertAdjacentHTML('beforeend', '<span class="nav-dot"></span>');
+    } else if (!hasToday && existing) {
+      existing.remove();
+    }
+  });
+}
+
+
+
+
+let currentStage = 'today';
+
+function showStage(stage) {
+  currentStage = stage;
+  const allStages = ['today','group','r32','r16','qf','sf','final'];
+  const ids = ['nav-today','nav-group','nav-r32','nav-r16','nav-qf','nav-sf','nav-final'];
+  ids.forEach((id, i) => {
+    const btn = document.getElementById(id);
+    if (btn) btn.classList.toggle('active', allStages[i] === stage);
+  });
+  renderContent();
+}
+
+function renderContent() {
+  const el = document.getElementById('main-content');
+  if (currentStage === 'today') {
+    el.innerHTML = renderTodayView();
+  } else if (currentStage === 'group') {
+    el.innerHTML = renderGroupStage(currentGroup);
+  } else {
+    el.innerHTML = renderKnockoutStage(currentStage);
+  }
+}
+
+
+
+
+let activeMatchId = null;
+let activePenWinner = null; 
+
+function isKnockoutMatch(m) {
+  return m.stage !== 'group';
+}
+
+function onScoreInput() {
+  if (!activeMatchId) return;
+  const m = MATCHES.find(x => x.id === activeMatchId);
+  if (!m || !isKnockoutMatch(m)) return;
+  const h = parseInt(document.getElementById('modal-home-score').value, 10);
+  const a = parseInt(document.getElementById('modal-away-score').value, 10);
+  const tied = !isNaN(h) && !isNaN(a) && h === a;
+  const penDiv = document.getElementById('modal-penalty');
+  penDiv.style.display = tied ? 'block' : 'none';
+  if (!tied) { activePenWinner = null; updatePenBtns(); }
+}
+
+function setPenWinner(side) {
+  activePenWinner = side;
+  updatePenBtns();
+}
+
+function updatePenBtns() {
+  ['home', null, 'away'].forEach(s => {
+    const id = s === 'home' ? 'pen-btn-home' : s === 'away' ? 'pen-btn-away' : 'pen-btn-none';
+    const btn = document.getElementById(id);
+    if (btn) btn.classList.toggle('selected', activePenWinner === s);
+  });
+}
+
+function openModal(id) {
+  const m = MATCHES.find(x => x.id === id);
+  if (!m) return;
+  activeMatchId  = id;
+  activePenWinner = null;
+
+  const stageLabel = m.group ? `Group ${m.group} · Matchday ${m.matchday}` :
+    { r32: 'Round of 32', r16: 'Round of 16', qf: 'Quarterfinal', sf: 'Semifinal', '3rd': '3rd Place Match', final: 'Final' }[m.stage] || m.stage;
+
+  document.getElementById('modal-stage').textContent = `Match ${m.id} · ${stageLabel}`;
+  document.getElementById('modal-date').textContent  = `${fmtDate(m.dt)} · ${fmtTime(m.dt)} GMT+7`;
+
+  
+  const hd = getDisplayTeam(m.home);
+  const ad = getDisplayTeam(m.away);
+  document.getElementById('modal-home-flag').textContent = hd.flag || '🏳️';
+  document.getElementById('modal-home-name').textContent = hd.name;
+  document.getElementById('modal-away-flag').textContent = ad.flag || '🏳️';
+  document.getElementById('modal-away-name').textContent = ad.name;
+
+  
+  const penHome = document.getElementById('pen-btn-home');
+  const penAway = document.getElementById('pen-btn-away');
+  if (penHome) penHome.textContent = `🏆 ${hd.name}`;
+  if (penAway) penAway.textContent = `🏆 ${ad.name}`;
+
+  document.getElementById('modal-venue').textContent = `📍 ${m.venue}`;
+
+  const r = getResult(id);
+  document.getElementById('modal-home-score').value = r !== null ? r.h : '';
+  document.getElementById('modal-away-score').value = r !== null ? r.a : '';
+
+  if (r && r.pen) { activePenWinner = r.pen; }
+  updatePenBtns();
+
+  
+  const penDiv = document.getElementById('modal-penalty');
+  if (isKnockoutMatch(m) && r && r.h === r.a) {
+    penDiv.style.display = 'block';
+  } else {
+    penDiv.style.display = 'none';
+  }
+
+  document.getElementById('modal-overlay').classList.add('open');
+  document.getElementById('modal-home-score').focus();
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  activeMatchId = null;
+}
+
+function closeModalIfOverlay(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+
+function saveResult() {
+  if (activeMatchId === null) return;
+  const hVal = document.getElementById('modal-home-score').value;
+  const aVal = document.getElementById('modal-away-score').value;
+  if (hVal === '' || aVal === '') { alert('Please enter both scores.'); return; }
+  const h = parseInt(hVal, 10);
+  const a = parseInt(aVal, 10);
+  if (isNaN(h) || isNaN(a) || h < 0 || a < 0) { alert('Please enter valid scores.'); return; }
+  const m = MATCHES.find(x => x.id === activeMatchId);
+  
+  if (m && isKnockoutMatch(m) && h === a && !activePenWinner) {
+    alert('Knockout matches cannot end in a draw — please select the penalty shootout winner.');
+    return;
+  }
+  saveResultData(activeMatchId, h, a, h === a ? activePenWinner : null);
+  closeModal();
+  invalidateResolutionCache();
+  updateStats();
+  updateNavDots();
+  renderContent();
+}
+
+function clearResult() {
+  if (activeMatchId === null) return;
+  clearResultData(activeMatchId);
+  closeModal();
+  invalidateResolutionCache();
+  updateStats();
+  updateNavDots();
+  renderContent();
+}
+
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+  if (e.key === 'Enter' && activeMatchId !== null) saveResult();
+});
+
+
+
+
+updateStats();
+updateNavDots();
+renderContent();
+</script>
+</body>
+</html>

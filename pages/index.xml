@@ -2,17 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Pages on khanhtc&#39;s blog</title>
-    <link>https://khanhtc1202.github.io/pages/</link>
+    <link>http://localhost:1313/pages/</link>
     <description>Recent content in Pages on khanhtc&#39;s blog</description>
-    <generator>Hugo</generator>
+    <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 26 Feb 2022 16:41:32 +0900</lastBuildDate>
-    <atom:link href="https://khanhtc1202.github.io/pages/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 11 Jun 2026 16:41:32 +0900</lastBuildDate>
+    <atom:link href="http://localhost:1313/pages/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>WC 2026</title>
+      <link>http://localhost:1313/wc2026/</link>
+      <pubDate>Thu, 11 Jun 2026 16:41:32 +0900</pubDate>
+      <guid>http://localhost:1313/wc2026/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Live check</title>
-      <link>https://khanhtc1202.github.io/alive/</link>
+      <link>http://localhost:1313/alive/</link>
       <pubDate>Sat, 26 Feb 2022 16:41:32 +0900</pubDate>
-      <guid>https://khanhtc1202.github.io/alive/</guid>
+      <guid>http://localhost:1313/alive/</guid>
       <description></description>
     </item>
   </channel>
