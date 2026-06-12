@@ -295,7 +295,7 @@
 </div>
 
 <nav id="stage-nav">
-  <button class="active" onclick="showStage('today')" id="nav-today">📅 Today</button>
+  <button class="active" onclick="showStage('today')" id="nav-today">⏰ Upcoming</button>
   <button onclick="showStage('group')" id="nav-group">Group Stage</button>
   <button onclick="showStage('r32')"   id="nav-r32">Round of 32</button>
   <button onclick="showStage('r16')"   id="nav-r16">Round of 16</button>
@@ -1023,18 +1023,31 @@ function renderKnockoutStage(stage) {
 
 function renderTodayView() {
   const today = todayStr();
-  const todayMatches = MATCHES.filter(m => m.dt.slice(0,10) === today)
-    .sort((a,b) => a.dt.localeCompare(b.dt));
 
   
   const { yr, mo, dy } = parseDT(today + 'T00:00');
-  const d = new Date(yr, mo - 1, dy);
-  const dateLabel = `${DAYS[d.getDay()]}, ${dy} ${MONTHS[mo-1]} ${yr}`;
+  const tomorrowDate = new Date(yr, mo - 1, dy + 1);
+  const tomorrow = `${tomorrowDate.getFullYear()}-${String(tomorrowDate.getMonth()+1).padStart(2,'0')}-${String(tomorrowDate.getDate()).padStart(2,'0')}`;
 
-  if (todayMatches.length === 0) {
-    
-    const future = MATCHES.filter(m => m.dt.slice(0,10) > today)
-      .sort((a,b) => a.dt.localeCompare(b.dt));
+  const dayLabel = date => {
+    const { yr, mo, dy } = parseDT(date + 'T00:00');
+    const d = new Date(yr, mo - 1, dy);
+    const base = `${DAYS[d.getDay()]}, ${dy} ${MONTHS[mo-1]}`;
+    if (date === today)    return base + ' · Today';
+    if (date === tomorrow) return base + ' · Tomorrow';
+    return base;
+  };
+
+  const upcomingDates = [today, tomorrow];
+  const matchesByDate = {};
+  upcomingDates.forEach(date => {
+    const ms = MATCHES.filter(m => m.dt.slice(0,10) === date).sort((a,b) => a.dt.localeCompare(b.dt));
+    if (ms.length) matchesByDate[date] = ms;
+  });
+
+  
+  if (!Object.keys(matchesByDate).length) {
+    const future = MATCHES.filter(m => m.dt.slice(0,10) > tomorrow).sort((a,b) => a.dt.localeCompare(b.dt));
     if (!future.length) {
       return `<div class="today-empty">
         <div class="empty-icon">🏆</div>
@@ -1042,14 +1055,12 @@ function renderTodayView() {
       </div>`;
     }
     const nextDay = future[0].dt.slice(0,10);
-    const nextMatches = future.filter(m => m.dt.slice(0,10) === nextDay)
-      .sort((a,b) => a.dt.localeCompare(b.dt));
+    const nextMatches = future.filter(m => m.dt.slice(0,10) === nextDay).sort((a,b) => a.dt.localeCompare(b.dt));
     const np = parseDT(nextDay + 'T00:00');
     const nd = new Date(np.yr, np.mo - 1, np.dy);
-    const nextLabel = `${DAYS[nd.getDay()]}, ${np.dy} ${MONTHS[np.mo-1]} ${np.yr}`;
-
+    const nextLabel = `${DAYS[nd.getDay()]}, ${np.dy} ${MONTHS[np.mo-1]}`;
     return `<div class="today-empty" style="text-align:left;padding:20px">
-        <div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:4px">No matches today (${dateLabel})</div>
+        <div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:4px">No matches today or tomorrow</div>
         <div style="font-size:0.9rem;color:var(--gold);font-weight:700;margin-bottom:14px">⏭ Next match day: ${nextLabel}</div>
       </div>
       <div class="today-section-label">Coming up · ${nextLabel}</div>
@@ -1063,16 +1074,22 @@ function renderTodayView() {
     { label: '☀️ Afternoon / Evening (12 PM +)',   check: h => h >= 12 },
   ];
 
+  const totalCount = Object.values(matchesByDate).reduce((s, ms) => s + ms.length, 0);
   let html = `<div class="today-header">
-    <h2>Today's Matches</h2>
-    <span class="today-subtitle">${dateLabel} · ${todayMatches.length} match${todayMatches.length > 1 ? 'es' : ''} · GMT+7</span>
+    <h2>Upcoming Matches</h2>
+    <span class="today-subtitle">${totalCount} match${totalCount !== 1 ? 'es' : ''} · GMT+7</span>
   </div>`;
 
-  blocks.forEach(block => {
-    const bm = todayMatches.filter(m => block.check(parseDT(m.dt).hr));
-    if (!bm.length) return;
-    html += `<div class="today-section-label">${block.label}</div>`;
-    bm.forEach(m => { html += renderAnyCard(m); });
+  upcomingDates.forEach(date => {
+    const dayMatches = matchesByDate[date];
+    if (!dayMatches) return;
+    html += `<div class="today-section-label" style="margin-top:12px">${dayLabel(date)} &nbsp;·&nbsp; ${dayMatches.length} match${dayMatches.length !== 1 ? 'es' : ''}</div>`;
+    blocks.forEach(block => {
+      const bm = dayMatches.filter(m => block.check(parseDT(m.dt).hr));
+      if (!bm.length) return;
+      html += `<div style="font-size:0.68rem;color:var(--text-dim);padding:8px 2px 4px;font-style:italic">${block.label}</div>`;
+      bm.forEach(m => { html += renderAnyCard(m); });
+    });
   });
 
   return html;
@@ -1097,15 +1114,18 @@ function updateNavDots() {
   };
 
   
-  const todayCount = MATCHES.filter(m => m.dt.slice(0,10) === today).length;
+  const { yr: ty, mo: tm, dy: td } = parseDT(today + 'T00:00');
+  const tomorrowD = new Date(ty, tm - 1, td + 1);
+  const tomorrow  = `${tomorrowD.getFullYear()}-${String(tomorrowD.getMonth()+1).padStart(2,'0')}-${String(tomorrowD.getDate()).padStart(2,'0')}`;
+  const upcomingCount = MATCHES.filter(m => m.dt.slice(0,10) === today || m.dt.slice(0,10) === tomorrow).length;
   const todayBtn = document.getElementById('nav-today');
   if (todayBtn) {
     const existing = todayBtn.querySelector('.nav-count');
     if (existing) existing.remove();
-    if (todayCount > 0) {
-      todayBtn.innerHTML = `📅 Today <span class="nav-count">${todayCount}</span>`;
+    if (upcomingCount > 0) {
+      todayBtn.innerHTML = `⏰ Upcoming <span class="nav-count">${upcomingCount}</span>`;
     } else {
-      todayBtn.textContent = '📅 Today';
+      todayBtn.textContent = '⏰ Upcoming';
     }
   }
 
