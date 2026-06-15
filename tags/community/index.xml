@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Community on khanhtc&#39;s blog</title>
-    <link>http://localhost:1313/tags/community/</link>
+    <link>https://khanhtc1202.github.io/tags/community/</link>
     <description>Recent content in Community on khanhtc&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 02 Dec 2024 16:50:23 +0700</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/community/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://khanhtc1202.github.io/tags/community/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>CNCF Ambassador Annoucement</title>
-      <link>http://localhost:1313/posts/cncf-ambassador-annoucement/</link>
+      <link>https://khanhtc1202.github.io/posts/cncf-ambassador-annoucement/</link>
       <pubDate>Mon, 02 Dec 2024 16:50:23 +0700</pubDate>
-      <guid>http://localhost:1313/posts/cncf-ambassador-annoucement/</guid>
+      <guid>https://khanhtc1202.github.io/posts/cncf-ambassador-annoucement/</guid>
       <description>Starting from November 2024, I have been officially appointed as the first CNCF ambassador in Vietnam 🎉🎉&#xA;This is an important milestone for me and I hope I can contribute more and more to the CNCF as well as OSS communities in vietnam with this new role 💪&#xA;Bắt đầu từ tháng 11 năm 2024, tôi chính thức được bổ nhiệm làm đại sứ CNCF đầu tiên tại Việt Nam 🎉🎉</description>
     </item>
   </channel>

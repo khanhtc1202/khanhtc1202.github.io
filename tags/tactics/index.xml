@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tactics on khanhtc&#39;s blog</title>
-    <link>http://localhost:1313/tags/tactics/</link>
+    <link>https://khanhtc1202.github.io/tags/tactics/</link>
     <description>Recent content in Tactics on khanhtc&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 24 Jan 2021 21:21:01 +0900</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/tactics/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://khanhtc1202.github.io/tags/tactics/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>A breakthrough of my mind</title>
-      <link>http://localhost:1313/posts/some-thought-about-tactics/</link>
+      <link>https://khanhtc1202.github.io/posts/some-thought-about-tactics/</link>
       <pubDate>Sun, 24 Jan 2021 21:21:01 +0900</pubDate>
-      <guid>http://localhost:1313/posts/some-thought-about-tactics/</guid>
+      <guid>https://khanhtc1202.github.io/posts/some-thought-about-tactics/</guid>
       <description>Today I got a really nice chess puzzle that makes me review all of my knowledge, or even more important - the way I should think strategically. 🤔&#xA;via chess.com&#xA;The puzzle starts with black makes Na5, white to move.&#xA;To this day, what I have learned about chess strategies could be shortened into: seek to prevail. There are many shapes of prevail, that is:&#xA;checkmate the opposite king gain the advantage in trading pieces (sacrifice) take the advantage of space (suppress, narrow the opponent&amp;rsquo;s scope of activity) promotion Apply to the current situation, white wins one piece (a pawn which means 1 point but it&amp;rsquo;s just a gambit), a little bit advantage of space (a pawn in d5 followed by Bishop at c4), a bad move of black pawn f7.</description>
     </item>
   </channel>

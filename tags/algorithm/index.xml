@@ -2,45 +2,45 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Algorithm on khanhtc&#39;s blog</title>
-    <link>http://localhost:1313/tags/algorithm/</link>
+    <link>https://khanhtc1202.github.io/tags/algorithm/</link>
     <description>Recent content in Algorithm on khanhtc&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 06 Jul 2023 21:58:23 +0700</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/algorithm/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://khanhtc1202.github.io/tags/algorithm/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>From subarray problems to Kadane and applications</title>
-      <link>http://localhost:1313/posts/kadane-and-its-applications/</link>
+      <link>https://khanhtc1202.github.io/posts/kadane-and-its-applications/</link>
       <pubDate>Thu, 06 Jul 2023 21:58:23 +0700</pubDate>
-      <guid>http://localhost:1313/posts/kadane-and-its-applications/</guid>
+      <guid>https://khanhtc1202.github.io/posts/kadane-and-its-applications/</guid>
       <description>Let&amp;rsquo;s start with a problem (src: leetcode#53)&#xA;Given an integer array nums, find the subarray with the largest sum, and return its sum. Constraints: ・ 1 &amp;lt;= nums.length &amp;lt;= 1e5 ・ -1e4 &amp;lt;= nums[i] &amp;lt;= 1e4 Since subarray means to a contiguous non-empty sequence of elements within an array. It&amp;rsquo;s easy to find the trivial solution where we try to calculate all possible subarray.&#xA;class Solution { public: int maxSubArray(vector&amp;lt;int&amp;gt;&amp;amp; nums) { int ans = INT_MIN; for (int l = 0; l &amp;lt; nums.</description>
     </item>
     <item>
       <title>An Approach for DP Problem</title>
-      <link>http://localhost:1313/posts/an-approach-for-dp-problem/</link>
+      <link>https://khanhtc1202.github.io/posts/an-approach-for-dp-problem/</link>
       <pubDate>Sat, 24 Jun 2023 13:00:04 +0700</pubDate>
-      <guid>http://localhost:1313/posts/an-approach-for-dp-problem/</guid>
+      <guid>https://khanhtc1202.github.io/posts/an-approach-for-dp-problem/</guid>
       <description>Start with the problem (src: leetcode#714)&#xA;You are given an array prices where prices[i] is the price of a given stock on the ith day, and an integer fee representing a transaction fee. Find the maximum profit you can achieve. You may complete as many transactions as you like, but you need to pay the transaction fee for each transaction. Note: You may not engage in multiple transactions simultaneously (i.e., you must sell the stock before you buy again).</description>
     </item>
     <item>
       <title>Complexity Classes</title>
-      <link>http://localhost:1313/posts/complexity-classes/</link>
+      <link>https://khanhtc1202.github.io/posts/complexity-classes/</link>
       <pubDate>Tue, 19 Nov 2019 00:51:18 +0900</pubDate>
-      <guid>http://localhost:1313/posts/complexity-classes/</guid>
+      <guid>https://khanhtc1202.github.io/posts/complexity-classes/</guid>
       <description>The following list contains common time complexities of algorithms:&#xA;O(1) The running time of a constant-time algorithm does not depend on the input size. A typical constant-time algorithm is a direct formula that calculates the answer.&#xA;O($\log n$) A logarithmic algorithm often halves the input size at each step. The running time of such an algorithm is logarithmic, because $\log n$ equals the number of times n must be divided by 2 to get 1.</description>
     </item>
     <item>
       <title>Dining Philosophers</title>
-      <link>http://localhost:1313/posts/dining-philosophers/</link>
+      <link>https://khanhtc1202.github.io/posts/dining-philosophers/</link>
       <pubDate>Mon, 04 Nov 2019 21:39:03 +0900</pubDate>
-      <guid>http://localhost:1313/posts/dining-philosophers/</guid>
+      <guid>https://khanhtc1202.github.io/posts/dining-philosophers/</guid>
       <description>Bữa tối của các triết gia (dining philosophers problem) là một ví dụ nổi tiếng khi nhắc đến các vấn đề trong bài toán xử lý concurrent.&#xA;Vấn đề được phát biểu như sau: Cho 5 triết gia ngồi chung một bàn tròn với 5 chiếc đũa xếp xem kẽ giữa 2 người ngồi cạnh nhau như hình&#xA;img: sphof.readthedocs.io&#xA;Mỗi triết gia tìm cách để ăn được thức ăn từ đĩa của mình với điều kiện: &amp;ldquo;chỉ ai có 2 chiếc đũa cạnh mình mới được phép ăn&amp;rdquo;, do đó họ lần lượt đổi trạng thái giữa ăn (eating) và đợi (thinking) :)) Mỗi người sau khi giữa đôi đũa để ăn sau 1 khoảng thời gian phải bỏ lại 2 chiếc đũa về vị trí cũ để tiếp tục quá trình này.</description>
     </item>
     <item>
       <title>Boundaries for algorithm analysis</title>
-      <link>http://localhost:1313/posts/competitive-prog-bound/</link>
+      <link>https://khanhtc1202.github.io/posts/competitive-prog-bound/</link>
       <pubDate>Thu, 15 Aug 2019 07:18:49 +0900</pubDate>
-      <guid>http://localhost:1313/posts/competitive-prog-bound/</guid>
+      <guid>https://khanhtc1202.github.io/posts/competitive-prog-bound/</guid>
       <description>Some boundaries you should know to approximate time and space complexity of your algorithm.&#xA;$2^{10} = 1,024 \approx 10^{3}, 2^{20} = 1,048,576 \approx 10^{6}$ 32-bit signed integers (int) and 64-bit signed integers (long long) have upper limits of $2^{31} − 1 \approx 2 \times 10^{9}$ (safe for up to $\approx 9$ decimal digits) and $2^{63} − 1 \approx 9 \times 10^{18}$ (safe for up to $\approx 18$ decimal digits) respectively. Unsigned integers can be used if only non-negative numbers are required.</description>
     </item>
   </channel>

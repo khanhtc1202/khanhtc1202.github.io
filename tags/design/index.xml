@@ -2,45 +2,45 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Design on khanhtc&#39;s blog</title>
-    <link>http://localhost:1313/tags/design/</link>
+    <link>https://khanhtc1202.github.io/tags/design/</link>
     <description>Recent content in Design on khanhtc&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 17 Sep 2019 23:01:32 +0900</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/design/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://khanhtc1202.github.io/tags/design/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Imperative vs Functional</title>
-      <link>http://localhost:1313/posts/imperative-vs-funcional/</link>
+      <link>https://khanhtc1202.github.io/posts/imperative-vs-funcional/</link>
       <pubDate>Tue, 17 Sep 2019 23:01:32 +0900</pubDate>
-      <guid>http://localhost:1313/posts/imperative-vs-funcional/</guid>
+      <guid>https://khanhtc1202.github.io/posts/imperative-vs-funcional/</guid>
       <description>Difference between Imperative languages and Functional languages:&#xA;Imperative languages are based on assignment sequences whereas functional languages are based on nested function calls.&#xA;In imperative languages, the same name may be associated with several values, whereas in functional languages a name is only associated with one value.&#xA;Imperative languages have fixed evaluation orders whereas functional languages need not.(1)&#xA;In imperative languages, new values may be associated with the same name through command repetition whereas in functional languages new names are associated with new values through recursive function call nesting.</description>
     </item>
     <item>
       <title>Migrate to NoSql</title>
-      <link>http://localhost:1313/posts/migrate-to-nosql/</link>
+      <link>https://khanhtc1202.github.io/posts/migrate-to-nosql/</link>
       <pubDate>Wed, 10 Jul 2019 22:34:41 +0000</pubDate>
-      <guid>http://localhost:1313/posts/migrate-to-nosql/</guid>
+      <guid>https://khanhtc1202.github.io/posts/migrate-to-nosql/</guid>
       <description>Một điều được nhắc đến rất nhiệu khi chuyển từ sql sang nosql là cách để lưu trữ quan hệ giữa các đối tượng trong database. Một đối tượng thường rất ít khi tồn tại độc lâp trong một hệ thống mà nắm giữ 1 phần thông tin được sử dụng để tạo ra một đối tượng khác.&#xA;Các dạng quan hệ chính giữa các đối tượng có thể lưu được trong cơ sở dữ liệu quan hệ bao gồm</description>
     </item>
     <item>
       <title>Why can&#39;t initialize object from abstract class (java)</title>
-      <link>http://localhost:1313/posts/why_can_not_new_abstract_class/</link>
+      <link>https://khanhtc1202.github.io/posts/why_can_not_new_abstract_class/</link>
       <pubDate>Sat, 23 Mar 2019 01:50:54 +0000</pubDate>
-      <guid>http://localhost:1313/posts/why_can_not_new_abstract_class/</guid>
+      <guid>https://khanhtc1202.github.io/posts/why_can_not_new_abstract_class/</guid>
       <description>Difference between Abstract class and Interface is one of the most be confused problem when the first time I learnt Java. In which case we should use Abstract class and which case we should use Interface? Let&amp;rsquo;s take a deeper look in this two of concepts.&#xA;By defination, the Abstract class (java) is a class but unlike a simple java class, it&amp;rsquo;s may not only contain regular defined methods but may also contain abstract methods or a mix of regular and abstract methods.</description>
     </item>
     <item>
       <title>How much your objects encapsulate ?</title>
-      <link>http://localhost:1313/posts/encapsulate/</link>
+      <link>https://khanhtc1202.github.io/posts/encapsulate/</link>
       <pubDate>Sun, 24 Feb 2019 18:46:19 +0000</pubDate>
-      <guid>http://localhost:1313/posts/encapsulate/</guid>
+      <guid>https://khanhtc1202.github.io/posts/encapsulate/</guid>
       <description>Encapsulate ( tài liệu tiếng Việt thường dịch là đóng gói ) hay được nhắc đến và ví dụ như là cách để che giấu thông tin trong lập trình hướng đối tượng.&#xA;Tức là trạng thái của đối tượng được bảo vệ không cho các truy cập từ code bên ngoài như thay đổi trong thái hay nhìn trực tiếp. Việc cho phép môi trường bên ngoài tác động lên các dữ liệu nội tại của một đối tượng theo cách nào là hoàn toàn tùy thuộc vào người viết mã.</description>
     </item>
     <item>
       <title>Dependency Injection in a nutshell</title>
-      <link>http://localhost:1313/posts/dependency-injection/</link>
+      <link>https://khanhtc1202.github.io/posts/dependency-injection/</link>
       <pubDate>Mon, 21 May 2018 13:13:40 +0000</pubDate>
-      <guid>http://localhost:1313/posts/dependency-injection/</guid>
+      <guid>https://khanhtc1202.github.io/posts/dependency-injection/</guid>
       <description>As a developer, we write code day by day, try to handle many things, put all the thing in the right way it should be. Almost of our time is spent to googling usage of libraries (or frameworks), try to handle some incredible bugs or try to maintain some shitty things from other guys you may never ever met. All this mess made us forget about something that really have a meaning, it made us forget that our job is not just try to handle all the things, but our job is focused on creating the new thing depend on another guy achievement.</description>
     </item>
   </channel>

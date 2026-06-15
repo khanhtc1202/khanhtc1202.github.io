@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FIFA World Cup 2026 — Match Tracker (GMT+7)</title>
@@ -21,6 +21,8 @@
       --today-border: #f0c040;
       --done: #0d2015;
       --done-border: #27ae60;
+      --missed: #1f0a08;
+      --missed-border: #e74c3c;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; }
@@ -151,6 +153,8 @@
     .match-card.today { background: var(--today); border-color: var(--today-border); }
     .match-card.done { background: var(--done); border-color: var(--done-border); }
     .match-card.done:hover { border-color: #3cb371; }
+    .match-card.missed { background: var(--missed); border-color: var(--missed-border); }
+    .match-card.missed:hover { border-color: #ff6b5b; }
 
     .mc-time { min-width: 54px; text-align: center; }
     .mc-time .time { font-size: 0.85rem; font-weight: 700; color: var(--gold); }
@@ -161,6 +165,7 @@
     .badge-today { background: var(--gold); color: #000; }
     .badge-done { background: var(--green); color: #fff; }
     .badge-soon { background: var(--blue); color: #fff; }
+    .badge-missed { background: var(--red); color: #fff; }
 
     .mc-divider { width: 1px; height: 36px; background: var(--border); flex-shrink: 0; }
 
@@ -248,6 +253,38 @@
     .modal-note { font-size: 0.7rem; color: var(--text-dim); text-align: center; margin-top: 12px; }
 
      
+    .search-bar {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
+      background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px;
+    }
+    .search-bar input {
+      flex: 1; background: none; border: none; outline: none;
+      color: var(--text); font-size: 1rem; min-width: 0;
+    }
+    .search-bar input::placeholder { color: var(--text-dim); }
+    .search-bar .search-icon { font-size: 1.1rem; color: var(--text-dim); flex-shrink: 0; }
+    .search-bar .search-clear {
+      background: none; border: none; color: var(--text-dim); cursor: pointer;
+      font-size: 1rem; padding: 0 2px; line-height: 1; display: none;
+    }
+    .search-bar .search-clear.visible { display: block; }
+    .search-bar .search-clear:hover { color: var(--text); }
+    .search-hint { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 14px; }
+    .search-team-header {
+      font-size: 0.85rem; font-weight: 700; color: var(--gold);
+      padding: 10px 0 6px; border-bottom: 1px solid var(--border); margin-bottom: 8px;
+    }
+    .search-suggestions {
+      display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px;
+    }
+    .search-suggestion {
+      background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+      padding: 4px 12px; font-size: 0.78rem; cursor: pointer; color: var(--text-dim);
+      transition: all 0.15s;
+    }
+    .search-suggestion:hover { border-color: var(--gold); color: var(--gold); }
+
+     
     .section-title { font-size: 1rem; font-weight: 700; color: var(--gold); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
     .empty { color: var(--text-dim); font-size: 0.85rem; padding: 20px 0; }
     .stage-intro { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 16px; padding: 10px 12px; background: var(--card); border-radius: 6px; border-left: 3px solid var(--gold); }
@@ -295,13 +332,14 @@
 </div>
 
 <nav id="stage-nav">
-  <button class="active" onclick="showStage('today')" id="nav-today">⏰ Upcoming</button>
+  <button onclick="showStage('today')" id="nav-today">⏰ Upcoming</button>
   <button onclick="showStage('group')" id="nav-group">Group Stage</button>
   <button onclick="showStage('r32')"   id="nav-r32">Round of 32</button>
   <button onclick="showStage('r16')"   id="nav-r16">Round of 16</button>
   <button onclick="showStage('qf')"    id="nav-qf">Quarterfinals</button>
   <button onclick="showStage('sf')"    id="nav-sf">Semifinals</button>
   <button onclick="showStage('final')" id="nav-final">Final</button>
+  <button onclick="showStage('search')" id="nav-search">🔍 Search</button>
 </nav>
 
 <main id="main-content"></main>
@@ -854,12 +892,14 @@ function renderMatchCard(m) {
   let cardClass = 'match-card';
   if (st === 'live' || st === 'today-soon' || st === 'today-done') cardClass += ' today';
   else if (hasResult) cardClass += ' done';
+  else if (st === 'past') cardClass += ' missed';
 
   let badge = '';
   if (st === 'live')            badge = '<span class="badge badge-today">🔴 LIVE</span>';
   else if (st === 'today-soon') badge = '<span class="badge badge-soon">Today</span>';
   else if (st === 'today-done') badge = '<span class="badge badge-today">Today</span>';
   else if (hasResult)           badge = '<span class="badge badge-done">✓</span>';
+  else if (st === 'past')       badge = '<span class="badge badge-missed">!</span>';
 
   
   const hWin = hasResult && r.h > r.a;
@@ -891,11 +931,13 @@ function renderKnockoutCard(m) {
   let cardClass = 'match-card';
   if (st === 'live' || st === 'today-soon' || st === 'today-done') cardClass += ' today';
   else if (hasResult) cardClass += ' done';
+  else if (st === 'past') cardClass += ' missed';
 
   let badge = '';
   if (st === 'live')            badge = '<span class="badge badge-today">🔴 LIVE</span>';
   else if (st === 'today-soon') badge = '<span class="badge badge-soon">Today</span>';
   else if (hasResult)           badge = '<span class="badge badge-done">✓</span>';
+  else if (st === 'past')       badge = '<span class="badge badge-missed">!</span>';
 
   
   let hWin = false, aWin = false;
@@ -1102,6 +1144,97 @@ function renderAnyCard(m) {
 
 
 
+let searchQuery = '';
+
+function renderSearchView() {
+  const q = searchQuery.trim().toLowerCase();
+
+  
+  const allTeams = Object.values(GROUPS).flat().sort();
+
+  let html = `<div class="today-header">
+    <h2>Team Search</h2>
+    <span class="today-subtitle">Find all matches for a team</span>
+  </div>
+  <div class="search-bar">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="search-input" placeholder="Type a team name…" value="${searchQuery.replace(/"/g,'&quot;')}"
+      oninput="onSearchInput(this.value)" onkeydown="onSearchKey(event)" autocomplete="off" autocorrect="off" spellcheck="false">
+    <button class="search-clear ${searchQuery ? 'visible' : ''}" onclick="clearSearch()" title="Clear">✕</button>
+  </div>`;
+
+  if (!q) {
+    html += `<div class="search-hint">Start typing to find a team's full schedule and results.</div>
+    <div class="search-suggestions">
+      ${allTeams.map(t => `<span class="search-suggestion" onclick="setSearch('${t.replace(/'/g,"\\'")}')">
+        ${FLAGS[t] || ''}${t}
+      </span>`).join('')}
+    </div>`;
+    return html;
+  }
+
+  
+  const matchedTeams = allTeams.filter(t => t.toLowerCase().includes(q));
+
+  if (!matchedTeams.length) {
+    html += `<div class="today-empty" style="margin-top:20px">
+      <div class="empty-icon">🔎</div>
+      <p>No team found matching "<strong>${searchQuery}</strong>"</p>
+      <p style="margin-top:4px;font-size:0.75rem">Teams are group-stage participants only</p>
+    </div>`;
+    return html;
+  }
+
+  matchedTeams.forEach(team => {
+    const teamMatches = MATCHES.filter(m => m.home === team || m.away === team)
+      .sort((a, b) => a.dt.localeCompare(b.dt));
+    html += `<div class="search-team-header">${FLAGS[team] || ''}${team} &nbsp;·&nbsp; ${teamMatches.length} match${teamMatches.length !== 1 ? 'es' : ''}</div>`;
+
+    
+    const byDate = {};
+    teamMatches.forEach(m => {
+      const day = m.dt.slice(0, 10);
+      (byDate[day] = byDate[day] || []).push(m);
+    });
+    Object.keys(byDate).sort().forEach(day => {
+      html += `<div style="font-size:0.72rem;color:var(--text-dim);padding:6px 2px 3px;font-style:italic">${fmtDate(day + 'T00:00')}</div>`;
+      byDate[day].forEach(m => { html += renderAnyCard(m); });
+    });
+  });
+
+  return html;
+}
+
+function onSearchInput(val) {
+  searchQuery = val;
+  document.querySelector('.search-clear').classList.toggle('visible', !!val);
+  document.getElementById('main-content').innerHTML = renderSearchView();
+  
+  const inp = document.getElementById('search-input');
+  if (inp) { inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); }
+}
+
+function onSearchKey(e) {
+  if (e.key === 'Escape') clearSearch();
+}
+
+function clearSearch() {
+  searchQuery = '';
+  document.getElementById('main-content').innerHTML = renderSearchView();
+  const inp = document.getElementById('search-input');
+  if (inp) inp.focus();
+}
+
+function setSearch(team) {
+  searchQuery = team;
+  document.getElementById('main-content').innerHTML = renderSearchView();
+  const inp = document.getElementById('search-input');
+  if (inp) { inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); }
+}
+
+
+
+
 function updateNavDots() {
   const today = todayStr();
   const stageMap = {
@@ -1150,13 +1283,16 @@ let currentStage = 'today';
 
 function showStage(stage) {
   currentStage = stage;
-  const allStages = ['today','group','r32','r16','qf','sf','final'];
-  const ids = ['nav-today','nav-group','nav-r32','nav-r16','nav-qf','nav-sf','nav-final'];
+  const allStages = ['today','group','r32','r16','qf','sf','final','search'];
+  const ids = ['nav-today','nav-group','nav-r32','nav-r16','nav-qf','nav-sf','nav-final','nav-search'];
   ids.forEach((id, i) => {
     const btn = document.getElementById(id);
     if (btn) btn.classList.toggle('active', allStages[i] === stage);
   });
   renderContent();
+  if (stage === 'search') {
+    setTimeout(() => { const inp = document.getElementById('search-input'); if (inp) inp.focus(); }, 50);
+  }
 }
 
 function renderContent() {
@@ -1165,6 +1301,8 @@ function renderContent() {
     el.innerHTML = renderTodayView();
   } else if (currentStage === 'group') {
     el.innerHTML = renderGroupStage(currentGroup);
+  } else if (currentStage === 'search') {
+    el.innerHTML = renderSearchView();
   } else {
     el.innerHTML = renderKnockoutStage(currentStage);
   }
@@ -1304,7 +1442,7 @@ document.addEventListener('keydown', e => {
 
 updateStats();
 updateNavDots();
-renderContent();
+showStage('today');
 </script>
 </body>
 </html>

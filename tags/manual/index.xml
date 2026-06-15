@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Manual on khanhtc&#39;s blog</title>
-    <link>http://localhost:1313/tags/manual/</link>
+    <link>https://khanhtc1202.github.io/tags/manual/</link>
     <description>Recent content in Manual on khanhtc&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 19 Jun 2018 01:13:17 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/manual/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://khanhtc1202.github.io/tags/manual/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Using Package Manager ??</title>
-      <link>http://localhost:1313/posts/install-nodejs/</link>
+      <link>https://khanhtc1202.github.io/posts/install-nodejs/</link>
       <pubDate>Tue, 19 Jun 2018 01:13:17 +0000</pubDate>
-      <guid>http://localhost:1313/posts/install-nodejs/</guid>
+      <guid>https://khanhtc1202.github.io/posts/install-nodejs/</guid>
       <description>Từ cái ngày trẻ trâu copy icon half-life vào usb cho đến khi biết click next next next trong installer của mấy cái app trên windows, bây giờ nhìn lại với mình vẫn là cả một bầu trời kỉ niệm :)) Từ hồi đó cũng gọi là có biết chút ít cái shell của windows nhưng cũng chẳng mấy khi động đến. Cho đến khi lần đầu tiếp xúc với linux, tương tác hồi đó vẫn chủ yếu là trỏ chuột.</description>
     </item>
     <item>
       <title>Log Viewer via HTTP</title>
-      <link>http://localhost:1313/posts/view-log/</link>
+      <link>https://khanhtc1202.github.io/posts/view-log/</link>
       <pubDate>Fri, 30 Mar 2018 17:17:44 +0000</pubDate>
-      <guid>http://localhost:1313/posts/view-log/</guid>
+      <guid>https://khanhtc1202.github.io/posts/view-log/</guid>
       <description>Nhân một cuối tuần rảnh rỗi cao hứng nào đấy, mình đã build một hệ thống nhỏ - mục đích chính để nó giúp mình clone tự động anime mới từ các trang mình đã thu thập rss (phần vì mình lười down từng tập, phần do đợt này mình hay quên nên 🤣).&#xA;Do là cái hệ thống viết chơi bời trong 2 ngày nghỉ nên nó thiếu đủ thứ 🤧&amp;hellip; Lúc đầu, mình chỉ tập trung vào viết cho nó chạy, nhưng thời gian đầu - do một số lý do khó nói - mà nó chết sập liên tục 😟 mình bắt đầu nghĩ đến logging, tất nhiên là log ra file thôi&amp;hellip;Sau đấy một thời gian khi đã chạy khá ổn định, dần dần bản thân việc mò vào server để mở file log ra đọc mình cũng lười nốt 🤤 nên bắt đầu nghĩ xem có cách nào đơn giản (không phải cài hay dùng thêm dịch vụ ngoài nào) mà có thể giúp xem luôn log file ở server từ trình duyệt không 🧐</description>
     </item>
     <item>
       <title>Compile C program in manual way</title>
-      <link>http://localhost:1313/posts/compile-c-source/</link>
+      <link>https://khanhtc1202.github.io/posts/compile-c-source/</link>
       <pubDate>Mon, 26 Mar 2018 01:09:47 +0000</pubDate>
-      <guid>http://localhost:1313/posts/compile-c-source/</guid>
+      <guid>https://khanhtc1202.github.io/posts/compile-c-source/</guid>
       <description>After hard coding your program hour by hour (sometime, it becomes year by year :) ), one of the most uncomfortable time is compiling it into executable file. As usually, we are going to compile a program by the hardest way to do it, just because it will make us knows that in some case, gcc is really a hero :))&#xA;The post&amp;rsquo;s content is about compiling a C program by manual way.</description>
     </item>
   </channel>
