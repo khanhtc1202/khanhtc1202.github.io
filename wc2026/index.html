@@ -78,6 +78,10 @@
       display: inline-block; width: 6px; height: 6px; background: var(--gold);
       border-radius: 50%; margin-left: 5px; vertical-align: middle; flex-shrink: 0;
     }
+    .nav-dot-red {
+      display: inline-block; width: 6px; height: 6px; background: #e74c3c;
+      border-radius: 50%; margin-left: 5px; vertical-align: middle; flex-shrink: 0;
+    }
     .nav-count {
       display: inline-block; background: var(--gold); color: #000;
       font-size: 0.65rem; font-weight: 700; border-radius: 10px;
@@ -980,12 +984,14 @@ function renderGroupStage(grp) {
 
   
   const hasDot = g => MATCHES.some(m => m.stage === 'group' && m.group === g && m.dt.slice(0,10) === today);
+  const hasMissing = g => MATCHES.some(m => m.stage === 'group' && m.group === g && m.dt.slice(0,10) < today && !getResult(m.id));
 
-  const groupBtns = 'ABCDEFGHIJKL'.split('').map(g =>
-    `<button class="group-btn ${g===grp?'active':''}" onclick="switchGroup('${g}')">
-      Group ${g}${hasDot(g) ? '<span class="nav-dot"></span>' : ''}
-    </button>`
-  ).join('');
+  const groupBtns = 'ABCDEFGHIJKL'.split('').map(g => {
+    let dot = '';
+    if (hasMissing(g)) dot = '<span class="nav-dot-red"></span>';
+    else if (hasDot(g)) dot = '<span class="nav-dot"></span>';
+    return `<button class="group-btn ${g===grp?'active':''}" onclick="switchGroup('${g}')">Group ${g}${dot}</button>`;
+  }).join('');
 
   const matchesByDay = {};
   MATCHES.filter(m => m.stage === 'group' && m.group === grp)
