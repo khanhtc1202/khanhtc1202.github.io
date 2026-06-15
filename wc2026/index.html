@@ -678,6 +678,27 @@ function nowGMT7Minutes() {
   return gmt7.getHours() * 60 + gmt7.getMinutes();
 }
 
+function nowStr() {
+  
+  const n = new Date();
+  const utcMs = n.getTime() + n.getTimezoneOffset() * 60000;
+  const gmt7  = new Date(utcMs + 7 * 3600000);
+  const yr = gmt7.getFullYear();
+  const mo = String(gmt7.getMonth() + 1).padStart(2, '0');
+  const dy = String(gmt7.getDate()).padStart(2, '0');
+  const hh = String(gmt7.getHours()).padStart(2, '0');
+  const mm = String(gmt7.getMinutes()).padStart(2, '0');
+  return `${yr}-${mo}-${dy}T${hh}:${mm}`;
+}
+
+function isFinished(m) {
+  
+  const now = nowStr();
+  if (m.dt >= now) return false;
+  const diffMs = new Date(now + ':00') - new Date(m.dt + ':00');
+  return diffMs >= 120 * 60 * 1000;
+}
+
 function matchStatus(m) {
   const today = todayStr();
   const mDate = m.dt.slice(0, 10);
@@ -688,8 +709,8 @@ function matchStatus(m) {
   const matchMinutes = hr * 60 + mn;
   const nowMin = nowGMT7Minutes();
   if (nowMin < matchMinutes - 5) return 'today-soon';
-  if (nowMin < matchMinutes + 115) return 'live';
-  return 'today-done';
+  if (isFinished(m)) return 'past';  
+  return 'live';
 }
 
 
@@ -894,14 +915,13 @@ function renderMatchCard(m) {
   const hasResult = r !== null;
 
   let cardClass = 'match-card';
-  if (st === 'live' || st === 'today-soon' || st === 'today-done') cardClass += ' today';
+  if (st === 'live' || st === 'today-soon') cardClass += ' today';
   else if (hasResult) cardClass += ' done';
   else if (st === 'past') cardClass += ' missed';
 
   let badge = '';
   if (st === 'live')            badge = '<span class="badge badge-today">🔴 LIVE</span>';
   else if (st === 'today-soon') badge = '<span class="badge badge-soon">Today</span>';
-  else if (st === 'today-done') badge = '<span class="badge badge-today">Today</span>';
   else if (hasResult)           badge = '<span class="badge badge-done">✓</span>';
   else if (st === 'past')       badge = '<span class="badge badge-missed">!</span>';
 
@@ -933,7 +953,7 @@ function renderKnockoutCard(m) {
   const hasResult = r !== null;
 
   let cardClass = 'match-card';
-  if (st === 'live' || st === 'today-soon' || st === 'today-done') cardClass += ' today';
+  if (st === 'live' || st === 'today-soon') cardClass += ' today';
   else if (hasResult) cardClass += ' done';
   else if (st === 'past') cardClass += ' missed';
 
@@ -984,7 +1004,7 @@ function renderGroupStage(grp) {
 
   
   const hasDot = g => MATCHES.some(m => m.stage === 'group' && m.group === g && m.dt.slice(0,10) === today);
-  const hasMissing = g => MATCHES.some(m => m.stage === 'group' && m.group === g && m.dt.slice(0,10) < today && !getResult(m.id));
+  const hasMissing = g => MATCHES.some(m => m.stage === 'group' && m.group === g && isFinished(m) && !getResult(m.id));
 
   const groupBtns = 'ABCDEFGHIJKL'.split('').map(g => {
     let dot = '';
