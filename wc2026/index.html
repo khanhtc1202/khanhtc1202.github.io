@@ -1230,14 +1230,18 @@ function renderSearchView() {
     html += `<div class="today-empty" style="margin-top:20px">
       <div class="empty-icon">🔎</div>
       <p>No team found matching "<strong>${searchQuery}</strong>"</p>
-      <p style="margin-top:4px;font-size:0.75rem">Teams are group-stage participants only</p>
+      <p style="margin-top:4px;font-size:0.75rem">Try a group-stage team name</p>
     </div>`;
     return html;
   }
 
   matchedTeams.forEach(team => {
-    const teamMatches = MATCHES.filter(m => m.home === team || m.away === team)
-      .sort((a, b) => a.dt.localeCompare(b.dt));
+    const teamMatches = MATCHES.filter(m => {
+      if (m.home === team || m.away === team) return true;
+      if (m.stage === 'group') return false;
+      
+      return getDisplayTeam(m.home).name === team || getDisplayTeam(m.away).name === team;
+    }).sort((a, b) => a.dt.localeCompare(b.dt));
     html += `<div class="search-team-header">${FLAGS[team] || ''}${team} &nbsp;·&nbsp; ${teamMatches.length} match${teamMatches.length !== 1 ? 'es' : ''}</div>`;
 
     
