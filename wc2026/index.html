@@ -299,6 +299,24 @@
       .mc-team-name { font-size: 0.82rem; }
       nav button { padding: 10px 12px; font-size: 0.78rem; }
     }
+
+     
+    .bk-outer { overflow-x: auto; padding-bottom: 12px; }
+    .bk-wrap  { position: relative; }
+    .bk-match {
+      position: absolute; background: var(--card2); border: 1px solid var(--border);
+      border-radius: 6px; cursor: pointer; overflow: hidden; box-sizing: border-box;
+    }
+    .bk-match:hover { border-color: var(--gold); }
+    .bk-match.bk-done { background: var(--done); border-color: var(--done-border); }
+    .bk-match.bk-done:hover { border-color: var(--green); }
+    .bk-hdr { font-size: 0.56rem; color: var(--text-dim); padding: 2px 5px; border-bottom: 1px solid var(--border); line-height: 1.4; white-space: nowrap; }
+    .bk-team { display: flex; align-items: center; padding: 3px 6px; font-size: 0.72rem; overflow: hidden; }
+    .bk-team .bk-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+    .bk-team .bk-prov { font-size: 0.62rem; color: var(--text-dim); font-style: italic; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+    .bk-team.bk-win  { color: var(--gold); font-weight: 700; }
+    .bk-score { font-weight: 700; font-size: 0.88rem; flex-shrink: 0; margin-left: 3px; }
+    .bk-score.bk-win { color: var(--gold); }
   </style>
 </head>
 <body>
@@ -343,6 +361,7 @@
   <button onclick="showStage('qf')"    id="nav-qf">Quarterfinals</button>
   <button onclick="showStage('sf')"    id="nav-sf">Semifinals</button>
   <button onclick="showStage('final')" id="nav-final">Final</button>
+  <button onclick="showStage('bracket')" id="nav-bracket">🏆 Bracket</button>
   <button onclick="showStage('search')" id="nav-search">🔍 Search</button>
 </nav>
 
@@ -658,6 +677,11 @@ function fmtDate(dt) {
   const { yr, mo, dy } = parseDT(dt);
   const d = new Date(yr, mo - 1, dy);
   return `${DAYS[d.getDay()]}, ${dy} ${MONTHS[mo-1]} ${yr}`;
+}
+
+function fmtShortDate(dt) {
+  const { mo, dy } = parseDT(dt);
+  return `${dy} ${MONTHS[mo-1]}`;
 }
 
 function todayStr() {
@@ -1305,12 +1329,106 @@ function updateNavDots() {
 
 
 
+
+
+const BRACKET_ROUNDS = [
+  { label:'Round of 32',    ids:[73,75,74,77,83,84,81,82,76,78,79,80,86,88,85,87] },
+  { label:'Round of 16',    ids:[90,89,93,94,91,92,95,96] },
+  { label:'Quarterfinals',  ids:[97,98,99,100] },
+  { label:'Semifinals',     ids:[101,102] },
+  { label:'Final',          ids:[104] },
+];
+
+function renderBracketMatch(mid, left, top, w, h) {
+  const m  = MATCHES.find(x => x.id === mid);
+  const r  = getResult(mid);
+  const hd = getDisplayTeam(m.home);
+  const ad = getDisplayTeam(m.away);
+  const has = r !== null;
+  let hWin = false, aWin = false;
+  if (has) {
+    if      (r.h > r.a)            hWin = true;
+    else if (r.a > r.h)            aWin = true;
+    else if (r.pen === 'home')     hWin = true;
+    else if (r.pen === 'away')     aWin = true;
+  }
+  const tl = (d, sc, win) => {
+    const nm = d.unresolved
+      ? `<span class="bk-prov">${d.name}</span>`
+      : `<span class="bk-name">${d.flag ? d.flag+' ' : ''}${d.name}</span>`;
+    const sv = has ? `<span class="bk-score${win?' bk-win':''}">${sc}</span>` : '';
+    return `<div class="bk-team${win?' bk-win':''}">${nm}${sv}</div>`;
+  };
+  return `<div class="bk-match${has?' bk-done':''}" onclick="openModal(${mid})"
+    title="M${mid} · ${fmtDate(m.dt)} · ${fmtTime(m.dt)} GMT+7"
+    style="left:${left}px;top:${top}px;width:${w}px;height:${h}px">
+    <div class="bk-hdr">M${mid} · ${fmtShortDate(m.dt)}</div>
+    ${tl(hd, r?.h, hWin)}
+    ${tl(ad, r?.a, aWin)}
+  </div>`;
+}
+
+function renderBracket() {
+  const SLOT=72, MH=60, MW=160, GAP=28, COL=MW+GAP;
+  const H=16*SLOT, W=BRACKET_ROUNDS.length*COL-GAP;
+
+  
+  let svg = `<svg style="position:absolute;top:0;left:0;width:${W}px;height:${H}px;pointer-events:none;overflow:visible">`;
+  BRACKET_ROUNDS.forEach((round, ri) => {
+    if (ri >= BRACKET_ROUNDS.length-1) return;
+    const sp  = 1<<ri;                
+    const rx  = ri*COL+MW;            
+    const cx  = rx+GAP/2;             
+    const nx  = (ri+1)*COL;           
+    for (let mi=0; mi<round.ids.length; mi+=2) {
+      const myA = mi*sp*SLOT     + (sp*SLOT-MH)/2 + MH/2;
+      const myB = (mi+1)*sp*SLOT + (sp*SLOT-MH)/2 + MH/2;
+      const nmy = (myA+myB)/2;
+      
+      svg += `<path d="M${rx},${myA} H${cx} V${myB} H${rx}" fill="none" stroke="var(--border)" stroke-width="1.5"/>`;
+      
+      svg += `<line x1="${cx}" y1="${nmy}" x2="${nx}" y2="${nmy}" stroke="var(--border)" stroke-width="1.5"/>`;
+    }
+  });
+  svg += `</svg>`;
+
+  
+  const labels = BRACKET_ROUNDS.map((r,ri) =>
+    `<div style="display:inline-block;width:${ri<BRACKET_ROUNDS.length-1?COL:MW}px;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);text-align:center">${r.label}</div>`
+  ).join('');
+
+  
+  let boxes = '';
+  BRACKET_ROUNDS.forEach((round, ri) => {
+    const sp = 1<<ri;
+    round.ids.forEach((mid, mi) => {
+      boxes += renderBracketMatch(mid, ri*COL, mi*sp*SLOT+(sp*SLOT-MH)/2, MW, MH);
+    });
+  });
+
+  const m3 = MATCHES.find(x => x.id===103);
+  return `
+    <div class="section-title">🏆 Tournament Bracket</div>
+    <div class="stage-intro">📅 Jun 29 – Jul 20 · Click any match to enter result · Scroll right on small screens</div>
+    <div class="bk-outer">
+      <div style="white-space:nowrap;margin-bottom:6px;min-width:${W}px">${labels}</div>
+      <div class="bk-wrap" style="width:${W}px;height:${H}px">${svg}${boxes}</div>
+    </div>
+    <div style="margin-top:24px">
+      <div class="section-title" style="font-size:0.85rem">🥉 3rd Place · ${fmtDate(m3.dt)} · ${fmtTime(m3.dt)} GMT+7</div>
+      ${renderKnockoutCard(m3)}
+    </div>`;
+}
+
+
+
+
 let currentStage = 'today';
 
 function showStage(stage) {
   currentStage = stage;
-  const allStages = ['today','group','r32','r16','qf','sf','final','search'];
-  const ids = ['nav-today','nav-group','nav-r32','nav-r16','nav-qf','nav-sf','nav-final','nav-search'];
+  const allStages = ['today','group','r32','r16','qf','sf','final','bracket','search'];
+  const ids = ['nav-today','nav-group','nav-r32','nav-r16','nav-qf','nav-sf','nav-final','nav-bracket','nav-search'];
   ids.forEach((id, i) => {
     const btn = document.getElementById(id);
     if (btn) btn.classList.toggle('active', allStages[i] === stage);
@@ -1327,6 +1445,8 @@ function renderContent() {
     el.innerHTML = renderTodayView();
   } else if (currentStage === 'group') {
     el.innerHTML = renderGroupStage(currentGroup);
+  } else if (currentStage === 'bracket') {
+    el.innerHTML = renderBracket();
   } else if (currentStage === 'search') {
     el.innerHTML = renderSearchView();
   } else {
